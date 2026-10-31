@@ -1,0 +1,31 @@
+.intro {
+  padding: 22vh var(--gutter) 18vh;
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  gap: 4vh 16px;
+}
+.big {
+  font-weight: 500;
+  font-size: clamp(30px, 4.2vw, 76px);
+  line-height: 1.02;
+  letter-spacing: -0.055em;
+  text-indent: 12%;
+}
+.small {
+  grid-column: 2;
+  max-width: 34ch;
+  font-size: clamp(15px, 1.15vw, 19px);
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  color: var(--muted);
+  margin-left: 50%;
+}
+@media (max-width: 800px) {
+  .intro {
+    grid-template-columns: 1fr;
+  }
+  .small {
+    grid-column: 1;
+    margin-left: 0;
+  }
+}

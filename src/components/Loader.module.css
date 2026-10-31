@@ -1,0 +1,66 @@
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: #050505;
+  color: #efefed;
+  clip-path: inset(0 0 0 0);
+}
+.inner {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+.sig {
+  width: min(70vw, 620px);
+  overflow: visible;
+}
+.sigText {
+  font-family: var(--font-script), cursive;
+  font-size: 230px;
+  fill: #efefed;
+  fill-opacity: 0;
+  stroke: #efefed;
+  stroke-width: 1.2;
+  stroke-dasharray: 1400;
+  stroke-dashoffset: 1400;
+}
+.foot {
+  position: absolute;
+  left: var(--gutter);
+  right: var(--gutter);
+  bottom: calc(var(--gutter) + 10px);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+}
+.count {
+  font-family: var(--font);
+  font-weight: 500;
+  letter-spacing: var(--track);
+  font-size: clamp(56px, 9vw, 140px);
+  line-height: 0.8;
+  font-variant-numeric: tabular-nums;
+}
+.bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.08);
+}
+.bar span {
+  display: block;
+  height: 100%;
+  background: #c4161c;
+  transform: scaleX(0);
+  transform-origin: left;
+}
+@media (max-width: 640px) {
+  .foot > span:nth-child(2) {
+    display: none;
+  }
+}

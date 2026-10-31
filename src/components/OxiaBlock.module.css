@@ -1,0 +1,136 @@
+.section {
+  background: #000;
+  color: #f2f2f0;
+  --fg: #f2f2f0;
+  --muted: #77736f;
+  --line: rgba(255, 255, 255, 0.12);
+  position: relative;
+}
+.inner {
+  padding: 14vh var(--gutter) 10vh;
+  display: flex;
+  flex-direction: column;
+  gap: 6vh;
+}
+.topRow {
+  display: flex;
+  justify-content: space-between;
+}
+.stage {
+  position: relative;
+  height: min(92vh, 62vw);
+  display: grid;
+  place-items: center;
+}
+.canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+}
+.word {
+  position: relative;
+  z-index: 1;
+  font-size: clamp(90px, 23vw, 420px);
+  text-align: center;
+  line-height: 0.8;
+  color: #1a1a1a;
+}
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+.line {
+  max-width: 26ch;
+  font-size: clamp(24px, 2.6vw, 46px);
+  font-weight: 500;
+  letter-spacing: -0.05em;
+  line-height: 1.04;
+}
+.switch {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.switch button {
+  padding: 7px 12px;
+  border: 1px solid var(--line);
+  border-radius: 99px;
+  transition: all 0.4s var(--ease);
+}
+.switch button:hover {
+  border-color: #f2f2f0;
+}
+.switch .on {
+  background: #f2f2f0;
+  color: #000;
+}
+.products {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  border-top: 1px solid var(--line);
+  padding-top: 4vh;
+}
+.product {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.thumb {
+  aspect-ratio: 16 / 10;
+  border-radius: 4px;
+}
+.thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 1.2s var(--ease);
+}
+.product:hover .thumb img {
+  transform: scale(1.05);
+}
+.pInfo {
+  display: grid;
+  grid-template-columns: 40px 1fr auto;
+  align-items: baseline;
+}
+.pName {
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.05em;
+}
+.cta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 3vh 0;
+  font-size: clamp(36px, 6vw, 110px);
+  transition: color 0.5s var(--ease), padding 0.6s var(--ease);
+}
+.cta:hover {
+  padding-left: 2vw;
+}
+.arrow {
+  font-weight: 300;
+  transition: transform 0.6s var(--ease);
+}
+.cta:hover .arrow {
+  transform: translateX(-2vw) rotate(-45deg);
+}
+@media (max-width: 800px) {
+  .products {
+    grid-template-columns: 1fr;
+  }
+  .pInfo {
+    grid-template-columns: 32px 1fr;
+  }
+  .pInfo > :last-child {
+    grid-column: 2;
+  }
+}
