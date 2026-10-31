@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Geist_Mono, Mrs_Saint_Delafield } from "next/font/google";
+import { Geist_Mono } from "next/font/google";
 import { notFound } from "next/navigation";
 import "../globals.css";
 import { isLocale, locales, type Locale } from "@/content/i18n";
@@ -8,12 +8,6 @@ import Loader from "@/components/Loader";
 import Nav from "@/components/Nav";
 
 const mono = Geist_Mono({ subsets: ["latin"], variable: "--font-mono", display: "swap" });
-const script = Mrs_Saint_Delafield({
-  subsets: ["latin"],
-  weight: "400",
-  variable: "--font-script",
-  display: "block",
-});
 
 export function generateStaticParams() {
   return locales.map((lang) => ({ lang }));
@@ -58,7 +52,7 @@ export default async function RootLayout({
   if (!isLocale(lang)) notFound();
   const locale = lang as Locale;
   return (
-    <html lang={locale} className={`${mono.variable} ${script.variable}`}>
+    <html lang={locale} className={`${mono.variable}`}>
       <body>
         <SmoothScroll>
           <Loader locale={locale} />

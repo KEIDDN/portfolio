@@ -7,6 +7,7 @@ import gsap from "gsap";
 import { dict, t, type Locale } from "@/content/i18n";
 import { getProject } from "@/content/projects";
 import { MATERIALS, type MaterialName } from "./Emblem3D";
+import Objects from "./Objects";
 import styles from "./OxiaBlock.module.css";
 
 const Emblem3D = dynamic(() => import("./Emblem3D"), { ssr: false });
@@ -85,6 +86,11 @@ export default function OxiaBlock({ locale }: { locale: Locale }) {
           <p className={styles.line}>{dict.oxiaLine[locale]}</p>
           <MaterialSwitch value={mat} onChange={setMat} locale={locale} />
         </div>
+
+        <Objects
+          size="sm"
+          srcs={["/work/cutouts/emblem-chrome.webp", "/work/cutouts/emblem-glass.webp", "/work/cutouts/emblem-moss.webp", "/work/cutouts/emblem-crystal.webp"]}
+        />
 
         <div data-o-prods className={styles.products}>
           {products.map((p, i) => (

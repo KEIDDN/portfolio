@@ -7,6 +7,8 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { LOADER_EVENT, loaderDone } from "./Loader";
 import styles from "./Hero.module.css";
 
+const MAX = 16;
+
 const vert = /* glsl */ `
 varying vec2 vUv;
 void main(){ vUv = uv; gl_Position = vec4(position.xy, 0.0, 1.0); }
@@ -14,65 +16,56 @@ void main(){ vUv = uv; gl_Position = vec4(position.xy, 0.0, 1.0); }
 
 const frag = /* glsl */ `
 precision highp float;
+#define MAX ${MAX}
 uniform sampler2D uTex;
-uniform vec2 uMouse;
-uniform vec2 uVel;
+uniform vec4 uBox[MAX];
+uniform vec3 uOff[MAX];
+uniform int uCount;
 uniform vec2 uRes;
 uniform float uTime;
-uniform float uReveal;
-uniform float uScroll;
-uniform float uHover;
+uniform float uDis;
 uniform vec3 uColor;
 varying vec2 vUv;
 
 float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
 
-float sampleA(vec2 uv){
-  if(uv.x < 0.0 || uv.x > 1.0 || uv.y < 0.0 || uv.y > 1.0) return 0.0;
-  return texture2D(uTex, uv).a;
+float alphaAt(vec2 uv){
+  vec2 px = uv * uRes;
+  float a = 0.0;
+  for (int i = 0; i < MAX; i++) {
+    if (i >= uCount) break;
+    vec4 b = uBox[i];           // px: x, y, w, h (y from bottom)
+    vec3 o = uOff[i];           // px offset x, y ; rotation
+    vec2 c = b.xy + b.zw * 0.5;
+    vec2 p = px - o.xy - c;
+    float s = sin(-o.z), co = cos(-o.z);
+    p = vec2(co * p.x - s * p.y, s * p.x + co * p.y) + c;
+    vec2 q = (p - b.xy) / b.zw;
+    if (q.x < -0.02 || q.x > 1.02 || q.y < -0.02 || q.y > 1.02) continue;
+    a = max(a, texture2D(uTex, p / uRes).a);
+  }
+  return a;
 }
 
 void main(){
-  vec2 uv = vUv;
-
-  // reveal: columns rise from below, staggered
-  float cols = 14.0;
-  float c = floor(uv.x * cols);
-  float delay = (c / cols) * 0.45;
-  float r = clamp((uReveal - delay) / 0.55, 0.0, 1.0);
-  r = 1.0 - pow(1.0 - r, 4.0);
-  uv.y -= (1.0 - r) * 1.05;
-
-  // mouse liquid push
-  vec2 asp = vec2(uRes.x / uRes.y, 1.0);
-  vec2 d = (vUv - uMouse) * asp;
-  float f = exp(-dot(d, d) * 9.0) * uHover;
-  uv -= uVel * f * 0.35;
-  // subtle lens bulge under cursor
-  uv -= d / asp * f * 0.035;
-
-  // scroll: slice displacement + vertical stretch
-  float band = floor(vUv.y * 18.0);
-  float n = hash(vec2(band, 3.0)) - 0.5;
-  uv.x += n * uScroll * 0.22;
-  uv.y = (uv.y - 1.0) * (1.0 - uScroll * 0.35) + 1.0;
-
-  float split = length(uVel) * f * 0.06 + uScroll * 0.012;
-  float aR = sampleA(uv + vec2(split, 0.0));
-  float aG = sampleA(uv);
-  float aB = sampleA(uv - vec2(split, 0.0));
-  float a = max(max(aR, aG), aB);
-
-  // grain
+  float solid = alphaAt(vUv);
+  // halftone dissolve
+  float cell = mix(3.0, 16.0, uDis);
+  vec2 px = vUv * uRes;
+  vec2 id = floor(px / cell);
+  vec2 cc = (id + 0.5) * cell;
+  float ca = alphaAt(cc / uRes);
+  float drop = step(hash(id) , 1.0 - uDis * 0.75);
+  float r = sqrt(ca) * cell * 0.62 * (1.0 - uDis * 0.35);
+  float dotA = (1.0 - smoothstep(r - 1.0, r + 0.5, length(px - cc))) * drop;
+  float a = mix(solid, dotA, smoothstep(0.02, 0.35, uDis));
   float g = hash(vUv * uRes + fract(uTime * 7.0)) - 0.5;
-  vec3 col = uColor * vec3(aR, aG, aB) / max(a, 0.001);
-  col += g * 0.12;
-  a *= 1.0 - uScroll * 0.6;
+  vec3 col = uColor + g * 0.12;
   gl_FragColor = vec4(col * a, a);
 }
 `;
 
-type Props = { text: string; color?: string };
+type Glyph = { x: number; y: number; w: number; h: number };
 
 function drawText(text: string, width: number, dpr: number, mobile: boolean) {
   const lines = mobile ? text.split(" ") : [text];
@@ -80,34 +73,45 @@ function drawText(text: string, width: number, dpr: number, mobile: boolean) {
   const ctx = canvas.getContext("2d")!;
   const base = 200;
   ctx.font = `500 ${base}px Garet`;
-  const track = -0.075 * base;
-  const measure = (s: string) =>
-    [...s].reduce((w, ch) => w + ctx.measureText(ch).width + track, -track);
-  const widest = Math.max(...lines.map(measure));
-  const size = (base * width) / widest;
+  const measure = (s: string, size: number) =>
+    [...s].reduce((w, ch) => w + ctx.measureText(ch).width + -0.075 * size, 0.075 * size);
+  const widest = Math.max(...lines.map((l) => measure(l, base)));
+  const size = (base * width * 0.995) / widest;
   const lineH = size * 0.84;
-  const padY = size * 0.18;
-  const h = lineH * lines.length + padY * 2;
+  const padY = size * 0.22;
+  const core = lineH * lines.length + padY * 2;
+  const padTop = size * 0.5;
+  const padBottom = size * 1.5;
+  const h = core + padTop + padBottom;
   canvas.width = Math.round(width * dpr);
   canvas.height = Math.round(h * dpr);
   ctx.scale(dpr, dpr);
   ctx.font = `500 ${size}px Garet`;
   ctx.fillStyle = "#fff";
-  ctx.textBaseline = "alphabetic";
   const tr = -0.075 * size;
+  const glyphs: Glyph[] = [];
   lines.forEach((line, i) => {
     const lw = [...line].reduce((w, ch) => w + ctx.measureText(ch).width + tr, -tr);
     let x = (width - lw) / 2;
-    const y = padY + lineH * (i + 1) - size * 0.1;
+    const base = padTop + padY + lineH * (i + 1) - size * 0.1;
     for (const ch of line) {
-      ctx.fillText(ch, x, y);
-      x += ctx.measureText(ch).width + tr;
+      const m = ctx.measureText(ch);
+      ctx.fillText(ch, x, base);
+      if (ch !== " ") {
+        const top = base - m.actualBoundingBoxAscent;
+        const gh = m.actualBoundingBoxAscent + m.actualBoundingBoxDescent;
+        // y from bottom for GL
+        glyphs.push({ x: x - 2, y: h - (top + gh) - 2, w: m.width + 4, h: gh + 4 });
+      }
+      x += m.width + tr;
     }
   });
-  return { canvas, height: h };
+  return { canvas, height: h, core, padTop, glyphs };
 }
 
-export default function HeroName({ text, color = "#efefed" }: Props) {
+type Body = { x: number; y: number; r: number; vx: number; vy: number; vr: number; fx: number; fy: number; fr: number };
+
+export default function HeroName({ text, color = "#efefed" }: { text: string; color?: string }) {
   const wrap = useRef<HTMLDivElement>(null);
   const fallback = useRef<HTMLHeadingElement>(null);
 
@@ -131,36 +135,47 @@ export default function HeroName({ text, color = "#efefed" }: Props) {
     tex.generateMipmaps = false;
     const uniforms = {
       uTex: { value: tex },
-      uMouse: { value: new THREE.Vector2(0.5, 0.5) },
-      uVel: { value: new THREE.Vector2() },
+      uBox: { value: Array.from({ length: MAX }, () => new THREE.Vector4()) },
+      uOff: { value: Array.from({ length: MAX }, () => new THREE.Vector3()) },
+      uCount: { value: 0 },
       uRes: { value: new THREE.Vector2(1, 1) },
       uTime: { value: 0 },
-      uReveal: { value: 0 },
-      uScroll: { value: 0 },
-      uHover: { value: 0 },
+      uDis: { value: 0 },
       uColor: { value: new THREE.Color(color) },
     };
-    const mat = new THREE.ShaderMaterial({
-      vertexShader: vert,
-      fragmentShader: frag,
-      uniforms,
-      transparent: true,
-      premultipliedAlpha: true,
-    });
+    const mat = new THREE.ShaderMaterial({ vertexShader: vert, fragmentShader: frag, uniforms, transparent: true, premultipliedAlpha: true });
     scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), mat));
 
+    let glyphs: Glyph[] = [];
+    let bodies: Body[] = [];
+    let H = 1;
+    let padTopPx = 0;
     const layout = () => {
       const w = el.clientWidth;
-      const mobile = window.innerWidth < 700;
-      const { canvas, height } = drawText(text, w, dpr, mobile);
-      el.style.height = `${height}px`;
-      tex.image = canvas;
+      const res = drawText(text, w, dpr, window.innerWidth < 700);
+      glyphs = res.glyphs;
+      H = res.core;
+      el.style.height = `${H}px`;
+      tex.image = res.canvas;
       tex.needsUpdate = true;
-      renderer.setSize(w, height);
-      uniforms.uRes.value.set(w, height);
+      renderer.setSize(w, res.height);
+      renderer.domElement.style.top = `${-res.padTop}px`;
+      renderer.domElement.style.height = `${res.height}px`;
+      uniforms.uRes.value.set(w, res.height);
+      padTopPx = res.padTop;
+      uniforms.uCount.value = Math.min(glyphs.length, MAX);
+      glyphs.slice(0, MAX).forEach((g, i) => uniforms.uBox.value[i].set(g.x, g.y, g.w, g.h));
+      bodies = glyphs.map(() => ({
+        x: 0, y: revealed ? 0 : -H * 1.3, r: 0, vx: 0, vy: 0, vr: 0,
+        // per-letter scroll scatter targets
+        fx: (Math.random() - 0.5) * 0.5, fy: 0.55 + Math.random() * 0.9, fr: (Math.random() - 0.5) * 1.6,
+      }));
       ScrollTrigger.refresh();
     };
+
     let ready = false;
+    let revealed = false;
+    let revealT = 0;
     document.fonts.load("500 100px Garet").then(() => {
       layout();
       ready = true;
@@ -169,29 +184,31 @@ export default function HeroName({ text, color = "#efefed" }: Props) {
     const ro = new ResizeObserver(() => ready && layout());
     ro.observe(el);
 
-    // mouse
-    const target = new THREE.Vector2(0.5, 0.5);
-    const prev = new THREE.Vector2(0.5, 0.5);
-    let hoverTarget = 0;
+    const mouse = { x: -9999, y: -9999, active: false };
     const onMove = (e: PointerEvent) => {
       const r = el.getBoundingClientRect();
-      target.set((e.clientX - r.left) / r.width, 1 - (e.clientY - r.top) / r.height);
-      hoverTarget = e.clientY > r.top - r.height * 0.6 && e.clientY < r.bottom + r.height * 0.6 ? 1 : 0;
+      mouse.x = e.clientX - r.left;
+      mouse.y = r.bottom - e.clientY + (renderer.domElement.clientHeight - padTopPx - H); // y from canvas bottom
+      mouse.active = true;
     };
+    const onLeave = () => (mouse.active = false);
     window.addEventListener("pointermove", onMove);
+    document.addEventListener("pointerleave", onLeave);
 
-    // reveal after loader
-    const reveal = () =>
-      gsap.to(uniforms.uReveal, { value: 1, duration: 2.0, ease: "power2.out", delay: 0.15 });
+    const reveal = () => {
+      revealed = true;
+      revealT = performance.now();
+    };
     if (loaderDone()) reveal();
     else window.addEventListener(LOADER_EVENT, reveal, { once: true });
 
+    let scrollP = 0;
     const st = ScrollTrigger.create({
       trigger: el,
-      start: "top 75%",
+      start: "top 70%",
       end: "bottom top",
       scrub: true,
-      onUpdate: (s) => (uniforms.uScroll.value = Math.max(0, s.progress - 0.15) * 1.2),
+      onUpdate: (s) => (scrollP = Math.max(0, (s.progress - 0.1) / 0.9)),
     });
 
     let visible = true;
@@ -205,12 +222,43 @@ export default function HeroName({ text, color = "#efefed" }: Props) {
       const dt = Math.min((now - last) / 1000, 0.05);
       last = now;
       uniforms.uTime.value += dt;
-      const m = uniforms.uMouse.value;
-      m.lerp(target, 0.12);
-      const v = new THREE.Vector2().subVectors(m, prev);
-      uniforms.uVel.value.lerp(v.multiplyScalar(6), 0.2);
-      prev.copy(m);
-      uniforms.uHover.value += (hoverTarget - uniforms.uHover.value) * 0.06;
+      const sp = scrollP;
+      uniforms.uDis.value += (Math.min(1, sp * 1.4) - uniforms.uDis.value) * 0.15;
+      const radius = H * 0.75;
+      bodies.forEach((b, i) => {
+        const g = glyphs[i];
+        if (!g) return;
+        // reveal stagger: letters rise in
+        const delay = i * 70;
+        const since = revealed ? now - revealT - delay : -1;
+        let tx = b.fx * H * sp * 1.6;
+        let ty = since < 0 ? -H * 1.3 : -b.fy * H * sp * 1.4;
+        let tr = b.fr * sp;
+        // magnet
+        if (mouse.active && sp < 0.6) {
+          const cx = g.x + g.w / 2 + b.x;
+          const cy = g.y + g.h / 2 + b.y;
+          const dx = cx - mouse.x;
+          const dy = cy - mouse.y;
+          const d = Math.hypot(dx, dy);
+          if (d < radius) {
+            const f = Math.pow(1 - d / radius, 2);
+            tx += (dx / (d || 1)) * f * H * 0.32;
+            ty += (dy / (d || 1)) * f * H * 0.32;
+            tr += (dx / radius) * f * -0.35;
+          }
+        }
+        // spring
+        const k = since < 0 ? 0 : 120;
+        const damp = 14;
+        b.vx += ((tx - b.x) * k - b.vx * damp) * dt;
+        b.vy += ((ty - b.y) * k - b.vy * damp) * dt;
+        b.vr += ((tr - b.r) * k - b.vr * damp) * dt;
+        b.x += b.vx * dt;
+        b.y += b.vy * dt;
+        b.r += b.vr * dt;
+        if (i < MAX) uniforms.uOff.value[i].set(b.x, b.y, b.r);
+      });
       renderer.render(scene, camera);
     };
     gsap.ticker.add(tick);
@@ -218,6 +266,7 @@ export default function HeroName({ text, color = "#efefed" }: Props) {
     return () => {
       gsap.ticker.remove(tick);
       window.removeEventListener("pointermove", onMove);
+      document.removeEventListener("pointerleave", onLeave);
       window.removeEventListener(LOADER_EVENT, reveal);
       ro.disconnect();
       io.disconnect();

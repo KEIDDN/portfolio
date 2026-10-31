@@ -37,6 +37,42 @@
 .title {
   font-size: clamp(72px, 15vw, 290px);
 }
+.story {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  gap: 24px 3vw;
+  padding: 22vh var(--gutter) 10vh;
+}
+.storyText {
+  display: flex;
+  flex-direction: column;
+  gap: 3vh;
+  font-size: clamp(17px, 1.4vw, 23px);
+  line-height: 1.45;
+  letter-spacing: -0.015em;
+  color: color-mix(in srgb, var(--fg) 78%, transparent);
+}
+.storyText .storyLead {
+  font-size: clamp(28px, 3.2vw, 58px);
+  line-height: 1.04;
+  letter-spacing: -0.055em;
+  font-weight: 500;
+  color: var(--fg);
+}
+.facts {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  align-self: end;
+}
+.facts dt {
+  margin-bottom: 4px;
+}
+.facts dd {
+  font-size: 16px;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+}
 .manifesto {
   padding: 24vh var(--gutter);
   display: grid;
@@ -157,9 +193,7 @@
 }
 .idImg {
   grid-column: 1 / -1;
-}
-.idImg img {
-  width: 100%;
+  padding-top: 8vh;
 }
 .next {
   padding: 16vh var(--gutter);
@@ -174,6 +208,7 @@
 }
 @media (max-width: 800px) {
   .manifesto,
+  .story,
   .principles,
   .product,
   .idGrid {

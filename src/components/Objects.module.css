@@ -1,0 +1,39 @@
+.row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 4vw;
+}
+.fig {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  min-width: 0;
+}
+.obj {
+  position: relative;
+  width: 100%;
+  will-change: transform;
+}
+.obj img {
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 30px 40px rgba(0, 0, 0, 0.35));
+}
+.sm {
+  max-width: 900px;
+  margin: 0 auto;
+}
+.lg {
+  gap: 2vw;
+}
+@media (max-width: 800px) {
+  .row {
+    flex-wrap: wrap;
+    gap: 8vw;
+  }
+  .fig {
+    flex: 0 0 40% !important;
+  }
+}

@@ -9,14 +9,37 @@ import { t, type L, type Locale } from "@/content/i18n";
 import { MaterialSwitch } from "./OxiaBlock";
 import type { MaterialName } from "./Emblem3D";
 import { useTheme } from "./CaseStudy";
+import Objects from "./Objects";
 import styles from "./OxiaPage.module.css";
 
 const Emblem3D = dynamic(() => import("./Emblem3D"), { ssr: false });
 
 const manifesto: L = {
-  en: "No brief. No client. No direction but forward. OXIA Labs is where I build the things I want to exist — products and experiences made with new technology, real-time 3D, spatial audio and AI, and designed at the highest level I can reach.",
-  es: "Sin brief. Sin cliente. Sin otra dirección que hacia delante. OXIA Labs es donde construyo las cosas que quiero que existan — productos y experiencias hechos con tecnología nueva, 3D en tiempo real, audio espacial e IA, y diseñados al máximo nivel que soy capaz.",
+  en: "No brief. No client. No direction but forward. If an idea excites us, we build it — and we don't stop until it feels right.",
+  es: "Sin brief. Sin cliente. Sin más dirección que hacia delante. Si una idea nos emociona, la construimos, y no paramos hasta que se siente bien.",
 };
+
+const story: L[] = [
+  {
+    en: "OXIA Labs started as something I had always wanted: a studio of my own, a place to launch products without anyone asking for them.",
+    es: "OXIA Labs nació de algo que siempre había querido: un estudio propio, un sitio desde el que lanzar productos sin que nadie los pida.",
+  },
+  {
+    en: "It lives where my two worlds meet — more than ten years producing music and a career designing digital products. That is why everything we make is audiovisual at heart: games that sound like records, apps that breathe, plugins you can see.",
+    es: "Vive justo donde se cruzan mis dos mundos: más de diez años produciendo música y una carrera diseñando producto digital. Por eso todo lo que hacemos es audiovisual por dentro: juegos que suenan como un disco, apps que respiran, plugins que se pueden ver.",
+  },
+  {
+    en: "Today OXIA is an independent umbrella brand — and these are real products, not mockups. A game you can download, an app you can use, audio plugins that run in your DAW.",
+    es: "Hoy OXIA es una marca paraguas independiente, y esto son productos reales, no mockups. Un juego que puedes descargar, una app que puedes usar, plugins de audio que funcionan en tu DAW.",
+  },
+];
+
+const facts: { k: L; v: L }[] = [
+  { k: { en: "Founded", es: "Fundado" }, v: { en: "2026", es: "2026" } },
+  { k: { en: "Founder", es: "Fundador" }, v: { en: "Miki Herrero", es: "Miki Herrero" } },
+  { k: { en: "Disciplines", es: "Disciplinas" }, v: { en: "Product design, creative technology, sound, real-time 3D", es: "Diseño de producto, creative technology, sonido, 3D en tiempo real" } },
+  { k: { en: "Products", es: "Productos" }, v: { en: "4 built — games, wellbeing, audio", es: "4 construidos — juego, bienestar, audio" } },
+];
 
 const principles: { title: L; body: L }[] = [
   {
@@ -72,14 +95,14 @@ const products: Product[] = [
     name: "Unwind",
     slug: "unwind-dark-matter",
     type: { en: "Tape manipulation instrument · Plugin", es: "Instrumento de manipulación de cinta · Plugin" },
-    status: "Concept",
+    status: "Built",
     media: { img: "/work/unwind/01.webp" },
   },
   {
     name: "Dark Matter",
     slug: "unwind-dark-matter",
     type: { en: "Space reverb · Plugin", es: "Reverb espacial · Plugin" },
-    status: "Concept",
+    status: "Built",
     media: { img: "/work/dark-matter/02.webp" },
   },
 ];
@@ -88,7 +111,7 @@ const THEME = { bg: "#000000", fg: "#f2f2f0", accent: "#ffffff", muted: "#77736f
 
 export default function OxiaPage({ locale }: { locale: Locale }) {
   const root = useRef<HTMLDivElement>(null);
-  const [mat, setMat] = useState<MaterialName>("glass");
+  const [mat, setMat] = useState<MaterialName>("chrome");
   useTheme(THEME);
 
   useEffect(() => {
@@ -106,7 +129,7 @@ export default function OxiaPage({ locale }: { locale: Locale }) {
       );
       gsap.to("[data-x-stage]", {
         scale: 0.86,
-        opacity: 0.3,
+        opacity: 0.2,
         ease: "none",
         scrollTrigger: { trigger: "[data-x-hero]", start: "top top", end: "bottom top", scrub: true },
       });
@@ -140,6 +163,23 @@ export default function OxiaPage({ locale }: { locale: Locale }) {
             <MaterialSwitch value={mat} onChange={setMat} locale={locale} />
           </div>
         </div>
+      </section>
+
+      <section className={styles.story}>
+        <span className="mono muted">( {locale === "en" ? "What is OXIA" : "Qué es OXIA"} )</span>
+        <div className={styles.storyText}>
+          {story.map((p, i) => (
+            <p key={i} data-x-reveal className={i === 0 ? styles.storyLead : ""}>{t(p, locale)}</p>
+          ))}
+        </div>
+        <dl className={styles.facts} data-x-reveal>
+          {facts.map((f) => (
+            <div key={f.k.en}>
+              <dt className="mono muted">{t(f.k, locale)}</dt>
+              <dd>{t(f.v, locale)}</dd>
+            </div>
+          ))}
+        </dl>
       </section>
 
       <section className={styles.manifesto}>
@@ -207,9 +247,11 @@ export default function OxiaPage({ locale }: { locale: Locale }) {
               ? "A geometric grotesk wordmark set tight, and an angular emblem built from chamfered strokes — an α and an X folded into one mark. The emblem is designed to live as an object: chrome, glass, moss, cracked crystal. The studio's identity is not a logo on a page, it is something you can light."
               : "Un wordmark en grotesca geométrica muy ajustado y un emblema angular hecho de trazos achaflanados — una α y una X plegadas en una sola marca. El emblema está pensado para vivir como objeto: cromo, cristal, musgo, cristal roto. La identidad del estudio no es un logo en una página, es algo que se puede iluminar."}
           </p>
-          <div className={`${styles.idImg} img-grain`} data-x-reveal>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/work/oxia/03.webp" alt="OXIA emblem material variations" loading="lazy" />
+          <div className={styles.idImg}>
+            <Objects
+              srcs={["/work/cutouts/emblem-chrome.webp", "/work/cutouts/emblem-glass.webp", "/work/cutouts/emblem-moss.webp", "/work/cutouts/emblem-crystal.webp"]}
+              captions={["Chrome", "Glass", "Moss", "Cracked crystal"]}
+            />
           </div>
         </div>
       </section>

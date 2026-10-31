@@ -8,14 +8,15 @@ import styles from "./Lab.module.css";
 
 const items = [
   { src: "/work/posters/01.webp", href: "posters", cap: "The Batman", speed: -0.1, cls: "a" },
-  { src: "/work/lab/03.webp", href: "3d-experiments", cap: "Wax seal — miki", speed: 0.15, cls: "b" },
+  { src: "/work/cutouts/seal.webp", href: "3d-experiments", cap: "Wax seal — miki", speed: 0.2, cls: "b", obj: true },
   { src: "/work/posters/04.webp", href: "posters", cap: "Whiplash", speed: -0.05, cls: "c" },
-  { src: "/work/lab/02.webp", href: "3d-experiments", cap: "Chrome keychain", speed: 0.22, cls: "d" },
+  { src: "/work/cutouts/keychain.webp", href: "3d-experiments", cap: "Chrome keychain", speed: 0.28, cls: "d", obj: true },
   { src: "/work/posters/05.webp", href: "posters", cap: "Animal Series", speed: -0.12, cls: "e" },
-  { src: "/work/lab/01.webp", href: "3d-experiments", cap: "Vulture", speed: 0.1, cls: "f" },
-  { src: "/work/posters/02.webp", href: "posters", cap: "Trainspotting", speed: 0.18, cls: "g" },
+  { src: "/work/cutouts/vulture.webp", href: "3d-experiments", cap: "Vulture", speed: 0.16, cls: "f", obj: true },
+  { src: "/work/posters/02.webp", href: "posters", cap: "Trainspotting", speed: 0.12, cls: "g" },
+  { src: "/work/cutouts/charro.webp", href: "3d-experiments", cap: "Charro button — silver", speed: 0.22, cls: "j", obj: true },
   { src: "/work/posters/03.webp", href: "posters", cap: "Ghost in the Shell", speed: -0.08, cls: "h" },
-  { src: "/work/lab/05.webp", href: "3d-experiments", cap: "Rosette", speed: 0.06, cls: "i" },
+  { src: "/work/cutouts/pendant.webp", href: "3d-experiments", cap: "Rosette pendant", speed: 0.3, cls: "i", obj: true },
 ];
 
 export default function Lab({ locale }: { locale: Locale }) {
@@ -59,7 +60,7 @@ export default function Lab({ locale }: { locale: Locale }) {
             className={`${styles.item} ${styles[it.cls]}`}
             data-speed={it.speed}
           >
-            <div className="img-grain">
+            <div className={it.obj ? styles.obj : "img-grain"}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={it.src} alt={it.cap} loading="lazy" />
             </div>

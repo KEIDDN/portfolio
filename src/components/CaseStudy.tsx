@@ -6,6 +6,9 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { dict, t, type Locale } from "@/content/i18n";
 import type { Project, Theme } from "@/content/projects";
+import { Browser, Embed, Media, Phone, Row, ratioOf } from "./Media";
+import Features from "./Features";
+import Objects from "./Objects";
 import styles from "./CaseStudy.module.css";
 
 const DEFAULT: Theme = { bg: "#050505", fg: "#efefed", accent: "#c4161c", muted: "#7a7875" };
@@ -25,15 +28,6 @@ export function useTheme(theme: Theme) {
   }, [theme]);
 }
 
-function Media({ src, alt }: { src: string; alt: string }) {
-  return (
-    <div className={`${styles.media} img-grain`} data-reveal>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={src} alt={alt} loading="lazy" data-parallax />
-    </div>
-  );
-}
-
 export default function CaseStudy({ project, next, locale }: { project: Project; next: Project; locale: Locale }) {
   const root = useRef<HTMLDivElement>(null);
   useTheme(project.theme);
@@ -50,13 +44,6 @@ export default function CaseStudy({ project, next, locale }: { project: Project;
       gsap.utils.toArray<HTMLElement>("[data-reveal]").forEach((el) => {
         gsap.from(el, { y: 80, opacity: 0, duration: 1.3, ease: "expo.out", scrollTrigger: { trigger: el, start: "top 90%" } });
       });
-      gsap.utils.toArray<HTMLElement>("[data-parallax]").forEach((el) => {
-        gsap.fromTo(el, { yPercent: -6, scale: 1.12 }, {
-          yPercent: 6,
-          ease: "none",
-          scrollTrigger: { trigger: el.parentElement, start: "top bottom", end: "bottom top", scrub: true },
-        });
-      });
       gsap.utils.toArray<HTMLElement>("[data-theme-idx]").forEach((el) => {
         const idx = Number(el.dataset.themeIdx);
         const blk = project.blocks[idx];
@@ -68,14 +55,6 @@ export default function CaseStudy({ project, next, locale }: { project: Project;
           start: "top 55%",
           onEnter: () => applyTheme(blk.theme),
           onLeaveBack: () => applyTheme(prevTheme),
-        });
-      });
-      gsap.utils.toArray<HTMLVideoElement>("video").forEach((v) => {
-        ScrollTrigger.create({
-          trigger: v,
-          start: "top bottom",
-          end: "bottom top",
-          onToggle: (s) => (s.isActive ? v.play().catch(() => {}) : v.pause()),
         });
       });
     }, root);
@@ -109,13 +88,14 @@ export default function CaseStudy({ project, next, locale }: { project: Project;
         </div>
       </header>
 
-      <div className={`${styles.cover} img-grain`} data-cover>
-        {project.coverVideo ? (
-          <video src={project.coverVideo} poster={project.cover} muted loop playsInline autoPlay />
-        ) : (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={project.cover} alt={project.title} />
-        )}
+      <div className={styles.cover} data-cover>
+        <Media
+          src={project.coverVideo ?? project.cover}
+          poster={project.cover}
+          alt={project.title}
+          ratio={project.coverVideo ? 16 / 10 : ratioOf(project.cover)}
+          priority
+        />
       </div>
 
       <div className={styles.blocks}>
@@ -133,23 +113,55 @@ export default function CaseStudy({ project, next, locale }: { project: Project;
               );
             case "image":
               return (
-                <div key={i} className={`${styles.img} ${styles[b.layout ?? "wide"]}`}>
+                <div key={i} className={`${styles.img} ${styles[b.layout ?? "wide"]}`} data-reveal>
                   <Media src={b.src} alt={b.alt} />
                 </div>
               );
-            case "pair":
+            case "row":
               return (
-                <div key={i} className={styles.pair}>
-                  <Media src={b.srcs[0]} alt={b.alt} />
-                  <Media src={b.srcs[1]} alt={b.alt} />
+                <div key={i} className={styles.wide} data-reveal>
+                  <Row srcs={b.srcs} alt={b.alt} />
                 </div>
               );
             case "video":
               return (
-                <div key={i} className={`${styles.img} ${styles[b.layout ?? "wide"]}`}>
-                  <div className={`${styles.media} img-grain`} data-reveal>
-                    <video src={b.src} poster={b.poster} muted loop playsInline preload="metadata" />
-                  </div>
+                <div key={i} className={`${styles.img} ${styles[b.layout ?? "wide"]}`} data-reveal>
+                  <Media src={b.src} poster={b.poster} />
+                </div>
+              );
+            case "browser":
+              return (
+                <div key={i} className={styles.device} data-reveal>
+                  <Browser src={b.src} poster={b.poster} url={b.url} />
+                </div>
+              );
+            case "phones":
+              return (
+                <div key={i} className={styles.phones} data-reveal>
+                  {b.srcs.map((s, j) => (
+                    <Phone key={s} src={s} poster={b.posters?.[j]} />
+                  ))}
+                </div>
+              );
+            case "features":
+              return <Features key={i} label={b.label} items={b.items} locale={locale} url={project.url} />;
+            case "embed":
+              return (
+                <div key={i} className={styles.device} data-reveal>
+                  <Embed
+                    url={b.url}
+                    title={b.title}
+                    note={t(b.note, locale)}
+                    blocked={b.blocked}
+                    mobile={b.mobile}
+                    cta={locale === "en" ? `Try ${b.title}` : `Prueba ${b.title}`}
+                  />
+                </div>
+              );
+            case "objects":
+              return (
+                <div key={i} className={styles.wide} data-reveal>
+                  <Objects srcs={b.srcs} captions={b.captions} />
                 </div>
               );
             case "statement":

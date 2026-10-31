@@ -35,9 +35,10 @@
 }
 .canvas {
   position: absolute;
-  inset: 0;
+  left: 0;
   width: 100% !important;
-  height: 100% !important;
+  pointer-events: none;
+  z-index: 2;
 }
 .fallback {
   position: absolute;

@@ -2,11 +2,18 @@ import type { L } from "./i18n";
 
 export type Theme = { bg: string; fg: string; accent: string; muted?: string };
 
+export type Feature = { title: L; body: L; media: string; poster?: string; frame?: "browser" | "phone" | "none" };
+
 export type Block =
   | { kind: "text"; label: L; title?: L; body: L }
   | { kind: "image"; src: string; alt: string; layout?: "full" | "wide" | "inset" }
-  | { kind: "pair"; srcs: [string, string]; alt: string }
+  | { kind: "row"; srcs: string[]; alt: string }
   | { kind: "video"; src: string; poster: string; layout?: "full" | "wide" }
+  | { kind: "browser"; src: string; poster?: string; url: string }
+  | { kind: "phones"; srcs: string[]; posters?: string[] }
+  | { kind: "features"; label: L; items: Feature[] }
+  | { kind: "embed"; url: string; title: string; note: L; blocked?: boolean; mobile?: boolean }
+  | { kind: "objects"; srcs: string[]; captions?: string[] }
   | { kind: "statement"; body: L }
   | { kind: "theme"; theme: Theme; label?: L };
 
@@ -67,7 +74,7 @@ export const projects: Project[] = [
           es: "Gratis y sin anuncios, por decisión de diseño. Una landing en 3D en tiempo real con Three.js marca el tono antes del primer movimiento; el juego corre sobre un renderer WebGL para que la música nunca espere al frame. Modo versus, bots personalizados y un sistema de cuentas convierten una partida en algo a lo que vuelves. Mejor con auriculares.",
         },
       },
-      { kind: "pair", srcs: [W("tetra/03.webp"), W("tetra/02.webp")], alt: "TETRA experience" },
+      { kind: "row", srcs: [W("tetra/03.webp"), W("tetra/02.webp")], alt: "TETRA experience" },
       {
         kind: "statement",
         body: {
@@ -86,51 +93,45 @@ export const projects: Project[] = [
     role: { en: "Art direction, brand identity, UI", es: "Dirección de arte, identidad, UI" },
     tools: "Illustrator, Photoshop, Figma",
     summary: {
-      en: "A digital bank that talks like a person. Banking, reimagined.",
-      es: "Un banco digital que habla como una persona. Banking, reimagined.",
+      en: "A bank named after the truth. Brand and product for a new kind of digital banking.",
+      es: "Un banco que se llama como la verdad. Marca y producto para una nueva banca digital.",
     },
     cover: W("veritas/07.webp"),
     theme: { bg: "#0c120e", fg: "#e8efe9", accent: "#4cd964", muted: "#7f8f83" },
     blocks: [
       {
         kind: "text",
-        label: { en: "Context", es: "Contexto" },
-        title: { en: "Banking, reimagined.", es: "Banking, reimagined." },
+        label: { en: "Origin", es: "Origen" },
+        title: { en: "Veritas — Latin for truth.", es: "Veritas — verdad, en latín." },
         body: {
-          en: "Veritas is a concept for a European digital bank built around one word: truth. No fine print, no grey corporate blue. A full identity system — logotype, monogram, cards, app and campaign — designed to feel confident, warm and unmistakably current.",
-          es: "Veritas es el concepto de un banco digital europeo construido sobre una palabra: verdad. Sin letra pequeña, sin el azul corporativo de siempre. Un sistema de identidad completo — logotipo, monograma, tarjetas, app y campaña — pensado para transmitir confianza, cercanía y actualidad.",
+          en: "Modern neobanks rewrote the rules of how money looks and feels. Veritas is my take on that world: a concept bank built on one promise — no small print. It was also my first deep dive into product design, where brand and interface had to be designed as one system.",
+          es: "Los neobancos han reescrito cómo se ve y se siente el dinero. Veritas es mi versión de ese mundo: un banco concepto construido sobre una sola promesa, nada de letra pequeña. Fue también mi primera inmersión de verdad en el diseño de producto, donde marca e interfaz tenían que diseñarse como un único sistema.",
         },
       },
-      { kind: "image", src: W("veritas/06.webp"), alt: "Veritas business cards", layout: "full" },
-      {
-        kind: "theme",
-        theme: { bg: "#4cd964", fg: "#07110a", accent: "#07110a", muted: "#1f5a2b" },
-      },
+      { kind: "image", src: W("veritas/06.webp"), alt: "Veritas business cards", layout: "wide" },
+      { kind: "theme", theme: { bg: "#4cd964", fg: "#07110a", accent: "#07110a", muted: "#1f5a2b" } },
       {
         kind: "text",
         label: { en: "Identity", es: "Identidad" },
+        title: { en: "Confident, warm, a little retro.", es: "Segura, cercana, un punto retro." },
         body: {
-          en: "A soft, high-contrast serif with a retro edge gives the brand a voice that a fintech rarely has. The V monogram works as app icon, card mark and signature. One electric green does all the talking.",
-          es: "Una serif de alto contraste, suave y con un punto retro, da a la marca una voz que pocas fintech tienen. El monograma V funciona como icono de app, marca en tarjeta y firma. Un único verde eléctrico lo dice todo.",
+          en: "A soft, high-contrast serif gives Veritas a voice fintech rarely has. The V monogram works as app icon, card mark and signature, and a single electric green does all the talking.",
+          es: "Una serif suave y de alto contraste le da a Veritas una voz que pocas fintech tienen. El monograma V funciona como icono de app, marca en la tarjeta y firma, y un único verde eléctrico lo dice todo.",
         },
       },
-      { kind: "pair", srcs: [W("veritas/08.webp"), W("veritas/04.webp")], alt: "Veritas cards" },
-      {
-        kind: "theme",
-        theme: { bg: "#0c120e", fg: "#e8efe9", accent: "#4cd964", muted: "#7f8f83" },
-      },
+      { kind: "row", srcs: [W("veritas/08.webp"), W("veritas/04.webp")], alt: "Veritas cards" },
+      { kind: "theme", theme: { bg: "#0c120e", fg: "#e8efe9", accent: "#4cd964", muted: "#7f8f83" } },
       { kind: "image", src: W("veritas/05.webp"), alt: "Veritas billboard", layout: "wide" },
       {
         kind: "text",
         label: { en: "Product", es: "Producto" },
         body: {
-          en: "The app follows the same rule as the brand: say less, show more. A card-first home, spending and earnings at a glance, and the green reserved for what matters.",
-          es: "La app sigue la misma regla que la marca: decir menos, enseñar más. Una home centrada en la tarjeta, gastos e ingresos de un vistazo y el verde reservado para lo importante.",
+          en: "The app follows the brand's rule: say less, show more. A card-first home, spending and earnings at a glance, and the green reserved for what actually matters.",
+          es: "La app sigue la regla de la marca: decir menos, enseñar más. Una home centrada en la tarjeta, gastos e ingresos de un vistazo y el verde reservado para lo que de verdad importa.",
         },
       },
-      { kind: "pair", srcs: [W("veritas/02.webp"), W("veritas/01.webp")], alt: "Veritas app" },
-      
-      { kind: "image", src: W("veritas/03.webp"), alt: "Veritas logotype green", layout: "wide" },
+      { kind: "row", srcs: [W("veritas/02.webp"), W("veritas/01.webp")], alt: "Veritas app" },
+      { kind: "image", src: W("veritas/03.webp"), alt: "Veritas logotype", layout: "wide" },
     ],
   },
   {
@@ -138,26 +139,26 @@ export const projects: Project[] = [
     title: "Unwind & Dark Matter",
     year: "2026",
     label: "Oxia Labs",
-    type: { en: "Audio plugin product design", es: "Diseño de producto — plugins de audio" },
+    type: { en: "Audio plugins — product design", es: "Plugins de audio — diseño de producto" },
     role: {
-      en: "Product design, UI, 3D, packaging",
-      es: "Diseño de producto, UI, 3D, packaging",
+      en: "Product design, UI, sound design, 3D, packaging",
+      es: "Diseño de producto, UI, diseño sonoro, 3D, packaging",
     },
-    tools: "Figma, Blender, AI-assisted rendering",
+    tools: "Figma, Blender, AI tools, Ableton Live",
     summary: {
-      en: "Two instruments for producers: a tape machine you can play, and a reverb the size of space.",
-      es: "Dos instrumentos para productores: una máquina de cinta que se toca y una reverb del tamaño del espacio.",
+      en: "Two real, working audio plugins by OXIA: a tape machine you can play, and a reverb the size of space.",
+      es: "Dos plugins de audio reales y funcionales de OXIA: una máquina de cinta que se toca y una reverb del tamaño del espacio.",
     },
     cover: W("dark-matter/02.webp"),
     theme: { bg: "#0b0912", fg: "#ece8f6", accent: "#9b7bff", muted: "#7c7590" },
     blocks: [
       {
         kind: "text",
-        label: { en: "Concept", es: "Concepto" },
+        label: { en: "Why plugins", es: "Por qué plugins" },
         title: { en: "Instruments, not utilities.", es: "Instrumentos, no utilidades." },
         body: {
-          en: "Most plugins look like spreadsheets with knobs. OXIA Audio starts from the opposite question: what should a sound feel like before you hear it? Two products, two worlds, one design language.",
-          es: "La mayoría de plugins parecen hojas de cálculo con potenciómetros. OXIA Audio parte de la pregunta contraria: ¿cómo debería sentirse un sonido antes de oírlo? Dos productos, dos mundos, un mismo lenguaje.",
+          en: "After more than ten years producing music, I know what it's like to stare at a plugin that looks like a spreadsheet with knobs. OXIA Audio starts from the opposite question: what should a sound feel like before you hear it? Two plugins, two worlds, one design language — and both of them run in your DAW today.",
+          es: "Después de más de diez años produciendo música, sé lo que es mirar un plugin que parece una hoja de cálculo con potenciómetros. OXIA Audio parte de la pregunta contraria: ¿cómo debería sentirse un sonido antes de oírlo? Dos plugins, dos mundos, un mismo lenguaje, y los dos funcionan hoy en tu DAW.",
         },
       },
       {
@@ -167,14 +168,14 @@ export const projects: Project[] = [
       },
       {
         kind: "text",
-        label: { en: "Unwind — Tape Manipulation Instrument", es: "Unwind — Tape Manipulation Instrument" },
+        label: { en: "Tape Manipulation Instrument", es: "Tape Manipulation Instrument" },
         body: {
-          en: "A reel-to-reel machine you can bend. Wow, flutter, age and saturation as physical controls; stop, play and reverse as real transport. Warm off-white hardware, honest typography and a single orange signal light.",
-          es: "Una máquina de bobinas que se puede doblar. Wow, flutter, age y saturation como controles físicos; stop, play y reverse como transporte real. Hardware blanco roto, tipografía honesta y una única luz naranja.",
+          en: "A reel-to-reel machine you can bend. Wow, flutter, age and saturation become physical controls; stop, play and reverse behave like real transport. Warm off-white hardware, honest type and a single orange signal light.",
+          es: "Una máquina de bobinas que se puede doblar. Wow, flutter, age y saturation se convierten en controles físicos; stop, play y reverse funcionan como un transporte real. Hardware blanco roto, tipografía honesta y una única luz naranja.",
         },
       },
-      { kind: "image", src: W("unwind/01.webp"), alt: "Unwind interface", layout: "full" },
-      { kind: "pair", srcs: [W("unwind/02.webp"), W("unwind/03.webp")], alt: "Unwind packaging and detail" },
+      { kind: "image", src: W("unwind/01.webp"), alt: "Unwind interface", layout: "wide" },
+      { kind: "row", srcs: [W("unwind/02.webp"), W("unwind/03.webp")], alt: "Unwind packaging and detail" },
       {
         kind: "theme",
         theme: { bg: "#0b0912", fg: "#ece8f6", accent: "#9b7bff", muted: "#7c7590" },
@@ -182,14 +183,14 @@ export const projects: Project[] = [
       },
       {
         kind: "text",
-        label: { en: "Dark Matter — Space Reverb", es: "Dark Matter — Space Reverb" },
+        label: { en: "Space Reverb", es: "Space Reverb" },
         body: {
-          en: "Sonic spaces for a deeper you. The reverb tail becomes a living nebula at the centre of the interface: size, decay and diffusion reshape it in real time, so you can see the room before you hear it.",
+          en: "Sonic spaces for a deeper you. The reverb tail becomes a living nebula at the centre of the interface: size, decay and diffusion reshape it in real time, so you see the room before you hear it.",
           es: "Sonic spaces for a deeper you. La cola de la reverb se convierte en una nebulosa viva en el centro de la interfaz: size, decay y diffusion la deforman en tiempo real, para que veas la sala antes de oírla.",
         },
       },
-      { kind: "image", src: W("dark-matter/02.webp"), alt: "Dark Matter interface", layout: "full" },
-      { kind: "image", src: W("dark-matter/01.webp"), alt: "Dark Matter detail", layout: "wide" },
+      { kind: "image", src: W("dark-matter/02.webp"), alt: "Dark Matter interface", layout: "wide" },
+      { kind: "image", src: W("dark-matter/01.webp"), alt: "Dark Matter detail", layout: "inset" },
     ],
   },
   {
@@ -233,7 +234,7 @@ export const projects: Project[] = [
           es: "Un diorama low-poly renderizado en tiempo real, con clima, hojas que caen y nubes suaves que responden a cómo estás. Tipografía tranquila, un verde y un único botón negro — el producto baja la voz para que tú también puedas.",
         },
       },
-      { kind: "pair", srcs: [W("tendu/02.webp"), W("tendu/03.webp")], alt: "Tendu onboarding" },
+      { kind: "row", srcs: [W("tendu/02.webp"), W("tendu/03.webp")], alt: "Tendu onboarding" },
     ],
   },
   {
@@ -245,36 +246,33 @@ export const projects: Project[] = [
     role: { en: "Design, typography, image treatment", es: "Diseño, tipografía, tratamiento de imagen" },
     tools: "Photoshop, Illustrator",
     summary: {
-      en: "Films I love, rewritten in halftone, grain and type. Plus an animal series in ASCII.",
-      es: "Películas que me encantan, reescritas en trama, grano y tipografía. Y una serie de animales en ASCII.",
+      en: "Films I love, rewritten in halftone, grain and type. Plus an animal series in bitmap.",
+      es: "Películas que me encantan, reescritas en trama, grano y tipografía. Y una serie de animales en bitmap.",
     },
-    cover: W("posters/04.webp"),
+    cover: W("posters/05.webp"),
     theme: { bg: "#0e0d0d", fg: "#f1eee6", accent: "#d0232f", muted: "#8a8580" },
     blocks: [
       {
         kind: "text",
         label: { en: "Series", es: "Serie" },
-        title: { en: "One frame, one idea.", es: "Un frame, una idea." },
+        title: { en: "One frame, one idea.", es: "Un fotograma, una idea." },
         body: {
           en: "A personal series of alternative film posters. Each one reduces a movie to a single gesture — a stare, a scream, a cigarette — and lets the type carry the rest.",
           es: "Una serie personal de carteles alternativos de cine. Cada uno reduce la película a un único gesto — una mirada, un grito, un cigarro — y deja que la tipografía haga el resto.",
         },
       },
-      { kind: "pair", srcs: [W("posters/01.webp"), W("posters/02.webp")], alt: "Batman and Trainspotting posters" },
-      { kind: "pair", srcs: [W("posters/03.webp"), W("posters/04.webp")], alt: "Ghost in the Shell and Whiplash posters" },
-      {
-        kind: "theme",
-        theme: { bg: "#f1eee6", fg: "#0e0d0d", accent: "#0e0d0d", muted: "#8a8580" },
-      },
+      { kind: "row", srcs: [W("posters/01.webp"), W("posters/02.webp")], alt: "Batman and Trainspotting posters" },
+      { kind: "row", srcs: [W("posters/03.webp"), W("posters/04.webp")], alt: "Ghost in the Shell and Whiplash posters" },
+      { kind: "theme", theme: { bg: "#f1eee6", fg: "#0e0d0d", accent: "#0e0d0d", muted: "#8a8580" } },
       {
         kind: "text",
         label: { en: "Animal Series", es: "Animal Series" },
         body: {
-          en: "Horse, wolf, eagle, leopard. Bitmap bodies against sharp display serifs — a study on how much an image can lose before it stops being one.",
-          es: "Caballo, lobo, águila, leopardo. Cuerpos en bitmap contra serifs de display afiladas — un estudio sobre cuánto puede perder una imagen antes de dejar de serlo.",
+          en: "Horse, wolf, eagle, leopard. Bitmap bodies against sharp display serifs — a study of how much an image can lose before it stops being one.",
+          es: "Caballo, lobo, águila, leopardo. Cuerpos en bitmap contra serifs de display afiladas: un estudio sobre cuánto puede perder una imagen antes de dejar de serlo.",
         },
       },
-      { kind: "image", src: W("posters/05.webp"), alt: "ASCII Animal Series", layout: "full" },
+      { kind: "image", src: W("posters/05.webp"), alt: "Animal Series", layout: "wide" },
     ],
   },
   {
@@ -282,12 +280,12 @@ export const projects: Project[] = [
     title: "3D Experiments",
     year: "2026",
     label: "Personal",
-    type: { en: "3D & material studies", es: "Estudios 3D y de material" },
+    type: { en: "3D & material studies", es: "Estudios 3D y de materiales" },
     role: { en: "3D, art direction", es: "3D, dirección de arte" },
-    tools: "Blender, AI-assisted rendering",
+    tools: "Blender, AI tools",
     summary: {
-      en: "Chrome, wax, silver and stone. Proofs of concept for objects that don't exist yet.",
-      es: "Cromo, cera, plata y piedra. Pruebas de concepto de objetos que aún no existen.",
+      en: "Chrome, wax, silver and stone. Objects that don't exist — yet.",
+      es: "Cromo, cera, plata y piedra. Objetos que todavía no existen.",
     },
     cover: W("lab/03.webp"),
     theme: { bg: "#050505", fg: "#efefed", accent: "#c4161c", muted: "#77736f" },
@@ -295,14 +293,24 @@ export const projects: Project[] = [
       {
         kind: "text",
         label: { en: "Process", es: "Proceso" },
+        title: { en: "Modelled in Blender. Pushed with AI.", es: "Modelado en Blender. Llevado más lejos con IA." },
         body: {
-          en: "Modelled in Blender, pushed further with AI. A playground to test materials, light and identity marks as physical objects — a personal 'miki' signature in chrome and wax, jewellery around the charro button, a vulture guarding a house.",
-          es: "Modelado en Blender y llevado más lejos con IA. Un espacio para probar materiales, luz y marcas de identidad como objetos físicos — una firma 'miki' en cromo y cera, joyería alrededor del botón charro, un buitre guardando una casa.",
+          en: "A playground for materials, light and identity as physical objects: my 'miki' signature in chrome and wax, jewellery built around the charro button, a vulture guarding a house.",
+          es: "Un campo de pruebas de materiales, luz e identidad convertida en objeto: mi firma 'miki' en cromo y en cera, joyería construida alrededor del botón charro, un buitre que vigila una casa.",
         },
       },
-      { kind: "pair", srcs: [W("lab/03.webp"), W("lab/02.webp")], alt: "Wax seal and chrome keychain" },
-      { kind: "image", src: W("lab/05.webp"), alt: "Silver rosette jewellery", layout: "full" },
-      { kind: "pair", srcs: [W("lab/01.webp"), W("lab/04.webp")], alt: "Vulture and jewellery set" },
+      {
+        kind: "objects",
+        srcs: [W("cutouts/seal.webp"), W("cutouts/keychain.webp"), W("cutouts/vulture.webp")],
+        captions: ["Wax seal — miki", "Chrome keychain", "Vulture"],
+      },
+      { kind: "statement", body: { en: "Identity you can hold.", es: "Identidad que se puede tocar." } },
+      {
+        kind: "objects",
+        srcs: [W("cutouts/charro.webp"), W("cutouts/pendant.webp")],
+        captions: ["Charro button — ring & pendant", "Rosette pendant"],
+      },
+      { kind: "image", src: W("lab/05.webp"), alt: "Silver rosette jewellery", layout: "wide" },
     ],
   },
   {
@@ -314,8 +322,8 @@ export const projects: Project[] = [
     role: { en: "Brand identity, print", es: "Identidad de marca, impresos" },
     tools: "Illustrator, Photoshop, InDesign",
     summary: {
-      en: "Old brands, new stories. Rebranding for a vintage store in Salamanca.",
-      es: "Old brands, new stories. Rebranding de una tienda vintage de Salamanca.",
+      en: "Old brands, new stories. A real rebrand for a vintage store in Salamanca.",
+      es: "Old brands, new stories. Un rebranding real para una tienda vintage de Salamanca.",
     },
     cover: W("more-vintage/01.webp"),
     theme: { bg: "#111010", fg: "#f1eee6", accent: "#ff4a1c", muted: "#8a8580" },
@@ -324,12 +332,12 @@ export const projects: Project[] = [
         kind: "text",
         label: { en: "Brief", es: "Encargo" },
         body: {
-          en: "A full rebrand for More Vintage, a second-hand fashion store in Salamanca: a loud, condensed identity built for walls, bags and pop-ups — and for a city that had never seen vintage look this urban.",
-          es: "Un rebranding completo para More Vintage, tienda de moda de segunda mano en Salamanca: una identidad condensada y ruidosa pensada para muros, bolsas y pop-ups — y para una ciudad que nunca había visto el vintage tan urbano.",
+          en: "A full rebrand for More Vintage, a second-hand fashion store in Salamanca: a loud, condensed identity made for walls, bags and pop-ups — and for a city that had never seen vintage look this urban.",
+          es: "Un rebranding completo para More Vintage, tienda de moda de segunda mano en Salamanca: una identidad condensada y ruidosa pensada para muros, bolsas y pop-ups, en una ciudad que nunca había visto el vintage tan urbano.",
         },
       },
-      { kind: "image", src: W("more-vintage/01.webp"), alt: "More Vintage posters", layout: "full" },
-      { kind: "pair", srcs: [W("more-vintage/02.webp"), W("more-vintage/03.webp")], alt: "Flyers and bag" },
+      { kind: "image", src: W("more-vintage/01.webp"), alt: "More Vintage posters", layout: "wide" },
+      { kind: "row", srcs: [W("more-vintage/02.webp"), W("more-vintage/03.webp")], alt: "Flyers and bag" },
     ],
   },
 ];

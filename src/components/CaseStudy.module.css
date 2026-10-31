@@ -50,15 +50,10 @@
   margin-bottom: 4px;
 }
 .cover {
-  width: 100%;
-  height: 100svh;
-  overflow: hidden;
+  padding: 0 var(--gutter);
 }
-.cover img,
-.cover video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.cover > * {
+  border-radius: 6px;
 }
 .blocks {
   display: flex;
@@ -83,30 +78,30 @@
   letter-spacing: -0.015em;
   color: color-mix(in srgb, var(--fg) 82%, transparent);
 }
-.media {
-  overflow: hidden;
-  border-radius: 3px;
+.img.full {
+  padding: 0;
 }
-.media img,
-.media video {
-  width: 100%;
-  height: auto;
-}
-.img.full .media {
+.img.full > * {
   border-radius: 0;
 }
-.img.wide {
+.img.wide,
+.wide {
   padding: 0 var(--gutter);
 }
 .img.inset {
-  padding: 0 22%;
+  padding: 0 18%;
 }
-.pair {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.6vw;
+.device {
+  padding: 0 8vw;
+}
+.phones {
+  display: flex;
+  justify-content: center;
+  gap: 3vw;
   padding: 0 var(--gutter);
-  align-items: start;
+}
+.phones > * {
+  width: min(300px, 26vw);
 }
 .statement {
   font-size: clamp(44px, 7.4vw, 140px);
@@ -164,18 +159,21 @@
 }
 @media (max-width: 800px) {
   .heroBottom,
-  .text,
-  .pair {
+  .text {
     grid-template-columns: 1fr;
   }
-  .pair {
-    gap: 12px;
+  .device {
+    padding: 0 var(--gutter);
+  }
+  .phones {
+    overflow-x: auto;
+    justify-content: flex-start;
+  }
+  .phones > * {
+    flex: 0 0 62vw;
   }
   .img.inset {
     padding: 0 var(--gutter);
-  }
-  .cover {
-    height: 70svh;
   }
   .nextImg {
     position: relative;

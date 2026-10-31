@@ -9,7 +9,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
     const first = !(window as unknown as { __mhNav?: boolean }).__mhNav;
     (window as unknown as { __mhNav?: boolean }).__mhNav = true;
     if (first) {
-      curtain.current?.remove();
+      if (curtain.current) curtain.current.style.display = "none";
       return;
     }
     const tl = gsap.timeline();

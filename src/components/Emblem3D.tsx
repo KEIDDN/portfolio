@@ -6,8 +6,8 @@ import { useMemo, useRef } from "react";
 import * as THREE from "three";
 import data from "@/data/emblem.json";
 
-export type MaterialName = "chrome" | "glass" | "obsidian" | "crimson";
-export const MATERIALS: MaterialName[] = ["chrome", "glass", "obsidian", "crimson"];
+export type MaterialName = "chrome" | "steel" | "black chrome" | "glass";
+export const MATERIALS: MaterialName[] = ["chrome", "steel", "black chrome", "glass"];
 
 function useEmblemGeometry() {
   return useMemo(() => {
@@ -59,11 +59,11 @@ function Emblem({ material, scale = 1.7 }: { material: MaterialName; scale?: num
           color="#ffffff"
         />
       ) : material === "chrome" ? (
-        <meshPhysicalMaterial color="#e8e8e8" metalness={1} roughness={0.06} clearcoat={1} />
-      ) : material === "obsidian" ? (
-        <meshPhysicalMaterial color="#0a0a0a" metalness={0.2} roughness={0.12} clearcoat={1} clearcoatRoughness={0.05} />
+        <meshPhysicalMaterial color="#ffffff" metalness={1} roughness={0.08} clearcoat={1} clearcoatRoughness={0.05} envMapIntensity={1.6} />
+      ) : material === "steel" ? (
+        <meshPhysicalMaterial color="#c9ccd1" metalness={1} roughness={0.32} anisotropy={0.9} anisotropyRotation={Math.PI / 2} envMapIntensity={1.8} />
       ) : (
-        <meshPhysicalMaterial color="#b0121b" metalness={0.1} roughness={0.25} clearcoat={1} clearcoatRoughness={0.08} sheen={0.4} />
+        <meshPhysicalMaterial color="#3a3a3c" metalness={1} roughness={0.14} clearcoat={1} clearcoatRoughness={0.04} envMapIntensity={2.2} />
       )}
     </mesh>
   );
@@ -74,21 +74,24 @@ export default function Emblem3D({ material, scale }: { material: MaterialName; 
     <Canvas
       dpr={[1, 1.75]}
       camera={{ position: [0, 0, 4.2], fov: 35 }}
-      gl={{ antialias: true, alpha: true, toneMapping: THREE.ACESFilmicToneMapping }}
+      gl={{ antialias: true, alpha: true, toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.25 }}
     >
+      <ambientLight intensity={0.4} />
+      <directionalLight position={[3, 4, 5]} intensity={1.4} />
       <Float speed={1.4} rotationIntensity={0.25} floatIntensity={0.6}>
         <Emblem material={material} scale={scale} />
       </Float>
       <Environment resolution={256}>
-        <color attach="background" args={["#0a0a0a"]} />
-        <Lightformer intensity={1.2} rotation-x={Math.PI / 2} position={[0, 5, -9]} scale={[10, 10, 1]} />
+        <color attach="background" args={["#262626"]} />
+        <Lightformer intensity={3} rotation-x={Math.PI / 2} position={[0, 5, -9]} scale={[10, 10, 1]} />
+        <Lightformer intensity={2.5} position={[0, 0, 8]} scale={[6, 3, 1]} />
         <group rotation={[Math.PI / 2, 1, 0]}>
           {[2, 0, 2, 0, 2, 0, 2, 0].map((x, i) => (
-            <Lightformer key={i} intensity={1.6} rotation={[Math.PI / 4, 0, 0]} position={[x, 4, i * 4]} scale={[4, 1, 1]} />
+            <Lightformer key={i} intensity={3} rotation={[Math.PI / 4, 0, 0]} position={[x, 4, i * 4]} scale={[4, 1, 1]} />
           ))}
-          <Lightformer intensity={0.8} rotation-y={Math.PI / 2} position={[-5, 1, -1]} scale={[50, 2, 1]} />
-          <Lightformer intensity={0.8} rotation-y={Math.PI / 2} position={[-5, -1, -1]} scale={[50, 2, 1]} />
-          <Lightformer intensity={0.8} rotation-y={-Math.PI / 2} position={[10, 1, 0]} scale={[50, 2, 1]} />
+          <Lightformer intensity={1.6} rotation-y={Math.PI / 2} position={[-5, 1, -1]} scale={[50, 2, 1]} />
+          <Lightformer intensity={1.6} rotation-y={Math.PI / 2} position={[-5, -1, -1]} scale={[50, 2, 1]} />
+          <Lightformer intensity={1.6} rotation-y={-Math.PI / 2} position={[10, 1, 0]} scale={[50, 2, 1]} />
         </group>
         <Lightformer form="ring" color="#c4161c" intensity={3} position={[-6, -4, 4]} scale={4} onUpdate={(self) => self.lookAt(0, 0, 0)} />
       </Environment>

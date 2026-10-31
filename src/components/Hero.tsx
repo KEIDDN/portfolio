@@ -21,7 +21,7 @@ function useClock(tz: string) {
 
 export default function Hero({ locale }: { locale: Locale }) {
   const root = useRef<HTMLElement>(null);
-  const time = useClock("Europe/London");
+  const time = useClock("Europe/Madrid");
 
   useEffect(() => {
     const items = root.current!.querySelectorAll("[data-fade]");
@@ -40,11 +40,10 @@ export default function Hero({ locale }: { locale: Locale }) {
           <span className="line-mask"><span data-fade className="mono">{dict.role[locale]}</span></span>
         </div>
         <div className={styles.col}>
-          <span className="line-mask"><span data-fade className="mono muted">{dict.currently[locale]}</span></span>
-          <span className="line-mask"><span data-fade className="mono muted">{dict.founder[locale]}</span></span>
+          <span className="line-mask"><span data-fade className="mono muted">{dict.heroNote[locale]}</span></span>
         </div>
         <div className={`${styles.col} ${styles.right}`}>
-          <span className="line-mask"><span data-fade className="mono muted">London, UK — {time}</span></span>
+          <span className="line-mask"><span data-fade className="mono muted">{locale === "en" ? "Spain" : "España"} — {time}</span></span>
           <span className="line-mask"><span data-fade className="mono muted">Portfolio ©2026</span></span>
         </div>
       </div>

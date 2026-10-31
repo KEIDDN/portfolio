@@ -69,7 +69,8 @@ export default function SelectedWork({ locale }: { locale: Locale }) {
   }, []);
 
   return (
-    <section ref={root} id="work" className={styles.section}>
+    <div id="work">
+    <section ref={root} className={styles.section}>
       <div className={styles.head}>
         <h2 className={`display ${styles.title}`}>{dict.selected[locale]}</h2>
         <div className={styles.headMeta}>
@@ -117,5 +118,6 @@ export default function SelectedWork({ locale }: { locale: Locale }) {
         </a>
       </div>
     </section>
+    </div>
   );
 }
