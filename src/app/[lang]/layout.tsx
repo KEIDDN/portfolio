@@ -32,7 +32,12 @@ export async function generateMetadata({
   return {
     title: { default: "Miki Herrero — Product Designer", template: "%s — Miki Herrero" },
     description,
-    metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
+    metadataBase: new URL(
+      process.env.NEXT_PUBLIC_SITE_URL ??
+        (process.env.VERCEL_PROJECT_PRODUCTION_URL
+          ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+          : "http://localhost:3000"),
+    ),
     openGraph: { title: "Miki Herrero", description, images: ["/og.jpg"], type: "website" },
     twitter: { card: "summary_large_image", images: ["/og.jpg"] },
     alternates: { languages: { en: "/en", es: "/es" } },

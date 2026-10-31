@@ -24,8 +24,19 @@
   display: flex;
   gap: clamp(16px, 2.4vw, 40px);
 }
-.lang {
+.right {
   justify-self: end;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+.menuBtn {
+  display: none;
+}
+.sheet {
+  display: none;
+}
+.lang {
   display: flex;
   gap: 4px;
   opacity: 0.9;
@@ -45,4 +56,36 @@
   .links {
     display: none;
   }
+  .menuBtn {
+    display: block;
+    position: relative;
+    z-index: 2;
+  }
+  .brand,
+  .right {
+    position: relative;
+    z-index: 2;
+  }
+  .sheet {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 4px;
+    position: fixed;
+    inset: 0;
+    padding: var(--gutter) var(--gutter) 12vh;
+    background: #000;
+    font-size: 15vw;
+    font-weight: 500;
+    letter-spacing: -0.075em;
+    line-height: 0.95;
+    clip-path: inset(0 0 100% 0);
+    transition: clip-path 0.8s var(--ease);
+  }
+  .sheetOpen {
+    clip-path: inset(0 0 0 0);
+  }
+}
+.opened {
+  mix-blend-mode: normal;
 }

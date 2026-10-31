@@ -198,10 +198,12 @@ export default function HeroName({ text, color = "#efefed" }: Props) {
     const io = new IntersectionObserver(([e]) => (visible = e.isIntersecting));
     io.observe(el);
 
-    const clock = new THREE.Clock();
+    let last = performance.now();
     const tick = () => {
       if (!visible || !ready) return;
-      const dt = Math.min(clock.getDelta(), 0.05);
+      const now = performance.now();
+      const dt = Math.min((now - last) / 1000, 0.05);
+      last = now;
       uniforms.uTime.value += dt;
       const m = uniforms.uMouse.value;
       m.lerp(target, 0.12);

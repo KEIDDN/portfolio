@@ -23,7 +23,7 @@ export default function Lab({ locale }: { locale: Locale }) {
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.utils.toArray<HTMLElement>("[data-speed]").forEach((el) => {
-        const s = parseFloat(el.dataset.speed!);
+        const s = window.innerWidth < 800 ? 0 : parseFloat(el.dataset.speed!);
         gsap.fromTo(
           el,
           { y: () => s * window.innerHeight },

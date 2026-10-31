@@ -11,10 +11,13 @@ export default function Nav({ locale }: { locale: Locale }) {
   const pathname = usePathname();
   const lenis = useLenis();
   const [hidden, setHidden] = useState(false);
+  const [open, setOpen] = useState(false);
   const last = useRef(0);
   const other: Locale = locale === "en" ? "es" : "en";
   const switchHref = pathname.replace(/^\/(en|es)/, `/${other}`);
   const home = `/${locale}`;
+
+  useEffect(() => setOpen(false), [pathname]);
 
   useEffect(() => {
     const onScroll = () => {
@@ -27,6 +30,7 @@ export default function Nav({ locale }: { locale: Locale }) {
   }, []);
 
   const goto = (id: string) => (e: React.MouseEvent) => {
+    setOpen(false);
     if (pathname !== home) return;
     e.preventDefault();
     const el = document.getElementById(id);
@@ -34,7 +38,7 @@ export default function Nav({ locale }: { locale: Locale }) {
   };
 
   return (
-    <header className={`${styles.nav} ${hidden ? styles.hidden : ""}`}>
+    <header className={`${styles.nav} ${hidden && !open ? styles.hidden : ""} ${open ? styles.opened : ""}`}>
       <Link href={home} className={styles.brand}>
         Miki Herrero
       </Link>
@@ -52,11 +56,22 @@ export default function Nav({ locale }: { locale: Locale }) {
           {dict.nav.contact[locale]}
         </Link>
       </nav>
+      <div className={styles.right}>
+      <button className={`mono ${styles.menuBtn}`} onClick={() => setOpen((o) => !o)} aria-expanded={open}>
+        {open ? (locale === "en" ? "Close" : "Cerrar") : "Menu"}
+      </button>
       <Link href={switchHref} className={`mono ${styles.lang}`} aria-label="Switch language">
         <span className={locale === "en" ? styles.on : ""}>EN</span>
         <span>/</span>
         <span className={locale === "es" ? styles.on : ""}>ES</span>
       </Link>
+      </div>
+      <div className={`${styles.sheet} ${open ? styles.sheetOpen : ""}`}>
+        <Link href={`${home}#work`} onClick={goto("work")}>{dict.nav.work[locale]}</Link>
+        <Link href={`${home}/oxia-labs`}>{dict.nav.oxia[locale]}</Link>
+        <Link href={`${home}/about`}>{dict.nav.about[locale]}</Link>
+        <Link href={`${home}#contact`} onClick={goto("contact")}>{dict.nav.contact[locale]}</Link>
+      </div>
     </header>
   );
 }
