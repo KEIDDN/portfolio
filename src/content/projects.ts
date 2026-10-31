@@ -41,15 +41,15 @@ export const projects: Project[] = [
     title: "TETRA",
     year: "2026",
     label: "Oxia Labs",
-    type: { en: "Audiovisual game experience", es: "Experiencia de juego audiovisual" },
+    type: { en: "Audiovisual game · Web, desktop & mobile", es: "Juego audiovisual · Web, escritorio y móvil" },
     role: {
-      en: "Product design, creative direction, creative development",
-      es: "Diseño de producto, dirección creativa, desarrollo creativo",
+      en: "Product design, UX/UI, sound & music, creative development",
+      es: "Diseño de producto, UX/UI, sonido y música, desarrollo creativo",
     },
-    tools: "Three.js, PixiJS, Figma, Ableton",
+    tools: "Three.js, WebGL, Web Audio, Figma, Ableton",
     summary: {
-      en: "The falling-blocks game, rebuilt as a piece of music. Every drop lands on the beat.",
-      es: "El juego de bloques que caen, reconstruido como una pieza musical. Cada bloque cae a ritmo.",
+      en: "The perfect game, rebuilt as a piece of music. Every skin is a room with its own track, every drop lands on the beat.",
+      es: "El juego perfecto, reconstruido como una pieza musical. Cada skin es una sala con su propia música y cada bloque cae a ritmo.",
     },
     cover: W("tetra/cover.webp"),
     coverVideo: W("tetra/hero.mp4"),
@@ -61,25 +61,119 @@ export const projects: Project[] = [
         label: { en: "The idea", es: "La idea" },
         title: { en: "Feel the blocks.", es: "Siente los bloques." },
         body: {
-          en: "Everyone knows how to play it. Almost nobody has felt it. TETRA takes the most familiar puzzle in the world and turns it into an audiovisual instrument: the soundtrack reacts to every move, spatial audio places each piece around you, and the interface steps back until there is only rhythm, light and blocks.",
-          es: "Todo el mundo sabe jugarlo. Casi nadie lo ha sentido. TETRA coge el puzle más conocido del mundo y lo convierte en un instrumento audiovisual: la música reacciona a cada movimiento, el audio espacial coloca cada pieza a tu alrededor y la interfaz se aparta hasta que solo quedan ritmo, luz y bloques.",
+          en: "I've always thought the falling-blocks game is the perfect game. And I've always played it with electronic music on. TETRA started there: what if the music wasn't playing over the game, but was the game? Stack, clear, tension, release — the same language a DJ speaks to a room until sunrise.",
+          es: "Siempre he pensado que el juego de los bloques que caen es el juego perfecto. Y siempre lo he jugado con música electrónica de fondo. TETRA nace de ahí: ¿y si la música no sonara encima del juego, sino que fuera el juego? Apilar, limpiar líneas, tensión, liberación: el mismo idioma con el que un DJ mueve una sala hasta el amanecer.",
         },
       },
-      { kind: "video", src: W("tetra/experience.mp4"), poster: W("tetra/03.webp"), layout: "full" },
+      { kind: "video", src: W("tetra/v-ring.mp4"), poster: W("tetra/v-ring.webp"), layout: "full" },
+      {
+        kind: "features",
+        label: { en: "The experience, screen by screen", es: "La experiencia, pantalla a pantalla" },
+        items: [
+          {
+            title: { en: "An entrance, not a menu", es: "Una entrada, no un menú" },
+            body: {
+              en: "The first minute is a guided, real-time 3D intro: blocks orbit, the music builds, and the product explains itself without a single tutorial screen.",
+              es: "El primer minuto es una intro guiada en 3D en tiempo real: los bloques orbitan, la música crece y el producto se explica solo, sin una sola pantalla de tutorial.",
+            },
+            media: W("tetra/v-intro.mp4"),
+            poster: W("tetra/v-intro.webp"),
+            frame: "browser",
+          },
+          {
+            title: { en: "Music and blocks, one language", es: "Música y bloques, un solo idioma" },
+            body: {
+              en: "Every move is sound. Rotations, drops and line clears are mixed into the track, and spatial audio places each piece around you. Best with headphones — the app even asks how you're listening.",
+              es: "Cada movimiento es sonido. Giros, caídas y líneas se mezclan con la pista, y el audio espacial coloca cada pieza a tu alrededor. Mejor con auriculares: la app incluso te pregunta cómo estás escuchando.",
+            },
+            media: W("tetra/s-listen.webp"),
+            frame: "browser",
+          },
+          {
+            title: { en: "Every skin is a room", es: "Cada skin es una sala" },
+            body: {
+              en: "Studio, Clay, Crystal, Liquid Glass… Each skin changes the materials, the light and the music. Its own electronic track, produced for it. Switching skin is switching club.",
+              es: "Studio, Clay, Crystal, Liquid Glass… Cada skin cambia los materiales, la luz y la música. Cada una tiene su propio tema electrónico, producido para ella. Cambiar de skin es cambiar de club.",
+            },
+            media: W("tetra/s-crystal.webp"),
+            frame: "browser",
+          },
+          {
+            title: { en: "Lights off", es: "Con las luces apagadas" },
+            body: {
+              en: "The background breathes with the game: it reacts to your stack, your clears and the beat, like playing in a dark room lit only by the music.",
+              es: "El fondo respira con la partida: reacciona a tu pila, a tus líneas y al ritmo, como jugar en una sala a oscuras iluminada solo por la música.",
+            },
+            media: W("tetra/v-game.mp4"),
+            poster: W("tetra/v-game.webp"),
+            frame: "browser",
+          },
+          {
+            title: { en: "Opponents with a pulse", es: "Rivales con pulso" },
+            body: {
+              en: "Ten bots with their own personality and tempo, a Versus mode and Cups — tournament brackets from Foundations to Summit. Something to come back to.",
+              es: "Diez bots con personalidad y tempo propios, un modo Versus y Copas: torneos por eliminatorias de Foundations a Summit. Algo a lo que volver.",
+            },
+            media: W("tetra/s-versus.webp"),
+            frame: "browser",
+          },
+          {
+            title: { en: "A locker, not a shop", es: "Una taquilla, no una tienda" },
+            body: {
+              en: "Profile, records, achievements, leaderboards and a music library for every track you've unlocked. No ads, no store, no pay-to-win. Free, by design.",
+              es: "Perfil, récords, logros, rankings y una biblioteca con cada tema que has desbloqueado. Sin anuncios, sin tienda, sin pagar para ganar. Gratis, por decisión de diseño.",
+            },
+            media: W("tetra/s-music.webp"),
+            frame: "browser",
+          },
+          {
+            title: { en: "Tuned like an instrument", es: "Afinado como un instrumento" },
+            body: {
+              en: "Handling (DAS, ARR, soft drop), remappable controls, per-layer volumes and full accessibility settings. Built for casual players and for people who count frames.",
+              es: "Handling (DAS, ARR, soft drop), controles reasignables, volúmenes por capa y ajustes de accesibilidad completos. Pensado para quien juega por gusto y para quien cuenta frames.",
+            },
+            media: W("tetra/s-sound-settings.webp"),
+            frame: "browser",
+          },
+        ],
+      },
+      { kind: "row", srcs: [W("tetra/s-clay.webp"), W("tetra/s-glass.webp")], alt: "TETRA skins: Clay and Liquid Glass" },
       {
         kind: "text",
-        label: { en: "Experience", es: "Experiencia" },
+        label: { en: "Everywhere", es: "En todas partes" },
+        title: { en: "Web, desktop and your pocket.", es: "Web, escritorio y tu bolsillo." },
         body: {
-          en: "Free and without ads, by design. A real-time 3D landing built in Three.js sets the tone before the first move; the game itself runs on a WebGL renderer so the music never waits for the frame. Versus mode, custom bots and a full account system turn a single session into something you come back to. Best with headphones.",
-          es: "Gratis y sin anuncios, por decisión de diseño. Una landing en 3D en tiempo real con Three.js marca el tono antes del primer movimiento; el juego corre sobre un renderer WebGL para que la música nunca espere al frame. Modo versus, bots personalizados y un sistema de cuentas convierten una partida en algo a lo que vuelves. Mejor con auriculares.",
+          en: "TETRA runs in the browser, installs as a desktop app for macOS and Windows, and lives on your home screen on mobile — with controls redesigned for touch instead of shrunk down from a keyboard.",
+          es: "TETRA funciona en el navegador, se instala como app de escritorio en macOS y Windows y vive en la pantalla de inicio del móvil, con controles rediseñados para el tacto en vez de reducidos desde un teclado.",
         },
       },
-      { kind: "row", srcs: [W("tetra/03.webp"), W("tetra/02.webp")], alt: "TETRA experience" },
+      {
+        kind: "phones",
+        srcs: [W("tetra/m-landing.webp"), W("tetra/m-choose.webp"), W("tetra/m-game.webp"), W("tetra/m-game2.webp")],
+      },
+      { kind: "row", srcs: [W("tetra/s-desktop.webp"), W("tetra/s-home.webp")], alt: "TETRA desktop and mobile install" },
+      {
+        kind: "text",
+        label: { en: "Under the hood", es: "Por dentro" },
+        body: {
+          en: "Three.js for the 3D landing and intro, a dedicated WebGL renderer for the board so the music never waits for a frame, and a Web Audio engine that mixes stems in real time and positions sound in space. Designed, produced and built end to end at OXIA Labs.",
+          es: "Three.js para la landing y la intro en 3D, un renderer WebGL propio para el tablero para que la música nunca espere a un frame, y un motor de Web Audio que mezcla stems en tiempo real y coloca el sonido en el espacio. Diseñado, producido y desarrollado de principio a fin en OXIA Labs.",
+        },
+      },
+      {
+        kind: "embed",
+        url: "https://tetra-blocks.vercel.app/",
+        title: "TETRA",
+        note: {
+          en: "The real thing, running live. Put your headphones on.",
+          es: "El producto real, funcionando aquí mismo. Ponte los auriculares.",
+        },
+      },
       {
         kind: "statement",
         body: {
-          en: "Design for the ears first. The eyes will follow.",
-          es: "Diseñar primero para el oído. Los ojos vienen después.",
+          en: "A game you hear as much as you play.",
+          es: "Un juego que se escucha tanto como se juega.",
         },
       },
     ],
@@ -198,10 +292,10 @@ export const projects: Project[] = [
     title: "Tendu",
     year: "2026",
     label: "Oxia Labs",
-    type: { en: "Wellbeing app", es: "App de bienestar" },
+    type: { en: "Wellbeing app · Proof of concept", es: "App de bienestar · Prueba de concepto" },
     role: {
-      en: "Product design, UX, 3D direction, creative development",
-      es: "Diseño de producto, UX, dirección 3D, desarrollo creativo",
+      en: "Product design, UX/UI, 3D direction, creative development",
+      es: "Diseño de producto, UX/UI, dirección 3D, desarrollo creativo",
     },
     tools: "Three.js, Blender, Figma",
     summary: {
@@ -215,26 +309,105 @@ export const projects: Project[] = [
     blocks: [
       {
         kind: "text",
-        label: { en: "The metaphor", es: "La metáfora" },
+        label: { en: "The idea", es: "La idea" },
         title: {
-          en: "Taking care of yourself is gardening.",
-          es: "Cuidarte es cuidar un jardín.",
+          en: "We forget to stop.",
+          es: "Se nos olvida parar.",
         },
         body: {
-          en: "Self-care apps usually feel like homework. Tendu replaces streaks and guilt with a floating island that is yours: every moment you give yourself — a walk, a breath, an early night — makes it grow. Skip a day and nothing dies. It just waits for you.",
-          es: "Las apps de autocuidado suelen parecer deberes. Tendu cambia las rachas y la culpa por una isla flotante que es tuya: cada momento que te dedicas — un paseo, respirar, acostarte pronto — la hace crecer. Si un día no puedes, no muere nada. Simplemente te espera.",
+          en: "We run all day and rarely stop to look after ourselves. Self-care apps don't help much: streaks, red badges and guilt — more homework. Tendu starts from a different metaphor. Taking care of yourself is like tending a garden: small, regular, patient. And you can see it grow.",
+          es: "Vamos corriendo todo el día y casi nunca paramos a cuidarnos. Las apps de autocuidado no ayudan mucho: rachas, avisos en rojo y culpa, más deberes. Tendu parte de otra metáfora. Cuidarte es como cuidar un jardín: poco a poco, con constancia y paciencia. Y puedes verlo crecer.",
         },
       },
-      { kind: "video", src: W("tendu/onboarding.mp4"), poster: W("tendu/04.webp"), layout: "full" },
+      { kind: "video", src: W("tendu/onboarding.mp4"), poster: W("tendu/s-start.webp"), layout: "full" },
+      {
+        kind: "features",
+        label: { en: "The product, step by step", es: "El producto, paso a paso" },
+        items: [
+          {
+            title: { en: "Plant your time", es: "Planta tu tiempo" },
+            body: {
+              en: "Onboarding is a conversation, not a form: your name, what you want to look after, how many days a week you'll come back. Every answer shapes the island.",
+              es: "El onboarding es una conversación, no un formulario: tu nombre, qué quieres cuidar, cuántos días a la semana vas a volver. Cada respuesta da forma a la isla.",
+            },
+            media: W("tendu/s-plant.webp"),
+            frame: "browser",
+          },
+          {
+            title: { en: "Choose your first seed", es: "Elige tu primera semilla" },
+            body: {
+              en: "The first decision is emotional, not functional. You pick a seed and the garden becomes yours from the very first minute.",
+              es: "La primera decisión es emocional, no funcional. Eliges una semilla y el jardín es tuyo desde el primer minuto.",
+            },
+            media: W("tendu/s-seed.webp"),
+            frame: "browser",
+          },
+          {
+            title: { en: "Today, without pressure", es: "Hoy, sin presión" },
+            body: {
+              en: "A short list of small rituals for the day. Complete one and something grows. Miss one and nothing withers — the garden just waits for you.",
+              es: "Una lista corta de pequeños rituales para el día. Completas uno y algo crece. Si no puedes, nada se marchita: el jardín simplemente te espera.",
+            },
+            media: W("tendu/s-today.webp"),
+            frame: "browser",
+          },
+          {
+            title: { en: "Calm, Focus, Read, Roots", es: "Calma, Foco, Lectura, Raíces" },
+            body: {
+              en: "Guided breathing and meditation, a focus timer, short reads and a journal with daily prompts. Four ways to stop, all inside the same quiet space.",
+              es: "Respiración guiada y meditación, un temporizador de foco, lecturas breves y un diario con preguntas para cada día. Cuatro formas de parar, todas en el mismo espacio tranquilo.",
+            },
+            media: W("tendu/s-calm.webp"),
+            frame: "browser",
+          },
+          {
+            title: { en: "Make it yours", es: "Hazlo tuyo" },
+            body: {
+              en: "The nursery and the garden editor let you plant, move and decorate. Progress isn't a number, it's a place you've built.",
+              es: "El vivero y el editor del jardín te dejan plantar, mover y decorar. El progreso no es un número, es un lugar que has construido tú.",
+            },
+            media: W("tendu/s-nursery.webp"),
+            frame: "browser",
+          },
+          {
+            title: { en: "Look back", es: "Mirar atrás" },
+            body: {
+              en: "Progress, achievements and an album of your garden through the seasons — a gentle record of the times you chose yourself.",
+              es: "Progreso, logros y un álbum de tu jardín a lo largo de las estaciones: un registro amable de las veces que te elegiste.",
+            },
+            media: W("tendu/s-album.webp"),
+            frame: "browser",
+          },
+        ],
+      },
+      { kind: "row", srcs: [W("tendu/s-breathe.webp"), W("tendu/s-roots.webp")], alt: "Tendu onboarding moments" },
       {
         kind: "text",
         label: { en: "Craft", es: "Oficio" },
+        title: { en: "The product gets quieter so you can.", es: "El producto baja la voz para que tú también puedas." },
         body: {
-          en: "A low-poly diorama rendered in real time, with weather, falling leaves and soft clouds that respond to how you are doing. Calm typography, one green and a single black button — the product gets quieter so you can.",
-          es: "Un diorama low-poly renderizado en tiempo real, con clima, hojas que caen y nubes suaves que responden a cómo estás. Tipografía tranquila, un verde y un único botón negro — el producto baja la voz para que tú también puedas.",
+          en: "A low-poly diorama rendered in real time, with seasons, falling leaves and soft clouds. Warm paper tones, calm typography, one green and a single black button. Every panel floats over the garden so you never leave it.",
+          es: "Un diorama low-poly renderizado en tiempo real, con estaciones, hojas que caen y nubes suaves. Tonos cálidos de papel, tipografía tranquila, un verde y un único botón negro. Cada panel flota sobre el jardín para que nunca salgas de él.",
         },
       },
-      { kind: "row", srcs: [W("tendu/02.webp"), W("tendu/03.webp")], alt: "Tendu onboarding" },
+      { kind: "row", srcs: [W("tendu/s-focus.webp"), W("tendu/s-read.webp")], alt: "Tendu Focus and Read" },
+      {
+        kind: "text",
+        label: { en: "Status", es: "Estado" },
+        body: {
+          en: "Tendu is a working proof of concept on the web, designed mobile-first. The next step is a native mobile app.",
+          es: "Tendu es una prueba de concepto funcional en web, diseñada pensando primero en el móvil. El siguiente paso es una app nativa para móvil.",
+        },
+      },
+      {
+        kind: "embed",
+        url: "https://tendu-beta.vercel.app/",
+        title: "Tendu",
+        note: {
+          en: "The live beta. Plant something.",
+          es: "La beta, en directo. Planta algo.",
+        },
+      },
     ],
   },
   {

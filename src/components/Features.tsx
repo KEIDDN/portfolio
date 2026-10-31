@@ -26,14 +26,16 @@ export default function Features({ label, items, locale, url }: { label: L; item
     return () => ctx.revert();
   }, []);
 
-  const render = (f: Feature) =>
-    f.frame === "phone" ? (
+  const render = (feat: Feature, live = true) => {
+    const f = !live && feat.poster && feat.media.endsWith(".mp4") ? { ...feat, media: feat.poster } : feat;
+    return f.frame === "phone" ? (
       <div className={styles.phoneWrap}><Phone src={f.media} poster={f.poster} /></div>
     ) : f.frame === "browser" ? (
       <Browser src={f.media} poster={f.poster} url={url ?? ""} />
     ) : (
       <Media src={f.media} poster={f.poster} />
     );
+  };
 
   return (
     <section ref={root} className={styles.wrap}>
@@ -53,7 +55,7 @@ export default function Features({ label, items, locale, url }: { label: L; item
           <div className={styles.stage}>
             {items.map((f, i) => (
               <div key={i} className={`${styles.slide} ${active === i ? styles.slideOn : ""}`}>
-                {render(f)}
+                {render(f, Math.abs(active - i) <= 0)}
               </div>
             ))}
           </div>
