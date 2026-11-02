@@ -21,6 +21,8 @@ export type Block =
       also?: string[];
     }
   | { kind: "sequence"; items: { title: L; body: L; media: string; poster: string }[] }
+  /** phone screens side by side, each with its caption */
+  | { kind: "screens"; items: { title: L; body: L; media: string; poster: string }[] }
   | { kind: "image"; src: string; alt: string; layout?: "full" | "wide" | "inset" | "bleed" }
   | { kind: "pair"; srcs: [string, string]; alt: string }
   | { kind: "icons"; title: L; body: L }
@@ -43,6 +45,9 @@ export type Project = {
   coverVideo?: string;
   /** cover: the media fills the screen · contain: it sits whole on the project colour */
   hero?: "cover" | "contain";
+  /** a different clip for the case's own hero (the cover stays for cards) */
+  heroVideo?: string;
+  heroPoster?: string;
   url?: string;
   theme: Theme;
   archive?: boolean;
@@ -230,6 +235,8 @@ export const projects: Project[] = [
     cover: W("tendu/v/i-days.webp"),
     coverVideo: W("tendu/v/i-days.mp4"),
     hero: "contain",
+    heroVideo: W("tendu/v/t-growth.mp4"),
+    heroPoster: W("tendu/v/t-growth.webp"),
     theme: { bg: "#f9f6f1", fg: "#1b1f1c", accent: "#4f7a3a", muted: "#7a7a72" },
     blocks: [
       { kind: "stage", n: "01", label: ST.challenge },
@@ -251,15 +258,21 @@ export const projects: Project[] = [
         },
       },
       {
-        kind: "moment",
-        title: { en: "It grows with you.", es: "Crece contigo." },
-        body: {
-          en: "Day 1, day 12, day 290: the island reflects the time you give yourself.",
-          es: "Día 1, día 12, día 290: la isla refleja el tiempo que te dedicas.",
-        },
-        media: W("tendu/v/i-days.mp4"),
-        poster: W("tendu/v/i-days.webp"),
-        layout: "plain",
+        kind: "screens",
+        items: [
+          {
+            title: { en: "It grows with you.", es: "Crece contigo." },
+            body: { en: "Day 1, week 2, month 3, year 1: the island reflects the time you give yourself.", es: "Día 1, semana 2, mes 3, año 1: la isla refleja el tiempo que te dedicas." },
+            media: W("tendu/v/t-growth.mp4"),
+            poster: W("tendu/v/t-growth.webp"),
+          },
+          {
+            title: { en: "It lives on your time.", es: "Vive a tu ritmo." },
+            body: { en: "Sunrise, golden hour and night follow your own clock.", es: "Amanecer, hora dorada y noche siguen tu propio reloj." },
+            media: W("tendu/v/t-daylight.mp4"),
+            poster: W("tendu/v/t-daylight.webp"),
+          },
+        ],
       },
       { kind: "stage", n: "03", label: ST.system },
       {
@@ -286,38 +299,28 @@ export const projects: Project[] = [
           {
             title: { en: "Focus that grows things.", es: "Concentrarse hace crecer cosas." },
             body: { en: "A timer, the phone face down, and when you finish, something new sprouts on the island.", es: "Un temporizador, el móvil a un lado y, al terminar, algo nuevo brota en la isla." },
-            media: W("tendu/v/p-focus.mp4"),
-            poster: W("tendu/v/p-focus.webp"),
+            media: W("tendu/v/t-focus.mp4"),
+            poster: W("tendu/v/t-focus.webp"),
           },
           {
             title: { en: "Breathe with something alive.", es: "Respirar con algo vivo." },
             body: { en: "An orb that swells and settles with your breath. Nothing else on screen.", es: "Una esfera que se expande y se contrae al ritmo de tu respiración. Nada más en pantalla." },
-            media: W("tendu/v/p-breathe.mp4"),
-            poster: W("tendu/v/p-breathe.webp"),
+            media: W("tendu/v/t-breathe.mp4"),
+            poster: W("tendu/v/t-breathe.webp"),
           },
           {
             title: { en: "A journal that asks the right question.", es: "Un diario que hace la pregunta justa." },
             body: { en: "One question a day. Slide to say how you feel and a flower opens with you.", es: "Una pregunta al día. Deslizas para decir cómo estás y una flor se abre contigo." },
-            media: W("tendu/v/p-journal.mp4"),
-            poster: W("tendu/v/p-journal.webp"),
+            media: W("tendu/v/t-journal.mp4"),
+            poster: W("tendu/v/t-journal.webp"),
           },
           {
             title: { en: "What you earn, you plant.", es: "Lo que ganas, lo plantas." },
             body: { en: "Looking after yourself earns seeds, trees and small details for your island.", es: "Lo que ganas cuidándote se convierte en semillas, árboles y detalles para tu isla." },
-            media: W("tendu/v/p-nursery.mp4"),
-            poster: W("tendu/v/p-nursery.webp"),
+            media: W("tendu/v/t-nursery.mp4"),
+            poster: W("tendu/v/t-nursery.webp"),
           },
         ],
-      },
-      {
-        kind: "moment",
-        title: { en: "It lives on your time.", es: "Vive a tu ritmo." },
-        body: {
-          en: "Real seasons, sunrises and nights that follow your clock.",
-          es: "Estaciones reales, amaneceres y noches que siguen tu reloj.",
-        },
-        media: W("tendu/v/i-seasons.mp4"),
-        poster: W("tendu/v/i-seasons.webp"),
       },
       {
         kind: "statement",

@@ -158,8 +158,8 @@ export default function LabUniverse({ locale }: { locale: Locale }) {
     apply();
     gsap.to(c, {
       z: fit(),
-      duration: 2.4,
-      ease: "expo.out",
+      duration: 3,
+      ease: "power4.out",
       delay: 0.15,
       onUpdate: apply,
     });
@@ -169,7 +169,7 @@ export default function LabUniverse({ locale }: { locale: Locale }) {
       {
         x: (i, el) => -parseFloat(el.dataset.ox!) * 0.9,
         y: (i, el) => -parseFloat(el.dataset.oy!) * 0.9,
-        scale: 0.2,
+        scale: 0.5,
         opacity: 0,
       },
       {
@@ -177,9 +177,9 @@ export default function LabUniverse({ locale }: { locale: Locale }) {
         y: 0,
         scale: 1,
         opacity: 1,
-        duration: 2.2,
-        ease: "expo.out",
-        stagger: { each: 0.025, from: "random" },
+        duration: 2.8,
+        ease: "power4.out",
+        stagger: { each: 0.03, from: "center" },
         delay: 0.1,
       },
     );
@@ -329,11 +329,15 @@ export default function LabUniverse({ locale }: { locale: Locale }) {
     [clusters],
   );
 
+  const from = useRef<{ rect: DOMRect; src: string } | null>(null);
   const enter = useCallback(
-    async (i: number) => {
+    async (i: number, el?: HTMLElement | null) => {
       setFocus(i);
       const f = frame(i);
       await api.current?.fly(f.x, f.y, f.z * 1.25, 1.3);
+      // the piece you clicked (or the constellation's star) flies into the room
+      const img = el?.querySelector("img") ?? root.current!.querySelector<HTMLImageElement>(`[data-cl="${i}"] [data-star] img`);
+      from.current = img ? { rect: img.getBoundingClientRect(), src: img.currentSrc || img.src } : null;
       setRoom(i);
     },
     [frame],
@@ -386,11 +390,25 @@ export default function LabUniverse({ locale }: { locale: Locale }) {
           return (
             <div
               key={s.slug}
-              className={`${styles.cluster} ${lit !== null && lit !== cl.i ? styles.dim : ""}`}
+              className={`${styles.cluster} ${lit !== null && lit !== cl.i ? styles.dim : ""} ${lit === cl.i ? styles.lit : ""}`}
+              data-cl={cl.i}
               style={{ left: cl.cx, top: cl.cy }}
               onPointerEnter={() => setHover(cl.i)}
               onPointerLeave={() => setHover(null)}
             >
+              <svg className={styles.lines} aria-hidden>
+                {cl.pieces.slice(1).map((p, k) => {
+                  const a = cl.pieces[0];
+                  const ax = a.x + a.w / 2, ay = a.y + a.w / ratioOf(a.src, 1) / 2;
+                  const bx = p.x + p.w / 2, by = p.y + p.w / ratioOf(p.src, 1) / 2;
+                  return (
+                    <g key={k}>
+                      <line x1={ax} y1={ay} x2={bx} y2={by} pathLength={1} style={{ transitionDelay: `${k * 0.12}s` }} />
+                      <circle cx={bx} cy={by} r={5} />
+                    </g>
+                  );
+                })}
+              </svg>
               {cl.pieces.map((p) => (
                 <button
                   key={p.src}
@@ -398,10 +416,11 @@ export default function LabUniverse({ locale }: { locale: Locale }) {
                   className={styles.piece}
                   style={{ left: p.x, top: p.y, width: p.w }}
                   data-piece
+                  data-star={p.star ? "" : undefined}
                   data-ox={p.x + p.w / 2 + cl.cx}
                   data-oy={p.y + cl.cy}
                   data-cursor={locale === "en" ? "View" : "Ver"}
-                  onClick={() => enter(cl.i)}
+                  onClick={(e) => enter(cl.i, e.currentTarget)}
                   aria-label={s.title}
                 >
                   <span data-d={p.d} className={styles.depth}>
@@ -500,12 +519,14 @@ export default function LabUniverse({ locale }: { locale: Locale }) {
             key={room}
             index={room}
             locale={locale}
+            from={from.current}
             onClose={() => {
               setRoom(null);
               const f = frame(room);
               api.current?.fly(f.x, f.y, f.z, 1.1);
             }}
             onGo={(i) => {
+              from.current = null;
               setRoom(i);
               setFocus(i);
               const f = frame(i);

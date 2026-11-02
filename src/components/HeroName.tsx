@@ -23,9 +23,16 @@ const TRACK = -0.05;
 const glslCell = /* glsl */ `
 float h1(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
 vec4 cellRnd(vec2 c){ return vec4(h1(c), h1(c + 17.31), h1(c + 41.17), h1(c + 73.73)); }
-// when (in scroll progress) this cell breaks away
-// a crumbling front that climbs from the base of the letters to the top, with a ragged edge
-float cellDelay(vec4 r, float yN){ return 0.01 + clamp(yN, 0.0, 1.0) * 0.34 + r.x * 0.07; }
+float vnoise(vec2 p){
+  vec2 i = floor(p), f = fract(p);
+  vec2 u = f * f * (3.0 - 2.0 * f);
+  return mix(mix(h1(i), h1(i + vec2(1.0, 0.0)), u.x), mix(h1(i + vec2(0.0, 1.0)), h1(i + 1.0), u.x), u.y);
+}
+// a gust sweeps the name from left to right; its front is ragged, never a straight line
+float cellDelay(vec4 r, float xN, float yN){
+  float front = vnoise(vec2(yN * 3.0, 1.7)) * 0.07 + vnoise(vec2(yN * 11.0, xN * 4.0)) * 0.04;
+  return 0.01 + clamp(xN, 0.0, 1.0) * 0.36 + front + r.x * 0.035;
+}
 `;
 
 const quadVert = /* glsl */ `
@@ -66,7 +73,8 @@ void main(){
   // cells that have already broken away leave the letter
   vec2 c = floor(vec2(hit.x, uRes.y - hit.y) / ${CELL.toFixed(2)});
   float yN = ((uRes.y - (c.y + 0.5) * ${CELL.toFixed(2)}) - uText.y) / uText.w;
-  if (uP > cellDelay(cellRnd(c), yN)) discard;
+  float xN = ((c.x + 0.5) * ${CELL.toFixed(2)} - uText.x) / uText.z;
+  if (uP > cellDelay(cellRnd(c), xN, yN)) discard;
   float g = h1(px + fract(uTime * 7.0)) - 0.5;
   gl_FragColor = vec4((uColor + g * 0.08) * a, a);
 }
@@ -82,35 +90,45 @@ uniform float uVh;
 uniform vec4 uText; // x0, y0 (bottom), w, h of the text block, px
 varying float vA;
 varying float vT;
+varying float vGlow;
 ${glslCell}
+// curl of a smooth noise field: swirling, divergence-free motion, like smoke or ash in air
+vec2 curl(vec2 p){
+  float e = 0.35;
+  float n1 = vnoise(p + vec2(0.0, e)), n2 = vnoise(p - vec2(0.0, e));
+  float n3 = vnoise(p + vec2(e, 0.0)), n4 = vnoise(p - vec2(e, 0.0));
+  return vec2(n1 - n2, -(n3 - n4)) / (2.0 * e);
+}
 void main(){
   vec2 o = position.xy;
   vec4 r = cellRnd(aCell);
+  float xN = (o.x - uText.x) / uText.z;
   float yN = (o.y - uText.y) / uText.w;
-  float d = cellDelay(r, yN);
-  float t = clamp((uP - d) / 0.42, 0.0, 1.0);
-  vec2 ctr = vec2(uText.x + uText.z * 0.5, uText.y + uText.w * 0.5);
-  vec2 dir = o - ctr;
-  dir.x /= uText.z * 0.5;
-  dir.y /= uText.w * 0.5;
-  // burst outwards (fast, then settles) …
-  float burst = 1.0 - pow(1.0 - min(t * 2.2, 1.0), 3.0);
+  float d = cellDelay(r, xN, yN);
+  float t = clamp((uP - d) / 0.5, 0.0, 1.0);
+  float e = t * t * (3.0 - 2.0 * t);
   vec2 p = o;
-  p.x += dir.x * (0.06 + r.z * 0.12) * uText.z * burst;
-  p.y += (0.35 + r.w * 0.9) * uText.w * burst * (0.6 + 0.4 * dir.y);
-  // … then gravity
-  p.y -= (2.2 + r.y * 1.8) * uVh * t * t;
-  p.x += (r.x - 0.5) * uText.z * 0.08 * t;
-  // a little air in the fall
-  p.x += sin(uTime * (0.8 + r.y) + r.z * 6.2831 + o.y * 0.015) * 18.0 * t;
-  p.y += cos(uTime * (0.7 + r.x) + r.w * 6.2831) * 8.0 * t;
+  // the gust: carried to the right, accelerating, lifting a little
+  float gust = (0.35 + r.z * 0.9) * uText.z * 0.55;
+  p.x += gust * t * t;
+  p.y += uText.w * (0.15 + r.w * 0.9) * e - uText.w * 0.5 * t * t * r.y;
+  // eddies: two octaves of curl noise, growing as the particle travels
+  vec2 q = o / uText.w * 1.6 + vec2(uTime * 0.12, 0.0);
+  vec2 sw = curl(q) * 0.9 + curl(q * 2.3 + 7.0) * 0.45;
+  p += sw * uText.w * 0.55 * e;
+  // depth: some drift towards the camera, some away
+  float z = (r.y - 0.5) * 2.0 * e;
+  vec2 ctr = vec2(uText.x + uText.z * 0.5, uText.y + uText.w * 0.5);
+  float persp = 1.0 / (1.0 - z * 0.38);
+  p = ctr + (p - ctr) * mix(1.0, persp, 0.6);
   gl_Position = vec4((p / uRes) * 2.0 - 1.0, 0.0, 1.0);
-  float size = mix(1.08, 0.45 + r.y * 0.85, smoothstep(0.0, 0.25, t));
+  float size = mix(1.06, (0.45 + r.y * 0.9) * persp, smoothstep(0.0, 0.2, t));
   gl_PointSize = ${CELL.toFixed(2)} * uDpr * size;
-  // only part of the cells survive as visible dust: the rest dissolves as it breaks
-  float keep = step(r.y, 0.42);
-  vA = step(0.0001, t) * mix(1.0 - smoothstep(0.0, 0.12, t), 1.0 - smoothstep(0.35, 0.8, t), keep) * (0.7 + r.z * 0.3);
+  float keep = step(r.y, 0.55);
+  float life = 1.0 - smoothstep(0.4, 1.0, t);
+  vA = step(0.0001, t) * mix(1.0 - smoothstep(0.0, 0.1, t), life, keep) * mix(1.0, 0.55, abs(z)) * (0.65 + r.z * 0.35);
   vT = t;
+  vGlow = step(0.93, r.w) * (1.0 - t);
 }
 `;
 
@@ -119,12 +137,15 @@ precision highp float;
 uniform vec3 uColor;
 varying float vA;
 varying float vT;
+varying float vGlow;
 void main(){
   vec2 c = gl_PointCoord - 0.5;
-  float round = 1.0 - smoothstep(0.38, 0.5, length(c));
+  // soft-edged round grains once airborne
+  float round = 1.0 - smoothstep(0.22, 0.5, length(c));
   float a = vA * mix(1.0, round, smoothstep(0.0, 0.15, vT));
   if (a < 0.01) discard;
-  gl_FragColor = vec4(uColor * a, a);
+  vec3 col = uColor * (1.0 + vGlow * 0.6);
+  gl_FragColor = vec4(col * a, a);
 }
 `;
 

@@ -23,7 +23,9 @@ export default function LabRoom({
   locale,
   onClose,
   onGo,
+  from,
 }: {
+  from?: { rect: DOMRect; src: string } | null;
   index: number;
   locale: Locale;
   onClose: () => void;
@@ -45,9 +47,33 @@ export default function LabRoom({
     const el = root.current!;
     const ar = area.current!;
     const tr = track.current!;
-    gsap.fromTo(el, { clipPath: "inset(100% 0 0 0)" }, { clipPath: "inset(0% 0 0 0)", duration: 1, ease: "expo.inOut" });
-    gsap.from(el.querySelectorAll("[data-c]"), { y: 30, opacity: 0, duration: 1.2, ease: "expo.out", stagger: 0.06, delay: 0.5 });
-    gsap.from(tr.children, { x: 220, opacity: 0, duration: 1.6, ease: "expo.out", stagger: 0.08, delay: 0.45 });
+    const figs = Array.from(tr.children) as HTMLElement[];
+    // the piece you clicked flies from the universe to its place on the wall (FLIP)
+    const startImg = from ? figs.map((f) => f.querySelector("img")!).find((im) => from.src.endsWith(im.getAttribute("src")!)) : null;
+    if (from && startImg) {
+      gsap.fromTo(el, { backgroundColor: "rgba(241,238,230,0)" }, { backgroundColor: "rgba(241,238,230,1)", duration: 0.7, ease: "power2.out" });
+      const fly = () => {
+        const to = startImg.getBoundingClientRect();
+        if (!to.width) return;
+        if (to.left > window.innerWidth * 0.9) {
+          gsap.from(startImg, { opacity: 0, duration: 1, delay: 0.6 });
+          return;
+        }
+        gsap.fromTo(
+          startImg,
+          { x: from.rect.left - to.left, y: from.rect.top - to.top, scaleX: from.rect.width / to.width, scaleY: from.rect.height / to.height, transformOrigin: "0 0" },
+          { x: 0, y: 0, scaleX: 1, scaleY: 1, duration: 1.1, ease: "expo.inOut" },
+        );
+      };
+      if (startImg.complete) fly();
+      else startImg.addEventListener("load", fly, { once: true });
+      gsap.from(figs.filter((f) => !f.contains(startImg)), { x: 160, opacity: 0, duration: 1.4, ease: "expo.out", stagger: 0.08, delay: 0.7 });
+      gsap.from(el.querySelectorAll("[data-c], header, footer"), { y: 24, opacity: 0, duration: 1.1, ease: "expo.out", stagger: 0.05, delay: 0.55 });
+    } else {
+      gsap.fromTo(el, { clipPath: "inset(100% 0 0 0)" }, { clipPath: "inset(0% 0 0 0)", duration: 1, ease: "expo.inOut" });
+      gsap.from(el.querySelectorAll("[data-c]"), { y: 30, opacity: 0, duration: 1.2, ease: "expo.out", stagger: 0.06, delay: 0.5 });
+      gsap.from(figs, { x: 220, opacity: 0, duration: 1.6, ease: "expo.out", stagger: 0.08, delay: 0.45 });
+    }
 
     const pos = { x: 0 };
     let target = 0;

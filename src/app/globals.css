@@ -156,10 +156,12 @@ video {
 }
 
 /* reveal helpers */
+/* room for descenders (j, g, p) without changing the line rhythm */
 .line-mask {
   display: block;
   overflow: hidden;
-  padding-bottom: 0.06em;
+  padding: 0.04em 0 0.16em;
+  margin: -0.04em 0 -0.16em;
 }
 .line-mask > span {
   display: block;

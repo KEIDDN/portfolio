@@ -42,6 +42,10 @@
   max-height: 100%;
   object-fit: contain;
 }
+.heroContain .heroMedia video {
+  border-radius: clamp(28px, 2.6vw, 46px);
+  box-shadow: 0 50px 90px -40px rgba(40, 34, 20, 0.45), 0 0 0 1px rgba(0, 0, 0, 0.06);
+}
 .heroContain .pill {
   background: color-mix(in srgb, var(--fg) 8%, transparent);
 }
@@ -170,8 +174,7 @@
   max-width: 1040px;
   margin: 0 auto;
 }
-.plainInner > *,
-.heroContain .heroMedia > * {
+.plainInner > * {
   border-radius: 0;
   background: none;
   -webkit-mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent), linear-gradient(to bottom, transparent, #000 4%, #000 96%, transparent);
@@ -251,6 +254,32 @@
 }
 .img.bleed :global(.img-grain)::after {
   opacity: 0.08;
+}
+/* phone screens, side by side, floating */
+.screens {
+  display: flex;
+  justify-content: center;
+  gap: 8vw;
+  padding: 0 var(--gutter);
+}
+.phone {
+  width: min(390px, 30vw);
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+.phone > :first-child {
+  border-radius: clamp(26px, 2.4vw, 44px);
+  box-shadow: 0 50px 90px -40px rgba(40, 34, 20, 0.45), 0 0 0 1px rgba(0, 0, 0, 0.06);
+}
+.phone figcaption {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.phone .h3,
+.phone .mBody {
+  grid-column: auto;
 }
 .system {
   display: flex;

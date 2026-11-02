@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 
-type W = Window & { __mhNav?: boolean; __mhTitle?: string };
+type W = Window & { __mhNav?: boolean; __mhTitle?: string; __mhMorph?: boolean };
 
 /**
  * Page transition: the new page arrives under a black curtain that lifts.
@@ -22,7 +22,10 @@ export default function Template({ children }: { children: React.ReactNode }) {
 
     const first = !w.__mhNav;
     w.__mhNav = true;
-    if (first) {
+    // a shared-element morph is already covering the screen: no curtain
+    const morph = w.__mhMorph;
+    w.__mhMorph = false;
+    if (first || morph) {
       if (curtain.current) curtain.current.style.display = "none";
       return () => document.removeEventListener("click", onClick, true);
     }

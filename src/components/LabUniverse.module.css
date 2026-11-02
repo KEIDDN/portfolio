@@ -42,10 +42,14 @@
   width: 100%;
 }
 .img {
-  transition: scale 1s var(--ease);
+  transition: scale 1s var(--ease), translate 1s var(--ease), box-shadow 1s var(--ease);
 }
 .piece:hover .img {
-  scale: 1.04;
+  scale: 1.03;
+  translate: 0 -10px;
+}
+.piece:hover .img:not(.cut) {
+  box-shadow: 0 40px 60px -30px rgba(40, 30, 20, 0.35);
 }
 .img img {
   width: 100%;
@@ -183,4 +187,35 @@
     right: var(--gutter);
     bottom: 70px;
   }
+}
+
+/* constellation: hairlines from the star to every satellite, drawn when the series lights up */
+.lines {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1px;
+  height: 1px;
+  overflow: visible;
+  pointer-events: none;
+}
+.lines line {
+  stroke: var(--ink);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  opacity: 0.35;
+  transition: stroke-dashoffset 1.2s var(--ease);
+}
+.lines circle {
+  fill: var(--ink);
+  opacity: 0;
+  transition: opacity 0.6s var(--ease) 0.6s;
+}
+.lit .lines line {
+  stroke-dashoffset: 0;
+}
+.lit .lines circle {
+  opacity: 0.5;
 }

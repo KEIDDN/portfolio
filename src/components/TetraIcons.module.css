@@ -1,43 +1,57 @@
-.pin {
-  height: 260svh;
-  padding: 0 var(--gutter);
-}
-.sticky {
-  position: sticky;
-  top: 0;
-  height: 100svh;
+.dict {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   gap: 16px;
   align-items: center;
+  padding: 0 var(--gutter);
+  min-height: 86svh;
 }
 .viewer {
   grid-column: 1 / span 5;
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: 32px;
 }
-.big {
-  width: min(24vw, 42svh);
+.stage {
+  width: min(26vw, 46svh);
   aspect-ratio: 1;
-  animation: pop 0.6s var(--ease);
 }
-@keyframes pop {
-  from {
-    transform: scale(0.94);
-    opacity: 0.4;
-  }
-}
-.big svg {
+.builder {
   width: 100%;
   height: 100%;
-}
-.big .on {
-  fill: var(--c);
-  transition: fill 0.4s var(--ease);
+  overflow: visible;
 }
 .ghost {
-  fill: color-mix(in srgb, var(--fg) 7%, transparent);
+  fill: color-mix(in srgb, var(--fg) 6%, transparent);
+}
+/* each cell drops from above the grid and lands, like a piece */
+.fall {
+  transform: translateY(var(--from));
+  opacity: 0;
+  animation: drop 0.52s cubic-bezier(0.55, 0, 0.85, 0.35) both, land 0.34s cubic-bezier(0.22, 1, 0.36, 1) both;
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+}
+@keyframes drop {
+  0% {
+    transform: translateY(var(--from));
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+@keyframes land {
+  0% {
+    scale: 1.1 0.82;
+  }
+  100% {
+    scale: 1 1;
+  }
 }
 .meta {
   display: flex;
@@ -45,16 +59,23 @@
   gap: 8px;
 }
 .name {
-  font-size: clamp(36px, 3.6vw, 68px);
+  font-size: clamp(36px, 3.4vw, 64px);
   font-weight: 500;
   letter-spacing: -0.045em;
-  line-height: 1;
+  line-height: 1.05;
+  animation: rise 0.7s var(--ease);
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
 }
 .grid {
   grid-column: 7 / -1;
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  gap: 10px;
+  gap: 8px;
 }
 .icon {
   aspect-ratio: 1;
@@ -62,32 +83,24 @@
   place-items: center;
   border-radius: 12px;
   border: 1px solid var(--line);
-  transition: background 0.4s var(--ease), border-color 0.4s var(--ease);
+  transition: background 0.5s var(--ease), border-color 0.5s var(--ease);
 }
 .icon svg {
-  width: 42%;
+  width: 40%;
+  fill: color-mix(in srgb, var(--fg) 82%, transparent);
+  transition: fill 0.4s var(--ease), transform 0.6s var(--ease);
 }
-.icon .on {
-  fill: var(--fg);
-  transition: fill 0.3s var(--ease);
-}
-.off {
-  fill: transparent;
-}
-.iconOn {
-  border-color: var(--c);
-  background: color-mix(in srgb, var(--c) 10%, transparent);
-}
-.iconOn .on {
+.icon:hover svg,
+.on svg {
   fill: var(--c);
+  transform: scale(1.1);
+}
+.on {
+  border-color: color-mix(in srgb, var(--c) 70%, transparent);
+  background: color-mix(in srgb, var(--c) 9%, transparent);
 }
 @media (max-width: 800px) {
-  .pin {
-    height: auto;
-  }
-  .sticky {
-    position: static;
-    height: auto;
+  .dict {
     grid-template-columns: 1fr;
     gap: 6vh;
   }
@@ -95,8 +108,8 @@
   .grid {
     grid-column: 1 / -1;
   }
-  .big {
-    width: 50vw;
+  .stage {
+    width: 56vw;
   }
   .grid {
     grid-template-columns: repeat(5, 1fr);

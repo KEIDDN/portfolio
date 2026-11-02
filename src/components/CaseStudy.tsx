@@ -86,8 +86,8 @@ export default function CaseStudy({ project, next, locale }: { project: Project;
     <div ref={root} className={styles.page}>
       <header className={`${styles.hero} ${project.hero === "contain" ? styles.heroContain : ""}`} data-hero>
         <div className={styles.heroMedia} data-hero-media>
-          {project.coverVideo ? (
-            <video src={project.coverVideo} poster={project.cover} autoPlay muted loop playsInline />
+          {project.heroVideo || project.coverVideo ? (
+            <video src={project.heroVideo ?? project.coverVideo} poster={project.heroPoster ?? project.cover} autoPlay muted loop playsInline />
           ) : (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={project.cover} alt={project.title} />
@@ -175,6 +175,20 @@ export default function CaseStudy({ project, next, locale }: { project: Project;
                 </section>
               );
             }
+            case "screens":
+              return (
+                <section key={i} className={styles.screens}>
+                  {b.items.map((it) => (
+                    <figure key={it.media} className={styles.phone} data-reveal>
+                      <Media src={it.media} poster={it.poster} alt={t(it.title, locale)} grain={false} ratio={ratioOf(it.poster, 0.46)} />
+                      <figcaption>
+                        <span className={styles.h3}>{t(it.title, locale)}</span>
+                        <span className={styles.mBody}>{t(it.body, locale)}</span>
+                      </figcaption>
+                    </figure>
+                  ))}
+                </section>
+              );
             case "sequence":
               return <Sequence key={i} items={b.items} locale={locale} />;
             case "image":
