@@ -26,13 +26,14 @@
 :root {
   --bg: #050505;
   --fg: #efefed;
-  --muted: #7a7875;
+  --muted: #9b9994;
   --accent: #c4161c;
   --line: color-mix(in srgb, var(--fg) 14%, transparent);
   --cream: #f1eee6;
   --ink: #050505;
   --gutter: clamp(16px, 2.2vw, 36px);
-  --track: -0.075em;
+  --track: -0.045em;
+  --track-brand: -0.075em;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --font: "Garet", "Plus Jakarta Sans", system-ui, sans-serif;
   --mono: var(--font-mono), ui-monospace, "SF Mono", Menlo, monospace;
@@ -50,6 +51,8 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  font-kerning: normal;
+  font-feature-settings: "kern" 1;
 }
 html.lenis,
 html.lenis body {
@@ -93,8 +96,8 @@ video {
 
 .mono {
   font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.04em;
+  font-size: 13px;
+  letter-spacing: 0.02em;
   text-transform: uppercase;
   line-height: 1.4;
 }
@@ -124,7 +127,7 @@ video {
   z-index: 90;
   background-image: url("/grain.png");
   background-size: 180px;
-  opacity: 0.085;
+  opacity: 0.055;
   mix-blend-mode: overlay;
   animation: grain 0.9s steps(6) infinite;
 }
@@ -147,7 +150,7 @@ video {
   inset: 0;
   background-image: url("/grain.png");
   background-size: 140px;
-  opacity: 0.16;
+  opacity: 0.1;
   mix-blend-mode: overlay;
   pointer-events: none;
 }
@@ -182,6 +185,11 @@ video {
 .ulink:hover::after {
   transform: scaleX(1);
   transform-origin: left;
+}
+
+html.has-cursor,
+html.has-cursor * {
+  cursor: none !important;
 }
 
 @media (prefers-reduced-motion: reduce) {

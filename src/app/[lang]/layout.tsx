@@ -6,6 +6,7 @@ import { isLocale, locales, type Locale } from "@/content/i18n";
 import SmoothScroll from "@/components/SmoothScroll";
 import Loader from "@/components/Loader";
 import Nav from "@/components/Nav";
+import Cursor from "@/components/Cursor";
 
 const mono = Geist_Mono({ subsets: ["latin"], variable: "--font-mono", display: "swap" });
 
@@ -59,6 +60,7 @@ export default async function RootLayout({
           <Nav locale={locale} />
           {children}
         </SmoothScroll>
+        <Cursor />
         <div className="grain" aria-hidden />
       </body>
     </html>

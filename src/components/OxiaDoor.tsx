@@ -26,7 +26,7 @@ export default function OxiaDoor({ locale }: { locale: Locale }) {
 
   return (
     <section ref={root} id="oxia" className={styles.section}>
-      <ChapterHead n="02" kicker={dict.ch2[locale]} title="OXIA Labs" sub={dict.oxiaTitle[locale]} />
+      <ChapterHead n="03" kicker={dict.ch2[locale]} title="OXIA Labs" />
       <div className={styles.door}>
         <div className={styles.stage} data-stage>
           <VariantStage />
@@ -34,7 +34,7 @@ export default function OxiaDoor({ locale }: { locale: Locale }) {
         <div className={styles.copy} data-copy>
           <p data-o className={styles.title}>{dict.oxiaTitle[locale]}</p>
           <p data-o className={styles.line}>{dict.oxiaLine[locale]}</p>
-          <Link href={`/${locale}/oxia-labs`} data-o className={styles.cta}>
+          <Link href={`/${locale}/oxia-labs`} data-o data-title="OXIA Labs" className={styles.cta}>
             {dict.oxiaCta[locale]} <span aria-hidden>↗</span>
           </Link>
         </div>

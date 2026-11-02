@@ -7,20 +7,20 @@ import styles from "./About.module.css";
 
 const bio: L[] = [
   {
-    en: "I'm Miguel Ángel Herrero, though almost everyone calls me Miki. I'm from Salamanca, and I've always loved design — I'm the kind of person who stops to look at posters, covers and details.",
-    es: "Soy Miguel Ángel Herrero, aunque casi todo el mundo me llama Miki. Soy de Salamanca y siempre me ha gustado el diseño: soy de los que se paran a mirar los pósters, las portadas y los detalles.",
+    en: "I'm Miguel Ángel Herrero — Miki to almost everyone. A product designer from Salamanca, based in London, obsessed with things making sense and looking perfect.",
+    es: "Soy Miguel Ángel Herrero, Miki para casi todo el mundo. Diseñador de producto de Salamanca, afincado en Londres y obsesionado con que las cosas tengan sentido y se vean perfectas.",
   },
   {
-    en: "I studied Advertising and Public Relations at UPSA because I think advertising is a wonderful world, but design opened up for me on its own: I'm very creative, I love art and I always need to be making something original. I spent a year on Erasmus in Rome, which filled me with art and culture.",
-    es: "Estudié Publicidad y Relaciones Públicas en la UPSA porque la publicidad me parece un mundo maravilloso, pero el diseño se me abrió por su cuenta: soy muy creativo, me encanta el arte y siempre necesito estar haciendo algo original. Pasé un año de Erasmus en Roma, que me llenó de arte y cultura.",
+    en: "I studied Advertising and Public Relations at UPSA, where I learned to tell an idea so it sticks. Design became the way to build it. A year of Erasmus in Rome filled me with art, and I haven't stopped making things since.",
+    es: "Estudié Publicidad y Relaciones Públicas en la UPSA, donde aprendí a contar una idea para que se recuerde. El diseño se convirtió en la forma de construirla. Un año de Erasmus en Roma me llenó de arte y desde entonces no he parado de crear.",
   },
   {
-    en: "Today I'm a product designer at VIOOH in London. I design interfaces and experiences, work to understand our users and their needs, help shape new features with design and product managers, and build AI agents that review our UI screens and suggest improvements.",
-    es: "Ahora soy diseñador de producto en VIOOH, en Londres. Diseño interfaces y experiencias, trabajo para entender a nuestros usuarios y sus necesidades, ayudo a definir nuevas funciones con el equipo de diseño y los product managers, y creo agentes de IA que analizan pantallas de nuestra UI y proponen mejoras.",
+    en: "Today I'm a product designer at VIOOH, in London. I design interfaces and experiences, research users and their needs, shape new features alongside design and product, and build AI agents that review our UI and propose improvements.",
+    es: "Hoy soy diseñador de producto en VIOOH, en Londres. Diseño interfaces y experiencias, investigo a los usuarios y sus necesidades, defino nuevas funcionalidades junto a diseño y producto, y creo agentes de IA que revisan nuestra UI y proponen mejoras.",
   },
   {
-    en: "In 2026 I founded OXIA Labs, my personal and independent studio, to launch my own ideas: creative experiences built on very polished design.",
-    es: "En 2026 creé OXIA Labs, mi estudio personal e independiente, para lanzar mis propias ideas: experiencias creativas construidas sobre un diseño muy pulido.",
+    en: "In parallel I run OXIA Labs, the studio where I launch my own products: TETRA, Tendu, Unwind and Dark Matter.",
+    es: "En paralelo dirijo OXIA Labs, el estudio desde el que lanzo mis propios productos: TETRA, Tendu, Unwind y Dark Matter.",
   },
 ];
 
@@ -28,25 +28,25 @@ const outside: { k: L; v: L }[] = [
   {
     k: { en: "Music", es: "Música" },
     v: {
-      en: "What moves me most outside design. I've been producing electronic music for over ten years as KEIDDN, self-taught, which also gave me an ear for audio engineering.",
-      es: "Lo que más me mueve fuera del diseño. Llevo más de diez años produciendo música electrónica como KEIDDN, de forma autodidacta, y eso también me ha dado oído para la ingeniería de audio.",
+      en: "Over ten years producing electronic music as KEIDDN, self-taught. It's why sound matters so much in what I design.",
+      es: "Más de diez años produciendo música electrónica como KEIDDN, de forma autodidacta. Por eso el sonido pesa tanto en lo que diseño.",
     },
   },
   {
     k: { en: "Film", es: "Cine" },
-    v: { en: "A die-hard film lover. Some of my favourites ended up as posters in the Lab.", es: "Cinéfilo empedernido. Algunas de mis favoritas han acabado como pósters en el Lab." },
+    v: { en: "A die-hard film lover. Some favourites ended up as posters in the Lab.", es: "Cinéfilo empedernido. Algunas favoritas han acabado como pósters en el Lab." },
   },
   {
     k: { en: "References", es: "Referentes" },
     v: {
-      en: "Dieter Rams for his simplicity, and Steve Jobs for the way he understood design: clean, with a reason, a little German.",
-      es: "Dieter Rams por su sencillez y Steve Jobs por su forma de entender el diseño: limpio, con un porqué, un punto alemán.",
+      en: "Dieter Rams, for less but better. Steve Jobs, for design as the way something works.",
+      es: "Dieter Rams, por el menos pero mejor. Steve Jobs, por entender el diseño como la forma en que algo funciona.",
     },
   },
 ];
 
 const experience = [
-  { years: "2026 — Now", role: { en: "Product Designer", es: "Product Designer" }, place: "VIOOH — London" },
+  { years: "2026 — Now", role: { en: "Product Designer", es: "Diseñador de producto" }, place: "VIOOH — London" },
   { years: "2026 — Now", role: { en: "Founder", es: "Fundador" }, place: "OXIA Labs" },
 ];
 const education = [
@@ -63,7 +63,7 @@ const capabilities: L[] = [
   { en: "Real-time 3D", es: "3D en tiempo real" },
   { en: "Prototyping", es: "Prototipado" },
 ];
-const tools = ["Figma", "Adobe CC", "Blender", "Three.js", "Claude & AI tools", "Ableton Live"];
+const tools = ["Figma", "Adobe CC", "Blender", "TypeScript", "React", "Three.js", "Claude & AI tools", "Ableton Live"];
 
 export default function About({ locale }: { locale: Locale }) {
   const root = useRef<HTMLDivElement>(null);

@@ -30,14 +30,13 @@ export default function TetraSkins({ locale }: { locale: Locale }) {
     <div ref={root} className={styles.wrap}>
       <div className={styles.grid}>
         {list.map((s, i) => (
-          <figure key={s.id} className={styles.card} data-skin>
-            <div className={styles.img}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={`/work/tetra/skins/${s.id}.webp`} alt={`TETRA — ${s.name}`} loading="lazy" />
-            </div>
-            <figcaption>
-              <span className="mono muted">{String(i + 1).padStart(2, "0")}</span>
-              <span className={styles.name}>{s.name}</span>
+          <figure key={s.id} className={styles.card} data-skin tabIndex={0}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={`/work/tetra/skins/${s.id}.webp`} alt={`TETRA — ${s.name}`} loading="lazy" />
+            <figcaption className={styles.glass}>
+              <span className={styles.name}>
+                <span className="mono">{String(i + 1).padStart(2, "0")}</span> {s.name}
+              </span>
               <span className={styles.desc}>{locale === "en" ? s.en : s.es}</span>
             </figcaption>
           </figure>

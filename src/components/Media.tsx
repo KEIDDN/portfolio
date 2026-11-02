@@ -32,11 +32,19 @@ export function Media({
   useEffect(() => {
     const el = v.current;
     if (!el) return;
+    // buffer well before it arrives, play only while it's on screen
+    const near = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting && el.preload !== "auto") el.preload = "auto";
+    }, { rootMargin: "150% 0px" });
     const io = new IntersectionObserver(([e]) => (e.isIntersecting ? el.play().catch(() => {}) : el.pause()), {
-      rootMargin: "10%",
+      threshold: 0.15,
     });
+    near.observe(el);
     io.observe(el);
-    return () => io.disconnect();
+    return () => {
+      near.disconnect();
+      io.disconnect();
+    };
   }, []);
   const [muted, setMuted] = useState(true);
   useEffect(() => {

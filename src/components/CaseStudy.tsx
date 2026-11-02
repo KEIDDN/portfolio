@@ -9,6 +9,7 @@ import type { Project, Theme } from "@/content/projects";
 import { Media, Row, ratioOf } from "./Media";
 import TetraIcons from "./TetraIcons";
 import TetraSkins from "./TetraSkins";
+import Sequence from "./Sequence";
 import NextChapter, { type NextTarget } from "./NextChapter";
 import styles from "./CaseStudy.module.css";
 
@@ -33,7 +34,6 @@ export default function CaseStudy({ project, next, locale }: { project: Project;
   const root = useRef<HTMLDivElement>(null);
   useTheme(project.theme);
   const sound = { on: dict.soundOn[locale], off: dict.soundOff[locale] };
-  let n = 0;
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -84,7 +84,7 @@ export default function CaseStudy({ project, next, locale }: { project: Project;
 
   return (
     <div ref={root} className={styles.page}>
-      <header className={styles.hero} data-hero>
+      <header className={`${styles.hero} ${project.hero === "contain" ? styles.heroContain : ""}`} data-hero>
         <div className={styles.heroMedia} data-hero-media>
           {project.coverVideo ? (
             <video src={project.coverVideo} poster={project.cover} autoPlay muted loop playsInline />
@@ -93,7 +93,7 @@ export default function CaseStudy({ project, next, locale }: { project: Project;
             <img src={project.cover} alt={project.title} />
           )}
         </div>
-        <div className={styles.heroShade} />
+        {project.hero !== "contain" && <div className={styles.heroShade} />}
         <div className={styles.heroTop}>
           <Link href={`/${locale}#work`} className="mono ulink" data-h-fade>← {dict.back[locale]}</Link>
           <span className={`mono ${styles.pill}`} data-h-fade>{project.label}</span>
@@ -135,49 +135,48 @@ export default function CaseStudy({ project, next, locale }: { project: Project;
       <div className={styles.blocks}>
         {project.blocks.map((b, i) => {
           switch (b.kind) {
+            case "stage":
+              return (
+                <div key={i} className={styles.stage} data-stop data-reveal>
+                  <span className="mono">{b.n}</span>
+                  <span className="mono">{t(b.label, locale)}</span>
+                </div>
+              );
             case "idea":
               return (
-                <section key={i} className={styles.idea} data-reveal>
-                  <span className="mono muted">{dict.idea[locale]}</span>
-                  <div>
-                    <h2 className={`display ${styles.h2}`}>{t(b.title, locale)}</h2>
-                    <p className={styles.body}>{t(b.body, locale)}</p>
-                  </div>
+                <section key={i} className={styles.idea}>
+                  <h2 className={`display ${styles.h2}`} data-reveal>{t(b.title, locale)}</h2>
+                  <p className={styles.body} data-reveal>{t(b.body, locale)}</p>
                 </section>
               );
             case "moment": {
-              n += 1;
               const full = b.layout === "full";
+              const plain = b.layout === "plain";
               return (
-                <section key={i} className={`${styles.moment} ${full ? styles.momentFull : ""}`}>
-                  <div className={styles.mText} data-reveal>
-                    <span className="mono muted">{String(n).padStart(2, "0")}</span>
-                    <h3 className={styles.h3}>{t(b.title, locale)}</h3>
-                    <p className={styles.mBody}>{t(b.body, locale)}</p>
-                  </div>
-                  <div className={styles.mMedia}>
-                    <div data-clip>
+                <section key={i} className={`${styles.moment} ${full ? styles.momentFull : ""} ${plain ? styles.momentPlain : ""}`}>
+                  <div className={styles.mMedia} data-clip>
+                    <div className={full ? "" : plain ? styles.plainInner : styles.panelInner}>
                       <Media src={b.media} poster={b.poster} alt={t(b.title, locale)} sound={b.sound ? sound : undefined} />
                     </div>
-                    {b.also && (
-                      <div className={styles.also} data-reveal>
-                        {b.also.map((src) =>
-                          ratioOf(src) < 0.8 ? (
-                            <div key={src} className={styles.screen}>
-                              <Media src={src} alt={t(b.title, locale)} />
-                            </div>
-                          ) : (
-                            <div key={src} className={styles.alsoWide}>
-                              <Media src={src} alt={t(b.title, locale)} />
-                            </div>
-                          ),
-                        )}
-                      </div>
-                    )}
+                  </div>
+                  {b.also && (
+                    <div className={styles.also} data-reveal>
+                      {b.also.map((src) => (
+                        <div key={src} className={ratioOf(src) < 0.8 ? styles.screen : styles.alsoWide}>
+                          <Media src={src} alt={t(b.title, locale)} />
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  <div className={styles.caption} data-reveal>
+                    <h3 className={styles.h3}>{t(b.title, locale)}</h3>
+                    <p className={styles.mBody}>{t(b.body, locale)}</p>
                   </div>
                 </section>
               );
             }
+            case "sequence":
+              return <Sequence key={i} items={b.items} locale={locale} />;
             case "image":
               return (
                 <div key={i} className={`${styles.img} ${styles[b.layout ?? "wide"]}`} data-clip>
@@ -192,28 +191,20 @@ export default function CaseStudy({ project, next, locale }: { project: Project;
               );
             case "icons":
               return (
-                <section key={i} className={styles.icons}>
-                  <div className={styles.idea} data-reveal>
-                    <span className="mono muted">{locale === "en" ? "System" : "Sistema"}</span>
-                    <div>
-                      <h2 className={`display ${styles.h2}`}>{t(b.title, locale)}</h2>
-                      <p className={styles.body}>{t(b.body, locale)}</p>
-                    </div>
+                <section key={i} className={styles.system}>
+                  <div className={styles.idea}>
+                    <h2 className={`display ${styles.h2}`} data-reveal>{t(b.title, locale)}</h2>
+                    <p className={styles.body} data-reveal>{t(b.body, locale)}</p>
                   </div>
-                  <div className={styles.wide}>
-                    <TetraIcons />
-                  </div>
+                  <TetraIcons locale={locale} />
                 </section>
               );
             case "skins":
               return (
-                <section key={i} className={styles.icons}>
-                  <div className={styles.idea} data-reveal>
-                    <span className="mono muted">{locale === "en" ? "System" : "Sistema"}</span>
-                    <div>
-                      <h2 className={`display ${styles.h2}`}>{t(b.title, locale)}</h2>
-                      <p className={styles.body}>{t(b.body, locale)}</p>
-                    </div>
+                <section key={i} className={styles.system}>
+                  <div className={styles.idea}>
+                    <h2 className={`display ${styles.h2}`} data-reveal>{t(b.title, locale)}</h2>
+                    <p className={styles.body} data-reveal>{t(b.body, locale)}</p>
                   </div>
                   <div className={styles.wide}>
                     <TetraSkins locale={locale} />
@@ -223,9 +214,9 @@ export default function CaseStudy({ project, next, locale }: { project: Project;
             case "details":
               return (
                 <section key={i} className={styles.details} data-reveal>
-                  {b.items.map((it) => (
+                  {b.items.map((it, k) => (
                     <div key={it.label.en}>
-                      <span className="mono muted">{t(it.label, locale)}</span>
+                      <span className="mono muted">{String(k + 1).padStart(2, "0")} — {t(it.label, locale)}</span>
                       <p>{t(it.body, locale)}</p>
                     </div>
                   ))}
@@ -233,7 +224,7 @@ export default function CaseStudy({ project, next, locale }: { project: Project;
               );
             case "chapter":
               return (
-                <section key={i} className={styles.chapter} data-theme-idx={i}>
+                <section key={i} className={styles.chapter} data-theme-idx={i} data-stop>
                   <span className="mono muted" data-reveal>{b.kicker}</span>
                   <h2 className={`display ${styles.chTitle}`} data-reveal>{b.title}</h2>
                   <p className={styles.body} data-reveal>{t(b.body, locale)}</p>
@@ -241,9 +232,10 @@ export default function CaseStudy({ project, next, locale }: { project: Project;
               );
             case "statement":
               return (
-                <p key={i} className={`display ${styles.statement}`} data-reveal>
-                  {t(b.body, locale)}
-                </p>
+                <section key={i} className={styles.closing} data-stop>
+                  <p className={`display ${styles.statement}`} data-reveal>{t(b.body, locale)}</p>
+                  {b.sub && <p className="mono muted" data-reveal>{t(b.sub, locale)}</p>}
+                </section>
               );
           }
         })}

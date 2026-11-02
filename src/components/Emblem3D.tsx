@@ -59,7 +59,7 @@ function Emblem({ material, scale = 1.7 }: { material: MaterialName; scale?: num
           color="#ffffff"
         />
       ) : material === "chrome" ? (
-        <meshPhysicalMaterial color="#f4f4f2" metalness={1} roughness={0.035} clearcoat={1} clearcoatRoughness={0.02} envMapIntensity={1.45} />
+        <meshPhysicalMaterial color="#ffffff" metalness={1} roughness={0.05} clearcoat={1} clearcoatRoughness={0.03} envMapIntensity={1.5} />
       ) : material === "steel" ? (
         <meshPhysicalMaterial color="#c9ccd1" metalness={1} roughness={0.32} anisotropy={0.9} anisotropyRotation={Math.PI / 2} envMapIntensity={1.8} />
       ) : (
@@ -74,22 +74,24 @@ export default function Emblem3D({ material, scale }: { material: MaterialName; 
     <Canvas
       dpr={[1, 1.75]}
       camera={{ position: [0, 0, 4.2], fov: 35 }}
-      gl={{ antialias: true, alpha: true, toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.1 }}
+      gl={{ antialias: true, alpha: true, toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.15 }}
     >
-      <ambientLight intensity={0.15} />
+      <ambientLight intensity={0.25} />
+      <directionalLight position={[2, 3, 5]} intensity={0.6} />
       <Float speed={1.4} rotationIntensity={0.25} floatIntensity={0.6}>
         <Emblem material={material} scale={scale} />
       </Float>
-      {/* studio chrome: a dark room with long, crisp softbox strips, black and white only */}
+      {/* bright studio chrome: a mid-grey room with big white softboxes, so the metal reads light on black */}
       <Environment resolution={512}>
-        <color attach="background" args={["#0b0b0b"]} />
-        <Lightformer intensity={4} rotation-x={Math.PI / 2} position={[0, 6, -2]} scale={[12, 1.2, 1]} />
-        <Lightformer intensity={2.2} rotation-x={Math.PI / 2} position={[0, 6, 3]} scale={[12, 0.5, 1]} />
-        <Lightformer intensity={3} position={[0, 0, 9]} scale={[1.2, 10, 1]} />
-        <Lightformer intensity={2.6} rotation-y={Math.PI / 2} position={[-7, 0.5, 0]} scale={[14, 0.9, 1]} />
-        <Lightformer intensity={2.6} rotation-y={-Math.PI / 2} position={[7, -0.5, 0]} scale={[14, 0.9, 1]} />
-        <Lightformer intensity={1.2} rotation-x={-Math.PI / 2} position={[0, -6, 0]} scale={[10, 10, 1]} color="#9a9a9a" />
-        <Lightformer form="ring" intensity={2} position={[4, 3, 6]} scale={2.4} onUpdate={(self) => self.lookAt(0, 0, 0)} />
+        <color attach="background" args={["#262626"]} />
+        <Lightformer intensity={2.4} position={[0, 1.5, 10]} scale={[12, 2.6, 1]} />
+        <Lightformer intensity={1.4} position={[0, -2.5, 10]} scale={[12, 1, 1]} />
+        <Lightformer intensity={3.6} rotation-x={Math.PI / 2} position={[0, 7, 0]} scale={[14, 3, 1]} />
+        <Lightformer intensity={3.2} rotation-y={Math.PI / 2} position={[-8, 0.5, 0]} scale={[14, 2.2, 1]} />
+        <Lightformer intensity={3.2} rotation-y={-Math.PI / 2} position={[8, -0.5, 0]} scale={[14, 2.2, 1]} />
+        <Lightformer intensity={1.6} rotation-x={-Math.PI / 2} position={[0, -7, 0]} scale={[12, 12, 1]} color="#bdbdbd" />
+        <Lightformer intensity={0} position={[0, 0, -9]} scale={[20, 20, 1]} color="#000" />
+        <Lightformer form="ring" intensity={4} position={[4, 3, 6]} scale={2.6} onUpdate={(self) => self.lookAt(0, 0, 0)} />
       </Environment>
     </Canvas>
   );

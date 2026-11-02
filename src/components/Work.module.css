@@ -11,7 +11,7 @@
   grid-column: 1 / span 5;
 }
 .item {
-  min-height: 52vh;
+  min-height: 42vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -114,7 +114,7 @@
 .archTitle {
   font-size: clamp(26px, 2.6vw, 46px);
   font-weight: 500;
-  letter-spacing: -0.06em;
+  letter-spacing: -0.045em;
 }
 @media (max-width: 800px) {
   .list {

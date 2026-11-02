@@ -1,34 +1,104 @@
-.grid {
+.pin {
+  height: 260svh;
+  padding: 0 var(--gutter);
+}
+.sticky {
+  position: sticky;
+  top: 0;
+  height: 100svh;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
-  border-top: 1px solid var(--line);
-  border-left: 1px solid var(--line);
+  grid-template-columns: repeat(12, 1fr);
+  gap: 16px;
+  align-items: center;
+}
+.viewer {
+  grid-column: 1 / span 5;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+.big {
+  width: min(24vw, 42svh);
+  aspect-ratio: 1;
+  animation: pop 0.6s var(--ease);
+}
+@keyframes pop {
+  from {
+    transform: scale(0.94);
+    opacity: 0.4;
+  }
+}
+.big svg {
+  width: 100%;
+  height: 100%;
+}
+.big .on {
+  fill: var(--c);
+  transition: fill 0.4s var(--ease);
+}
+.ghost {
+  fill: color-mix(in srgb, var(--fg) 7%, transparent);
+}
+.meta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.name {
+  font-size: clamp(36px, 3.6vw, 68px);
+  font-weight: 500;
+  letter-spacing: -0.045em;
+  line-height: 1;
+}
+.grid {
+  grid-column: 7 / -1;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
 }
 .icon {
   aspect-ratio: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 14px;
-  border-right: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-  color: var(--fg);
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  transition: background 0.4s var(--ease), border-color 0.4s var(--ease);
 }
 .icon svg {
   width: 42%;
-  fill: currentColor;
-  transition: fill 0.4s var(--ease), transform 0.6s var(--ease);
 }
-.icon rect {
-  transform-box: fill-box;
-  transform-origin: center;
+.icon .on {
+  fill: var(--fg);
+  transition: fill 0.3s var(--ease);
 }
-.icon:hover svg {
+.off {
+  fill: transparent;
+}
+.iconOn {
+  border-color: var(--c);
+  background: color-mix(in srgb, var(--c) 10%, transparent);
+}
+.iconOn .on {
   fill: var(--c);
-  transform: scale(1.12);
 }
-.icon span {
-  color: var(--muted);
-  font-size: 10px;
+@media (max-width: 800px) {
+  .pin {
+    height: auto;
+  }
+  .sticky {
+    position: static;
+    height: auto;
+    grid-template-columns: 1fr;
+    gap: 6vh;
+  }
+  .viewer,
+  .grid {
+    grid-column: 1 / -1;
+  }
+  .big {
+    width: 50vw;
+  }
+  .grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
 }

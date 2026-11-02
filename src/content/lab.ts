@@ -5,11 +5,22 @@ export type Series = {
   title: string;
   kind: L;
   year: string;
-  note: L;
+  /** museum label: where it comes from, what was tried, what it is */
+  origin: L;
+  experiment: L;
+  format: L;
+  /** the room: every piece, in order */
   images: string[];
+  /** the constellation in the universe: up to four pieces, the first one is the star */
+  orbit: string[];
 };
 
 const W = (p: string) => `/work/${p}`;
+
+export const labIntro: L = {
+  en: "A laboratory of design experiments. Pieces with no client and no brief, where I try out techniques, formats and tools.",
+  es: "Un laboratorio de experimentos de diseño. Piezas sin cliente ni briefing donde pongo a prueba técnicas, formatos y herramientas.",
+};
 
 export const series: Series[] = [
   {
@@ -17,99 +28,147 @@ export const series: Series[] = [
     title: "Botón Charro",
     kind: { en: "3D · Jewellery", es: "3D · Joyería" },
     year: "2026",
-    note: {
-      en: "I'm from Salamanca, and the botón charro is part of my culture: a very baroque silver button. I wanted to bring it into a more modern aesthetic as rings and pendants. Modelled with Blender and AI MCPs.",
-      es: "Soy de Salamanca y el botón charro es parte de mi cultura: un botón de plata muy barroco. Quise llevarlo a una estética más moderna en forma de anillos y colgantes. Modelado con Blender y MCPs de IA.",
+    origin: {
+      en: "The botón charro is the emblem of Salamanca's silverwork: baroque, meticulous, from another century.",
+      es: "El botón charro es el emblema de la platería salmantina: barroco, minucioso, de otro siglo.",
     },
+    experiment: {
+      en: "Bring it into the present. Rings and pendants that keep its geometry and lose everything else.",
+      es: "Traerlo al presente. Anillos y colgantes que conservan su geometría y se quedan solo con lo esencial.",
+    },
+    format: { en: "3D render · Blender + AI MCPs", es: "Render 3D · Blender + MCPs de IA" },
     images: [W("lab/04.webp"), W("cutouts/charro.webp"), W("cutouts/pendant.webp")],
+    orbit: [W("cutouts/charro.webp"), W("lab/04.webp"), W("cutouts/pendant.webp")],
   },
   {
     slug: "inhabit",
     title: "Inhabit",
     kind: { en: "3D · Concept", es: "3D · Concepto" },
     year: "2026",
-    note: {
-      en: "An artistic critique of the housing crisis: a vulture perched on a house, and a house squeezed until it bends. About vulture funds and how hard it has become to have a home, in Spain and everywhere.",
-      es: "Una crítica artística al problema de la vivienda: un buitre posado sobre una casa y una casa estrujada hasta deformarse. Sobre los fondos buitre y lo difícil que se ha vuelto tener un hogar, en España y en todas partes.",
+    origin: {
+      en: "Having a home has become a privilege. Vulture funds buy whole neighbourhoods while rents push out the people who live in them.",
+      es: "Tener casa se ha convertido en un privilegio. Los fondos buitre compran barrios enteros mientras el alquiler expulsa a quienes viven en ellos.",
     },
+    experiment: {
+      en: "Two images, one idea: a vulture guarding its prey and a house squeezed until it buckles.",
+      es: "Dos imágenes, una idea: un buitre que custodia su presa y una casa estrujada hasta deformarse.",
+    },
+    format: { en: "3D render · Diptych", es: "Render 3D · Díptico" },
     images: [W("lab/01.webp"), W("lab/inhabit-house.webp")],
+    orbit: [W("lab/inhabit-house.webp"), W("cutouts/vulture.webp")],
   },
   {
     slug: "tutto-passa",
     title: "Tutto Passa",
     kind: { en: "Vinyl", es: "Vinilo" },
     year: "2026",
-    note: {
-      en: "An invented Neapolitan record. 'Tutto passa' — everything passes, the good and the bad — is a phrase I have tattooed. Sleeve, label, booklet and inner sleeve around a photo I love.",
-      es: "Un disco napolitano inventado. «Tutto passa», todo pasa, lo bueno y lo malo, es una frase que llevo tatuada. Portada, galleta, libreto y funda interior alrededor de una foto que me encanta.",
+    origin: {
+      en: "“Tutto passa”: everything passes, the good and the bad. A phrase I carry tattooed.",
+      es: "«Tutto passa»: todo pasa, lo bueno y lo malo. Una frase que llevo tatuada.",
     },
+    experiment: {
+      en: "The full release of a Neapolitan record that doesn't exist, built around a single photograph.",
+      es: "La edición completa de un disco napolitano que no existe, construida alrededor de una sola fotografía.",
+    },
+    format: { en: "12″ vinyl · Sleeve, label, booklet, inner sleeve", es: "Vinilo 12″ · Portada, galleta, libreto y funda interior" },
     images: [W("lab/vinyl-tutto-passa.webp"), ...[1, 2, 3, 4, 5].map((i) => W(`lab/vinyl-tutto-passa-${i}.webp`))],
+    orbit: [W("lab/vinyl-tutto-passa-1.webp"), W("lab/vinyl-tutto-passa-2.webp"), W("lab/vinyl-tutto-passa-3.webp")],
   },
   {
     slug: "any-kind-of-blues",
     title: "Any Kind of Blues",
     kind: { en: "Vinyl", es: "Vinilo" },
     year: "2026",
-    note: {
-      en: "I love jazz. An imagined Miles Davis record with a more Japanese, abstract aesthetic: navy brushstrokes over raw paper, closer to art than to a cover.",
-      es: "Me encanta el jazz. Un disco imaginado de Miles Davis con una estética más japonesa y abstracta: pinceladas azul marino sobre papel crudo, más cerca del arte que de una portada.",
+    origin: {
+      en: "An imagined Miles Davis record. A tribute to jazz.",
+      es: "Un disco imaginado de Miles Davis. Un homenaje al jazz.",
     },
+    experiment: {
+      en: "Swap jazz's visual code for Japanese abstraction: navy brushstrokes on raw paper, closer to art than to a cover.",
+      es: "Cambiar el código visual del jazz por la abstracción japonesa: pinceladas azul marino sobre papel crudo, más cerca del arte que de una portada.",
+    },
+    format: { en: "12″ vinyl · Sleeve, label, inner sleeve", es: "Vinilo 12″ · Portada, galleta y funda" },
     images: [W("lab/vinyl-miles.webp"), ...[1, 2, 3, 4].map((i) => W(`lab/vinyl-miles-${i}.webp`))],
+    orbit: [W("lab/vinyl-miles-1.webp"), W("lab/vinyl-miles-3.webp"), W("lab/vinyl-miles-2.webp")],
   },
   {
     slug: "film-posters",
     title: "Film Posters",
     kind: { en: "Posters", es: "Pósters" },
     year: "2025",
-    note: {
-      en: "I'm a die-hard film lover, and these are four of my favourite films. Alternative posters with halftones, print textures and big type.",
-      es: "Soy un cinéfilo empedernido y estas son cuatro de mis películas favoritas. Pósters alternativos con tramas, texturas de impresión y tipografía grande.",
+    origin: { en: "Four of my favourite films.", es: "Cuatro de mis películas favoritas." },
+    experiment: {
+      en: "Tell each film in a single image: halftones, print textures and type at full scale.",
+      es: "Contar cada película en una sola imagen: tramas, texturas de imprenta y tipografía a gran escala.",
     },
+    format: { en: "Poster · Series of 4", es: "Póster · Serie de 4" },
     images: [W("posters/01.webp"), W("posters/02.webp"), W("posters/03.webp"), W("posters/04.webp")],
+    orbit: [W("posters/02.webp"), W("posters/01.webp"), W("posters/03.webp"), W("posters/04.webp")],
   },
   {
     slug: "jpn-drift",
     title: "Retro JPN Drift",
     kind: { en: "Posters", es: "Pósters" },
     year: "2026",
-    note: {
-      en: "I'm a huge fan of Japanese cars. My own take on retro posters for three I love: Supra, Impreza and Skyline.",
-      es: "Soy un gran fanático de los coches japoneses. Mi propia versión de pósters retro para tres que me encantan: Supra, Impreza y Skyline.",
+    origin: {
+      en: "Japanese car culture of the nineties: Supra, Impreza and Skyline.",
+      es: "La cultura del motor japonés de los noventa: Supra, Impreza y Skyline.",
     },
+    experiment: {
+      en: "A triptych in the language of the retro poster: flat colour, grain and speed.",
+      es: "Un tríptico con el lenguaje del póster retro: color plano, grano y velocidad.",
+    },
+    format: { en: "Poster · Triptych", es: "Póster · Tríptico" },
     images: [1, 2, 3].map((i) => W(`lab/jpn-drift-${i}.webp`)),
+    orbit: [2, 1, 3].map((i) => W(`lab/jpn-drift-${i}.webp`)),
   },
   {
     slug: "animal-series",
     title: "ASCII Animal Series",
     kind: { en: "Type · Illustration", es: "Tipografía · Ilustración" },
     year: "2025",
-    note: {
-      en: "ASCII was one of the first ways images were drawn on screens. I wanted to play with it in a retro-futuristic key, and animals felt like a curious subject: horse, wolf, eagle and leopard.",
-      es: "El ASCII fue una de las primeras formas de dibujar imágenes en pantalla. Quise jugar con él en clave retrofuturista, y los animales me parecieron un tema curioso: caballo, lobo, águila y leopardo.",
+    origin: {
+      en: "ASCII was one of the first ways to draw with a screen.",
+      es: "El ASCII fue una de las primeras formas de dibujar con una pantalla.",
     },
+    experiment: {
+      en: "Portray a horse, a wolf, an eagle and a leopard with nothing but characters, in a retro-futurist key.",
+      es: "Retratar un caballo, un lobo, un águila y un leopardo solo con caracteres, en clave retrofuturista.",
+    },
+    format: { en: "Typographic illustration · Series of 4", es: "Ilustración tipográfica · Serie de 4" },
     images: [W("posters/05.webp")],
+    orbit: [W("posters/05.webp")],
   },
   {
     slug: "ceramics",
     title: "Ceramics",
     kind: { en: "3D", es: "3D" },
     year: "2026",
-    note: {
-      en: "I really like ceramics. A collection of pieces made with Blender through Claude's MCP: glazes, speckles and imperfections, up close.",
-      es: "Me gusta mucho la cerámica. Una colección de piezas hechas con Blender a través del MCP de Claude: esmaltes, motas e imperfecciones, de cerca.",
+    origin: {
+      en: "The oldest material, made with the newest tool.",
+      es: "El material más antiguo, hecho con la herramienta más nueva.",
     },
+    experiment: {
+      en: "Pieces modelled in Blender and directed from Claude through MCP, with glazes, speckles and flaws that feel handmade.",
+      es: "Piezas modeladas en Blender y dirigidas desde Claude a través de MCP, con esmaltes, motas e imperfecciones que parecen hechas a mano.",
+    },
+    format: { en: "3D render · Blender + Claude (MCP)", es: "Render 3D · Blender + Claude (MCP)" },
     images: [W("cutouts/ceramics.webp"), W("lab/ceramics-detail.webp")],
+    orbit: [W("cutouts/ceramics.webp"), W("lab/ceramics-detail.webp")],
   },
   {
     slug: "objects",
     title: "Objects",
     kind: { en: "3D", es: "3D" },
     year: "2026",
-    note: {
-      en: "Experiments with my own name: a wax seal and a chrome keychain.",
-      es: "Experimentos con mi propio nombre: un sello de lacre y un llavero cromado.",
+    origin: { en: "My own name as raw material.", es: "Mi propio nombre como materia prima." },
+    experiment: {
+      en: "A wax seal and a chrome keychain: a personal identity turned into objects.",
+      es: "Un sello de lacre y un llavero cromado: identidad personal convertida en objeto.",
     },
+    format: { en: "3D render", es: "Render 3D" },
     images: [W("lab/03.webp"), W("lab/02.webp")],
+    orbit: [W("cutouts/seal.webp"), W("cutouts/keychain.webp")],
   },
 ];
 

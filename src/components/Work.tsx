@@ -48,7 +48,7 @@ export default function Work({ locale }: { locale: Locale }) {
 
   return (
     <section ref={root} id="work" className={styles.section}>
-      <ChapterHead n="01" kicker={dict.ch1[locale]} title={dict.work[locale]} sub={dict.workSub[locale]} />
+      <ChapterHead n="02" kicker={dict.ch1[locale]} title={dict.work[locale]} sub={dict.workSub[locale]} />
       <div className={styles.layout}>
         <div className={styles.list}>
           {work.map((p, i) => (

@@ -4,13 +4,13 @@ import { useEffect, useState } from "react";
 import styles from "./VariantStage.module.css";
 
 export const VARIANTS = [
-  { src: "/work/oxia/v-chrome.webp", name: "Chrome" },
-  { src: "/work/oxia/v-glass.webp", name: "Glass" },
-  { src: "/work/oxia/v-moss.webp", name: "Moss" },
-  { src: "/work/oxia/v-crystal.webp", name: "Crystal" },
+  { src: "/work/oxia/cut-chrome.webp", name: "Chrome" },
+  { src: "/work/oxia/cut-glass.webp", name: "Glass" },
+  { src: "/work/oxia/cut-moss.webp", name: "Moss" },
+  { src: "/work/oxia/cut-crystal.webp", name: "Crystal" },
 ];
 
-/** The emblem's material renders, one at a time, with a switcher and a grainy wipe. */
+/** The emblem's material renders (cut out, floating on black), one at a time, with a switcher and a grainy wipe. */
 export default function VariantStage({ auto = true }: { auto?: boolean }) {
   const [i, setI] = useState(0);
   const [hold, setHold] = useState(false);
@@ -21,7 +21,7 @@ export default function VariantStage({ auto = true }: { auto?: boolean }) {
   }, [auto, hold]);
   return (
     <div className={styles.wrap}>
-      <div className={`${styles.stage} img-grain`}>
+      <div className={styles.stage}>
         {VARIANTS.map((v, k) => (
           // eslint-disable-next-line @next/next/no-img-element
           <img key={v.src} src={v.src} alt={`OXIA emblem — ${v.name}`} className={k === i ? styles.on : ""} loading="lazy" draggable={false} />

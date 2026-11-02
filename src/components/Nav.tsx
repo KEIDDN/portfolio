@@ -43,17 +43,17 @@ export default function Nav({ locale }: { locale: Locale }) {
         Miki Herrero
       </Link>
       <nav className={styles.links}>
+        <Link href={`${home}/about`} className="mono ulink">
+          {dict.nav.about[locale]}
+        </Link>
         <Link href={`${home}#work`} onClick={goto("work")} className="mono ulink">
           {dict.nav.work[locale]}
         </Link>
-        <Link href={`${home}#lab`} onClick={goto("lab")} className="mono ulink">
+        <Link href={`${home}/oxia-labs`} className="mono ulink" data-title="OXIA Labs">
+          {dict.nav.oxia[locale]}
+        </Link>
+        <Link href={`${home}/lab`} className="mono ulink" data-title="Lab">
           {dict.nav.lab[locale]}
-        </Link>
-        <Link href={`${home}/oxia-labs`} className="mono ulink">
-          {dict.nav.oxia[locale]} ↗
-        </Link>
-        <Link href={`${home}/about`} className="mono ulink">
-          {dict.nav.about[locale]}
         </Link>
       </nav>
       <div className={styles.right}>
@@ -67,10 +67,10 @@ export default function Nav({ locale }: { locale: Locale }) {
       </Link>
       </div>
       <div className={`${styles.sheet} ${open ? styles.sheetOpen : ""}`}>
-        <Link href={`${home}#work`} onClick={goto("work")}>{dict.nav.work[locale]}</Link>
-        <Link href={`${home}#lab`} onClick={goto("lab")}>{dict.nav.lab[locale]}</Link>
-        <Link href={`${home}/oxia-labs`}>{dict.nav.oxia[locale]} ↗</Link>
         <Link href={`${home}/about`}>{dict.nav.about[locale]}</Link>
+        <Link href={`${home}#work`} onClick={goto("work")}>{dict.nav.work[locale]}</Link>
+        <Link href={`${home}/oxia-labs`}>{dict.nav.oxia[locale]}</Link>
+        <Link href={`${home}/lab`}>{dict.nav.lab[locale]}</Link>
         <Link href={`${home}#contact`} onClick={goto("contact")}>{dict.nav.contact[locale]}</Link>
       </div>
     </header>

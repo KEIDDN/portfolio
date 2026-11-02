@@ -7,7 +7,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { t, type L, type Locale } from "@/content/i18n";
 import { useTheme } from "./CaseStudy";
-import VariantStage from "./VariantStage";
+import { VARIANTS } from "./VariantStage";
 import NextChapter from "./NextChapter";
 import styles from "./OxiaPage.module.css";
 
@@ -15,22 +15,22 @@ const Emblem3D = dynamic(() => import("./Emblem3D"), { ssr: false });
 
 
 const manifesto: L = {
-  en: "No brief, no client. If an idea excites me, I build it — and I keep polishing until it feels right.",
-  es: "Sin brief y sin cliente. Si una idea me emociona, la construyo, y la pulo hasta que se siente bien.",
+  en: "No brief. No client. Only ideas that deserve to exist, polished down to the last detail.",
+  es: "Sin brief. Sin cliente. Solo ideas que merecen existir, pulidas hasta el último detalle.",
 };
 
 const story: L[] = [
   {
-    en: "OXIA Labs is my personal, independent studio. I founded it in 2026 because I wanted my own place to launch creative products without waiting for anyone to ask for them.",
-    es: "OXIA Labs es mi estudio personal e independiente. Lo creé en 2026 porque quería un sitio propio desde el que lanzar productos creativos sin esperar a que nadie me los pidiera.",
+    en: "OXIA Labs is an independent studio for design and creative technology, founded in 2026 by Miki Herrero.",
+    es: "OXIA Labs es un estudio independiente de diseño y tecnología creativa, fundado en 2026 por Miki Herrero.",
   },
   {
-    en: "The name comes from Original eXperiments + IA, and the emblem is an O and an X folded into one abstract mark. For an idea to become an OXIA project it has to go further: not something you just look at, but something immersive you can interact with, built on very polished design.",
-    es: "El nombre viene de Original eXperiments + IA, y el emblema es una O y una X plegadas en una marca abstracta. Para que una idea se convierta en proyecto de OXIA tiene que ir más allá: no algo que solo se mira, sino algo inmersivo con lo que interactuar, construido sobre un diseño muy pulido.",
+    en: "Original eXperiments + IA. Products that aren't just looked at: they're played, heard and inhabited. Each one starts from an original idea and is built to the same standard — impeccable design, with technology in service of the experience.",
+    es: "Original eXperiments + IA. Productos que no se limitan a mirarse: se juegan, se escuchan y se habitan. Cada uno nace de una idea propia y se construye con el mismo estándar: un diseño impecable y la tecnología al servicio de la experiencia.",
   },
   {
-    en: "So far that has meant a game, a wellbeing app and two audio plugins — music is part of some of them, because it's part of me, but not everything here will be musical. Right now most of the work goes into TETRA. More will come.",
-    es: "Hasta ahora eso ha sido un juego, una app de bienestar y dos plugins de audio. La música está en algunos porque forma parte de mí, pero no todo lo que salga de aquí será musical. Ahora mismo casi todo el trabajo va a TETRA. Vendrán más cosas.",
+    en: "Today the catalogue is an audiovisual game, a wellbeing app and two audio plugins. TETRA is the current focus. The next one is already underway.",
+    es: "Hoy su catálogo lo forman un juego audiovisual, una app de bienestar y dos plugins de audio. TETRA es el foco actual. El siguiente ya está en marcha.",
   },
 ];
 
@@ -38,29 +38,29 @@ const facts: { k: L; v: L }[] = [
   { k: { en: "Founded", es: "Fundado" }, v: { en: "2026", es: "2026" } },
   { k: { en: "Founder", es: "Fundador" }, v: { en: "Miki Herrero", es: "Miki Herrero" } },
   { k: { en: "Name", es: "Nombre" }, v: { en: "Original eXperiments + IA", es: "Original eXperiments + IA" } },
-  { k: { en: "Products", es: "Productos" }, v: { en: "4 — a game, an app, two plugins", es: "4: un juego, una app y dos plugins" } },
+  { k: { en: "Catalogue", es: "Catálogo" }, v: { en: "4 products", es: "4 productos" } },
 ];
 
 const principles: { title: L; body: L }[] = [
   {
     title: { en: "Original", es: "Original" },
     body: {
-      en: "If it already exists, it doesn't need me. Every project has to bring something of its own.",
-      es: "Si ya existe, no me necesita. Cada proyecto tiene que aportar algo propio.",
+      en: "If it already exists, it doesn't need another version. Every product brings something of its own.",
+      es: "Si ya existe, no necesita otra versión. Cada producto aporta algo propio.",
     },
   },
   {
-    title: { en: "To be lived", es: "Para vivirlo" },
+    title: { en: "Immersive", es: "Inmersivo" },
     body: {
-      en: "Not a static design you look at and forget, but an experience you play with, hear and feel.",
-      es: "No un diseño estático que miras y olvidas, sino una experiencia que juegas, escuchas y sientes.",
+      en: "Experiences you play, hear and feel. Not screens you look at and forget.",
+      es: "Experiencias que se juegan, se escuchan y se sienten. No pantallas que se miran y se olvidan.",
     },
   },
   {
-    title: { en: "Polished to the end", es: "Pulido hasta el final" },
+    title: { en: "Polished", es: "Pulido" },
     body: {
-      en: "Every decision with a reason, every detail looked after. That's the part I enjoy most.",
-      es: "Cada decisión con un porqué y cada detalle cuidado. Es la parte que más disfruto.",
+      en: "Every decision has a reason. Every detail gets its time.",
+      es: "Cada decisión tiene un porqué. Cada detalle, su tiempo.",
     },
   },
 ];
@@ -88,7 +88,7 @@ const products: Product[] = [
     slug: "tendu",
     type: { en: "Wellbeing app · Real-time 3D", es: "App de bienestar · 3D en tiempo real" },
     status: "Beta",
-    media: { video: "/work/tendu/v/days.mp4", img: "/work/tendu/v/days.webp" },
+    media: { video: "/work/tendu/v/i-days.mp4", img: "/work/tendu/v/i-days.webp" },
   },
   {
     name: "Unwind",
@@ -229,29 +229,32 @@ export default function OxiaPage({ locale }: { locale: Locale }) {
 
       <section className={styles.identity}>
         <div className={styles.secHead}>
-          <h2 className={`display ${styles.secTitle}`}>{locale === "en" ? "Identity" : "Identidad"}</h2>
-          <span className="mono muted">Wordmark · Emblem · Materials</span>
+          <h2 className={`display ${styles.secTitle}`}>{locale === "en" ? "Emblem" : "Emblema"}</h2>
+          <span className="mono muted">{locale === "en" ? "One sign · Four materials" : "Un signo · Cuatro materias"}</span>
         </div>
-        <div className={styles.idGrid}>
-          <div className={styles.idWord} data-x-reveal>
-            <span className={styles.wordmark}>OXIA Labs</span>
-          </div>
-          <p className={styles.idText} data-x-reveal>
-            {locale === "en"
-              ? "The wordmark is Garet Regular set tight, at −75 tracking. The emblem, an O and an X folded together, lives in black and white — and as an object, rendered in chrome, glass, moss and crystal with AI, so the brand can change skin without losing its shape."
-              : "El wordmark es Garet Regular muy ajustada, a −75 de tracking. El emblema, una O y una X plegadas, vive en blanco y negro, y también como objeto: renderizado con IA en cromo, cristal, musgo y cristal roto, para que la marca cambie de piel sin perder su forma."}
-          </p>
-          <div className={styles.variants} data-x-reveal>
-            <VariantStage />
-          </div>
+        <p className={styles.idText} data-x-reveal>
+          {locale === "en"
+            ? "An O and an X folded into one sign. It changes material without losing its shape."
+            : "Una O y una X plegadas en un solo signo. Cambia de materia sin perder la forma."}
+        </p>
+        <div className={styles.lineup}>
+          {VARIANTS.map((v, i) => (
+            <figure key={v.name} className={styles.lineItem} data-x-reveal>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={v.src} alt={`OXIA — ${v.name}`} loading="lazy" draggable={false} />
+              <figcaption className="mono muted">
+                {String(i + 1).padStart(2, "0")} — {v.name}
+              </figcaption>
+            </figure>
+          ))}
         </div>
       </section>
 
       <NextChapter
         next={{
-          href: `/${locale}#lab`,
+          href: `/${locale}/lab`,
           title: "Lab",
-          kicker: locale === "en" ? "Next — 03 · Design experiments" : "Siguiente — 03 · Experimentos de diseño",
+          kicker: locale === "en" ? "Next — 04 · Design experiments" : "Siguiente — 04 · Experimentos de diseño",
           img: "/work/lab/vinyl-tutto-passa-1.webp",
         }}
       />

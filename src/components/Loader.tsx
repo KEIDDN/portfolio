@@ -43,6 +43,7 @@ export default function Loader({ locale }: { locale: Locale }) {
     }
 
     document.documentElement.style.overflow = "hidden";
+    document.documentElement.dataset.modal = "1";
     const el = root.current!;
     const state = { v: 0 };
     const ready = Promise.all([
@@ -64,12 +65,14 @@ export default function Loader({ locale }: { locale: Locale }) {
     tl.to(el, { opacity: 0, duration: 0.6, ease: "power2.out" }, "-=0.05");
     tl.add(() => {
       document.documentElement.style.overflow = "";
+      delete document.documentElement.dataset.modal;
       setGone(true);
     });
 
     return () => {
       tl.kill();
       document.documentElement.style.overflow = "";
+      delete document.documentElement.dataset.modal;
     };
   }, []);
 

@@ -6,7 +6,7 @@ export type NextTarget = { href: string; title: string; kicker: string; img?: st
 /** The bottom of every page points to the next chapter of the story. */
 export default function NextChapter({ next }: { next: NextTarget }) {
   return (
-    <Link href={next.href} className={styles.next}>
+    <Link href={next.href} className={styles.next} data-title={next.title}>
       <span className="mono muted">{next.kicker} →</span>
       <span className={`display ${styles.nextTitle}`}>{next.title}</span>
       {next.img && (

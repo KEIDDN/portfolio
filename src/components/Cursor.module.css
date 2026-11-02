@@ -1,0 +1,43 @@
+.cursor {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 200;
+  pointer-events: none;
+  mix-blend-mode: difference;
+}
+.dot {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 12px;
+  height: 12px;
+  margin: -6px 0 0 -6px;
+  border-radius: 999px;
+  background: #fff;
+  color: #000;
+  display: grid;
+  place-items: center;
+  transition:
+    width 0.45s var(--ease),
+    height 0.45s var(--ease),
+    margin 0.45s var(--ease);
+}
+.dot span {
+  opacity: 0;
+  white-space: nowrap;
+  transition: opacity 0.25s;
+}
+.hover {
+  width: 44px;
+  height: 44px;
+  margin: -22px 0 0 -22px;
+}
+.label {
+  width: 96px;
+  height: 96px;
+  margin: -48px 0 0 -48px;
+}
+.label span {
+  opacity: 1;
+}
