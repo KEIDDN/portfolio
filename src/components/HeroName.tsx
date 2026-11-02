@@ -50,15 +50,16 @@ float alphaAt(vec2 uv){
 void main(){
   float solid = alphaAt(vUv);
   // halftone dissolve
-  float cell = mix(3.0, 16.0, uDis);
+  float cell = mix(3.0, 14.0, smoothstep(0.0, 0.7, uDis));
   vec2 px = vUv * uRes;
   vec2 id = floor(px / cell);
   vec2 cc = (id + 0.5) * cell;
   float ca = alphaAt(cc / uRes);
-  float drop = step(hash(id) , 1.0 - uDis * 0.75);
-  float r = sqrt(ca) * cell * 0.62 * (1.0 - uDis * 0.35);
+  float drop = step(hash(id), 1.0 - smoothstep(0.25, 1.0, uDis));
+  float r = sqrt(ca) * cell * 0.55;
   float dotA = (1.0 - smoothstep(r - 1.0, r + 0.5, length(px - cc))) * drop;
-  float a = mix(solid, dotA, smoothstep(0.02, 0.35, uDis));
+  float a = mix(solid, dotA, smoothstep(0.0, 0.22, uDis));
+  a *= 1.0 - smoothstep(0.85, 1.0, uDis);
   float g = hash(vUv * uRes + fract(uTime * 7.0)) - 0.5;
   vec3 col = uColor + g * 0.12;
   gl_FragColor = vec4(col * a, a);
@@ -80,8 +81,8 @@ function drawText(text: string, width: number, dpr: number, mobile: boolean) {
   const lineH = size * 0.84;
   const padY = size * 0.22;
   const core = lineH * lines.length + padY * 2;
-  const padTop = size * 0.5;
-  const padBottom = size * 1.5;
+  const padTop = size * 0.6;
+  const padBottom = size * 0.12;
   const h = core + padTop + padBottom;
   canvas.width = Math.round(width * dpr);
   canvas.height = Math.round(h * dpr);
@@ -166,9 +167,9 @@ export default function HeroName({ text, color = "#efefed" }: { text: string; co
       uniforms.uCount.value = Math.min(glyphs.length, MAX);
       glyphs.slice(0, MAX).forEach((g, i) => uniforms.uBox.value[i].set(g.x, g.y, g.w, g.h));
       bodies = glyphs.map(() => ({
-        x: 0, y: revealed ? 0 : -H * 1.3, r: 0, vx: 0, vy: 0, vr: 0,
+        x: 0, y: revealed ? 0 : -H * 1.1, r: 0, vx: 0, vy: 0, vr: 0,
         // per-letter scroll scatter targets
-        fx: (Math.random() - 0.5) * 0.5, fy: 0.55 + Math.random() * 0.9, fr: (Math.random() - 0.5) * 1.6,
+        fx: 0, fy: 0.4 + Math.random() * 0.8, fr: 0,
       }));
       ScrollTrigger.refresh();
     };
@@ -184,16 +185,6 @@ export default function HeroName({ text, color = "#efefed" }: { text: string; co
     const ro = new ResizeObserver(() => ready && layout());
     ro.observe(el);
 
-    const mouse = { x: -9999, y: -9999, active: false };
-    const onMove = (e: PointerEvent) => {
-      const r = el.getBoundingClientRect();
-      mouse.x = e.clientX - r.left;
-      mouse.y = r.bottom - e.clientY + (renderer.domElement.clientHeight - padTopPx - H); // y from canvas bottom
-      mouse.active = true;
-    };
-    const onLeave = () => (mouse.active = false);
-    window.addEventListener("pointermove", onMove);
-    document.addEventListener("pointerleave", onLeave);
 
     const reveal = () => {
       revealed = true;
@@ -204,11 +195,10 @@ export default function HeroName({ text, color = "#efefed" }: { text: string; co
 
     let scrollP = 0;
     const st = ScrollTrigger.create({
-      trigger: el,
-      start: "top 70%",
-      end: "bottom top",
-      scrub: true,
-      onUpdate: (s) => (scrollP = Math.max(0, (s.progress - 0.1) / 0.9)),
+      trigger: el.closest("section") ?? el,
+      start: "top top",
+      end: "bottom 15%",
+      onUpdate: (s) => (scrollP = s.progress),
     });
 
     let visible = true;
@@ -223,34 +213,18 @@ export default function HeroName({ text, color = "#efefed" }: { text: string; co
       last = now;
       uniforms.uTime.value += dt;
       const sp = scrollP;
-      uniforms.uDis.value += (Math.min(1, sp * 1.4) - uniforms.uDis.value) * 0.15;
-      const radius = H * 0.75;
+      uniforms.uDis.value += (sp - uniforms.uDis.value) * 0.12;
       bodies.forEach((b, i) => {
         const g = glyphs[i];
         if (!g) return;
-        // reveal stagger: letters rise in
-        const delay = i * 70;
-        const since = revealed ? now - revealT - delay : -1;
-        let tx = b.fx * H * sp * 1.6;
-        let ty = since < 0 ? -H * 1.3 : -b.fy * H * sp * 1.4;
-        let tr = b.fr * sp;
-        // magnet
-        if (mouse.active && sp < 0.6) {
-          const cx = g.x + g.w / 2 + b.x;
-          const cy = g.y + g.h / 2 + b.y;
-          const dx = cx - mouse.x;
-          const dy = cy - mouse.y;
-          const d = Math.hypot(dx, dy);
-          if (d < radius) {
-            const f = Math.pow(1 - d / radius, 2);
-            tx += (dx / (d || 1)) * f * H * 0.32;
-            ty += (dy / (d || 1)) * f * H * 0.32;
-            tr += (dx / radius) * f * -0.35;
-          }
-        }
-        // spring
-        const k = since < 0 ? 0 : 120;
-        const damp = 14;
+        // reveal: letters rise into place, staggered
+        const since = revealed ? now - revealT - i * 55 : -1;
+        // scroll: each letter drifts upward at its own pace while dissolving
+        const tx = 0;
+        const ty = since < 0 ? -H * 1.1 : b.fy * H * 0.45 * sp;
+        const tr = 0;
+        const k = since < 0 ? 0 : 90;
+        const damp = 16;
         b.vx += ((tx - b.x) * k - b.vx * damp) * dt;
         b.vy += ((ty - b.y) * k - b.vy * damp) * dt;
         b.vr += ((tr - b.r) * k - b.vr * damp) * dt;
@@ -265,8 +239,6 @@ export default function HeroName({ text, color = "#efefed" }: { text: string; co
 
     return () => {
       gsap.ticker.remove(tick);
-      window.removeEventListener("pointermove", onMove);
-      document.removeEventListener("pointerleave", onLeave);
       window.removeEventListener(LOADER_EVENT, reveal);
       ro.disconnect();
       io.disconnect();

@@ -36,11 +36,10 @@ export default function Footer({ locale }: { locale: Locale }) {
     <footer ref={root} id="contact" className={styles.footer}>
       <div className={styles.top}>
         <span className="mono muted">( {dict.nav.contact[locale]} )</span>
-        <span className="mono muted">{locale === "en" ? "Open to new projects & collaborations" : "Abierto a nuevos proyectos y colaboraciones"}</span>
+        <span className="mono muted">{dict.contactSub[locale]}</span>
       </div>
       <h2 className={`display ${styles.big}`}>
         <span className="line-mask"><span data-f-line>{dict.contactBig[locale]}</span></span>
-        <span className="line-mask"><span data-f-line className={styles.dim}>{dict.contactBig2[locale]}</span></span>
       </h2>
       <button className={styles.email} onClick={copy}>
         <span>{site.email}</span>

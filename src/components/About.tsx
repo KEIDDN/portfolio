@@ -7,16 +7,16 @@ import styles from "./About.module.css";
 
 const bio: L[] = [
   {
-    en: "I'm Miki Herrero, a Spanish product designer working where interfaces, brand and new technology overlap. I care about products that feel like something — not just products that work.",
-    es: "Soy Miki Herrero, diseñador de producto español trabajando donde se cruzan las interfaces, la marca y la tecnología nueva. Me importan los productos que hacen sentir algo — no solo los que funcionan.",
+    en: "I'm Miki Herrero, a product designer from Spain. I care about every decision having a reason behind it, and about clean, modern design that you can feel when you use it.",
+    es: "Soy Miki Herrero, diseñador de producto. Me importa que cada decisión tenga un porqué detrás y que el diseño sea limpio, actual y se note al usarlo.",
   },
   {
-    en: "Today I'm a Product Designer at VIOOH in London, the programmatic platform behind digital out-of-home advertising. On the side I run OXIA Labs, my creative technology studio, where I design and ship experimental products like TETRA and Tendu.",
-    es: "Hoy soy Product Designer en VIOOH, en Londres, la plataforma programática detrás de la publicidad exterior digital. En paralelo dirijo OXIA Labs, mi estudio de creative technology, donde diseño y lanzo productos experimentales como TETRA y Tendu.",
+    en: "I currently work as a Product Designer at VIOOH in London, the programmatic platform behind digital out-of-home advertising. On the side I run OXIA Labs, my personal studio, where I design and launch my own projects like TETRA and Tendu.",
+    es: "Ahora trabajo como Product Designer en VIOOH, en Londres, la plataforma programática detrás de la publicidad exterior digital. En paralelo llevo OXIA Labs, mi estudio personal, donde diseño y lanzo mis propios proyectos, como TETRA y Tendu.",
   },
   {
-    en: "I trained in Advertising & Public Relations, spent a year studying in Rome, and learned the rest by building: brand systems, apps, 3D, music and a growing toolbox of AI.",
-    es: "Me formé en Publicidad y Relaciones Públicas, pasé un año estudiando en Roma y el resto lo aprendí construyendo: sistemas de marca, apps, 3D, música y una caja de herramientas de IA que no para de crecer.",
+    en: "I studied Advertising and Public Relations, spent a year studying in Rome, and learned the rest by making things: brands, apps, 3D, music and AI tools. I'm still learning every day.",
+    es: "Estudié Publicidad y Relaciones Públicas, pasé un año estudiando en Roma y el resto lo he aprendido haciendo cosas: marcas, apps, 3D, música y herramientas de IA. Sigo aprendiendo cada día.",
   },
 ];
 

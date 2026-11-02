@@ -6,61 +6,80 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { t, type L, type Locale } from "@/content/i18n";
-import { MaterialSwitch } from "./OxiaBlock";
 import type { MaterialName } from "./Emblem3D";
 import { useTheme } from "./CaseStudy";
-import Objects from "./Objects";
 import styles from "./OxiaPage.module.css";
 
 const Emblem3D = dynamic(() => import("./Emblem3D"), { ssr: false });
 
+const MATERIALS: MaterialName[] = ["chrome", "steel", "black chrome", "glass"];
+function MaterialSwitch({ value, onChange, locale }: { value: MaterialName; onChange: (m: MaterialName) => void; locale: Locale }) {
+  return (
+    <div className={styles.switch}>
+      <span className="mono muted">{locale === "en" ? "Material" : "Material"}</span>
+      {MATERIALS.map((m) => (
+        <button key={m} onClick={() => onChange(m)} className={`mono ${value === m ? styles.on : ""}`}>
+          {m}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+const VARIANTS = [
+  { src: "/work/oxia/v-chrome.webp", name: "Chrome" },
+  { src: "/work/oxia/v-glass.webp", name: "Glass" },
+  { src: "/work/oxia/v-moss.webp", name: "Moss" },
+  { src: "/work/oxia/v-crystal.webp", name: "Crystal" },
+];
+
 const manifesto: L = {
-  en: "No brief. No client. No direction but forward. If an idea excites us, we build it — and we don't stop until it feels right.",
-  es: "Sin brief. Sin cliente. Sin más dirección que hacia delante. Si una idea nos emociona, la construimos, y no paramos hasta que se siente bien.",
+  en: "No brief, no client. If an idea excites me, I build it — and I keep polishing until it feels right.",
+  es: "Sin brief y sin cliente. Si una idea me emociona, la construyo, y la pulo hasta que se siente bien.",
 };
 
 const story: L[] = [
   {
-    en: "OXIA Labs started as something I had always wanted: a studio of my own, a place to launch products without anyone asking for them.",
-    es: "OXIA Labs nació de algo que siempre había querido: un estudio propio, un sitio desde el que lanzar productos sin que nadie los pida.",
+    en: "OXIA Labs is my personal, independent studio. I'd always wanted a place of my own to launch the projects I feel like making, without waiting for anyone to ask.",
+    es: "OXIA Labs es mi estudio personal e independiente. Siempre había querido un sitio propio desde el que lanzar los proyectos que me apetece hacer, sin esperar a que nadie me los pida.",
   },
   {
-    en: "It lives where my two worlds meet — more than ten years producing music and a career designing digital products. That is why everything we make is audiovisual at heart: games that sound like records, apps that breathe, plugins you can see.",
-    es: "Vive justo donde se cruzan mis dos mundos: más de diez años produciendo música y una carrera diseñando producto digital. Por eso todo lo que hacemos es audiovisual por dentro: juegos que suenan como un disco, apps que respiran, plugins que se pueden ver.",
+    en: "It's where my two worlds meet: over ten years producing music and designing digital products. So the projects mix very polished design with experiences, music, art, technology and AI.",
+    es: "Es donde se cruzan mis dos mundos: más de diez años produciendo música y diseñando producto digital. Por eso los proyectos mezclan un diseño muy pulido con experiencias, música, arte, tecnología e IA.",
   },
   {
-    en: "Today OXIA is an independent umbrella brand — and these are real products, not mockups. A game you can download, an app you can use, audio plugins that run in your DAW.",
-    es: "Hoy OXIA es una marca paraguas independiente, y esto son productos reales, no mockups. Un juego que puedes descargar, una app que puedes usar, plugins de audio que funcionan en tu DAW.",
+    en: "And they're real: a game you can play and download, a wellbeing app in beta, and two audio plugins that work in any DAW.",
+    es: "Y son reales: un juego que puedes jugar y descargar, una app de bienestar en beta y dos plugins de audio que funcionan en cualquier DAW.",
   },
 ];
 
 const facts: { k: L; v: L }[] = [
   { k: { en: "Founded", es: "Fundado" }, v: { en: "2026", es: "2026" } },
   { k: { en: "Founder", es: "Fundador" }, v: { en: "Miki Herrero", es: "Miki Herrero" } },
-  { k: { en: "Disciplines", es: "Disciplinas" }, v: { en: "Product design, creative technology, sound, real-time 3D", es: "Diseño de producto, creative technology, sonido, 3D en tiempo real" } },
-  { k: { en: "Products", es: "Productos" }, v: { en: "4 built — games, wellbeing, audio", es: "4 construidos — juego, bienestar, audio" } },
+  { k: { en: "Disciplines", es: "Disciplinas" }, v: { en: "Product design, music, 3D, AI", es: "Diseño de producto, música, 3D, IA" } },
+  { k: { en: "Products", es: "Productos" }, v: { en: "4 — a game, an app, two plugins", es: "4: un juego, una app y dos plugins" } },
 ];
 
 const principles: { title: L; body: L }[] = [
   {
     title: { en: "Technology is a material", es: "La tecnología es un material" },
     body: {
-      en: "WebGL, audio engines and AI models are treated like paper or ink: something to shape, not just to use.",
-      es: "WebGL, motores de audio y modelos de IA se tratan como el papel o la tinta: algo que moldear, no solo usar.",
+      en: "WebGL, audio and AI are part of the design, like paper or ink. Something to shape, not just to use.",
+      es: "WebGL, audio e IA forman parte del diseño, como el papel o la tinta. Algo que moldear, no solo usar.",
     },
   },
   {
     title: { en: "Made to be felt", es: "Hecho para sentirse" },
     body: {
-      en: "Every project starts from a sensation — calm, rhythm, depth — and works backwards to the interface.",
-      es: "Cada proyecto empieza en una sensación — calma, ritmo, profundidad — y trabaja hacia atrás hasta la interfaz.",
+      en: "Every project starts from a feeling — calm, rhythm, depth — and the interface is built to get you there.",
+      es: "Cada proyecto empieza en una sensación —calma, ritmo, profundidad— y la interfaz se construye para llevarte a ella.",
     },
   },
   {
     title: { en: "Shipped, not pitched", es: "Lanzado, no presentado" },
     body: {
-      en: "Experiments only count when they are live. Prototype fast, polish obsessively, publish.",
-      es: "Un experimento solo cuenta cuando está online. Prototipar rápido, pulir con obsesión, publicar.",
+      en: "An idea only counts once it's live. Prototype fast, polish a lot, publish.",
+      es: "Una idea solo cuenta cuando está publicada. Prototipar rápido, pulir mucho y publicar.",
     },
   },
 ];
@@ -80,7 +99,7 @@ const products: Product[] = [
     slug: "tetra",
     type: { en: "Audiovisual game · Spatial audio", es: "Juego audiovisual · Audio espacial" },
     status: "Live",
-    media: { video: "/work/tetra/experience.mp4", img: "/work/tetra/cover.webp" },
+    media: { video: "/work/tetra/v/game.mp4", img: "/work/tetra/v/game.webp" },
     url: "https://tetra-blocks.vercel.app/",
   },
   {
@@ -88,8 +107,7 @@ const products: Product[] = [
     slug: "tendu",
     type: { en: "Wellbeing app · Real-time 3D", es: "App de bienestar · 3D en tiempo real" },
     status: "Beta",
-    media: { video: "/work/tendu/onboarding.mp4", img: "/work/tendu/cover.webp" },
-    url: "https://tendu-beta.vercel.app/",
+    media: { video: "/work/tendu/v/days.mp4", img: "/work/tendu/v/days.webp" },
   },
   {
     name: "Unwind",
@@ -244,14 +262,19 @@ export default function OxiaPage({ locale }: { locale: Locale }) {
           </div>
           <p className={styles.idText} data-x-reveal>
             {locale === "en"
-              ? "A geometric grotesk wordmark set tight, and an angular emblem built from chamfered strokes — an α and an X folded into one mark. The emblem is designed to live as an object: chrome, glass, moss, cracked crystal. The studio's identity is not a logo on a page, it is something you can light."
-              : "Un wordmark en grotesca geométrica muy ajustado y un emblema angular hecho de trazos achaflanados — una α y una X plegadas en una sola marca. El emblema está pensado para vivir como objeto: cromo, cristal, musgo, cristal roto. La identidad del estudio no es un logo en una página, es algo que se puede iluminar."}
+              ? "A tight geometric wordmark and an angular emblem made of chamfered strokes. In black and white. I render the emblem as an object in different materials — chrome, glass, moss, crystal — so the brand can change skin without losing its shape."
+              : "Un wordmark geométrico muy ajustado y un emblema angular hecho de trazos achaflanados. En blanco y negro. El emblema lo renderizo como objeto en distintos materiales —cromo, cristal, musgo, cristal roto— para que la marca cambie de piel sin perder su forma."}
           </p>
-          <div className={styles.idImg}>
-            <Objects
-              srcs={["/work/cutouts/emblem-chrome.webp", "/work/cutouts/emblem-glass.webp", "/work/cutouts/emblem-moss.webp", "/work/cutouts/emblem-crystal.webp"]}
-              captions={["Chrome", "Glass", "Moss", "Cracked crystal"]}
-            />
+          <div className={styles.variants}>
+            {VARIANTS.map((v) => (
+              <figure key={v.src} data-x-reveal>
+                <div className="img-grain">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={v.src} alt={`OXIA emblem — ${v.name}`} loading="lazy" />
+                </div>
+                <figcaption className="mono muted">{v.name}</figcaption>
+              </figure>
+            ))}
           </div>
         </div>
       </section>
@@ -259,7 +282,7 @@ export default function OxiaPage({ locale }: { locale: Locale }) {
       <section className={styles.next}>
         <span className="mono muted">{locale === "en" ? "Coming next" : "Lo siguiente"}</span>
         <p className={`display ${styles.nextText}`}>
-          {locale === "en" ? "oxialabs — its own home. Soon." : "oxialabs — su propia casa. Pronto."}
+          {locale === "en" ? "More is on the way." : "Vienen más cosas."}
         </p>
       </section>
     </div>

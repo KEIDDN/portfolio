@@ -16,6 +16,7 @@ export function Media({
   grain = true,
   className = "",
   priority = false,
+  sound,
 }: {
   src: string;
   poster?: string;
@@ -24,6 +25,7 @@ export function Media({
   grain?: boolean;
   className?: string;
   priority?: boolean;
+  sound?: { on: string; off: string };
 }) {
   const r = ratio ?? (isVideo(src) ? ratioOf(poster ?? "", 16 / 10) : ratioOf(src));
   const v = useRef<HTMLVideoElement>(null);
@@ -36,8 +38,36 @@ export function Media({
     io.observe(el);
     return () => io.disconnect();
   }, []);
+  const [muted, setMuted] = useState(true);
+  useEffect(() => {
+    // only one video speaks at a time
+    const other = (e: Event) => {
+      if ((e as CustomEvent).detail !== v.current && v.current) {
+        v.current.muted = true;
+        setMuted(true);
+      }
+    };
+    window.addEventListener("mh:sound", other);
+    return () => window.removeEventListener("mh:sound", other);
+  }, []);
+  const toggle = () => {
+    const el = v.current;
+    if (!el) return;
+    el.muted = !el.muted;
+    setMuted(el.muted);
+    if (!el.muted) {
+      window.dispatchEvent(new CustomEvent("mh:sound", { detail: el }));
+      el.play().catch(() => {});
+    }
+  };
   return (
     <div className={`${styles.media} ${grain ? "img-grain" : ""} ${className}`} style={{ aspectRatio: r }}>
+      {sound && isVideo(src) && (
+        <button type="button" className={`mono ${styles.sound} ${muted ? "" : styles.soundOn}`} onClick={toggle}>
+          <span className={styles.eq} aria-hidden><i /><i /><i /></span>
+          {muted ? sound.on : sound.off}
+        </button>
+      )}
       {isVideo(src) ? (
         <video ref={v} src={src} poster={poster} muted loop playsInline preload="metadata" />
       ) : (

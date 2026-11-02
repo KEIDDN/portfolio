@@ -1,0 +1,32 @@
+.head {
+  padding: 0 var(--gutter);
+  margin-bottom: 8vh;
+}
+.rule {
+  display: block;
+  height: 1px;
+  background: var(--line);
+  transform-origin: left;
+  margin-bottom: 14px;
+}
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+.sub {
+  text-align: right;
+  max-width: 36ch;
+}
+.title {
+  font-size: clamp(72px, 15vw, 280px);
+  margin-top: 4vh;
+}
+@media (max-width: 700px) {
+  .row {
+    flex-direction: column;
+  }
+  .sub {
+    text-align: left;
+  }
+}

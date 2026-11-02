@@ -11,39 +11,22 @@ export default function Intro({ locale }: { locale: Locale }) {
     const ctx = gsap.context(() => {
       gsap.fromTo(
         "[data-w]",
-        { opacity: 0.12 },
-        {
-          opacity: 1,
-          stagger: 0.05,
-          ease: "none",
-          scrollTrigger: { trigger: "[data-big]", start: "top 80%", end: "bottom 45%", scrub: true },
-        },
+        { opacity: 0.14 },
+        { opacity: 1, stagger: 0.08, ease: "none", scrollTrigger: { trigger: "[data-big]", start: "top 75%", end: "bottom 50%", scrub: true } },
       );
-      gsap.from("[data-small]", {
-        y: 40,
-        opacity: 0,
-        duration: 1.2,
-        ease: "expo.out",
-        scrollTrigger: { trigger: "[data-small]", start: "top 90%" },
-      });
+      gsap.from("[data-small]", { y: 30, opacity: 0, duration: 1.4, ease: "expo.out", scrollTrigger: { trigger: "[data-small]", start: "top 88%" } });
     }, root);
     return () => ctx.revert();
   }, [locale]);
 
-  const words = dict.intro[locale].split(" ");
   return (
     <section ref={root} className={styles.intro}>
-      <span className="mono muted">( 01 — {locale === "en" ? "Intro" : "Intro"} )</span>
-      <p data-big className={styles.big}>
-        {words.map((w, i) => (
-          <span key={i} data-w>
-            {w}{" "}
-          </span>
+      <p data-big className={`display ${styles.big}`}>
+        {dict.intro[locale].split(" ").map((w, i) => (
+          <span key={i} data-w>{w} </span>
         ))}
       </p>
-      <p data-small className={styles.small}>
-        {dict.introSmall[locale]}
-      </p>
+      <p data-small className={styles.small}>{dict.introSmall[locale]}</p>
     </section>
   );
 }
