@@ -43,6 +43,7 @@
   object-fit: contain;
 }
 .heroContain .heroMedia video {
+  max-height: 58svh;
   border-radius: clamp(28px, 2.6vw, 46px);
   box-shadow: 0 50px 90px -40px rgba(40, 34, 20, 0.45), 0 0 0 1px rgba(0, 0, 0, 0.06);
 }

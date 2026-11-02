@@ -235,8 +235,8 @@ export const projects: Project[] = [
     cover: W("tendu/v/i-days.webp"),
     coverVideo: W("tendu/v/i-days.mp4"),
     hero: "contain",
-    heroVideo: W("tendu/v/t-growth.mp4"),
-    heroPoster: W("tendu/v/t-growth.webp"),
+    heroVideo: W("tendu/v/t-bloom.mp4"),
+    heroPoster: W("tendu/v/t-bloom.webp"),
     theme: { bg: "#f9f6f1", fg: "#1b1f1c", accent: "#4f7a3a", muted: "#7a7a72" },
     blocks: [
       { kind: "stage", n: "01", label: ST.challenge },
@@ -261,16 +261,16 @@ export const projects: Project[] = [
         kind: "screens",
         items: [
           {
-            title: { en: "It grows with you.", es: "Crece contigo." },
-            body: { en: "Day 1, week 2, month 3, year 1: the island reflects the time you give yourself.", es: "Día 1, semana 2, mes 3, año 1: la isla refleja el tiempo que te dedicas." },
-            media: W("tendu/v/t-growth.mp4"),
-            poster: W("tendu/v/t-growth.webp"),
+            title: { en: "It greets you by name.", es: "Te recibe por tu nombre." },
+            body: { en: "Every time you come back, your garden is waiting for you.", es: "Cada vez que vuelves, tu jardín te está esperando." },
+            media: W("tendu/v/t-welcome.webp"),
+            poster: W("tendu/v/t-welcome.webp"),
           },
           {
-            title: { en: "It lives on your time.", es: "Vive a tu ritmo." },
-            body: { en: "Sunrise, golden hour and night follow your own clock.", es: "Amanecer, hora dorada y noche siguen tu propio reloj." },
-            media: W("tendu/v/t-daylight.mp4"),
-            poster: W("tendu/v/t-daylight.webp"),
+            title: { en: "It grows with you.", es: "Crece contigo." },
+            body: { en: "Day 290: the island reflects the time you give yourself, with seasons and nights that follow your clock.", es: "Día 290: la isla refleja el tiempo que te dedicas, con estaciones y noches que siguen tu reloj." },
+            media: W("tendu/v/t-night.webp"),
+            poster: W("tendu/v/t-night.webp"),
           },
         ],
       },
@@ -301,6 +301,12 @@ export const projects: Project[] = [
             body: { en: "A timer, the phone face down, and when you finish, something new sprouts on the island.", es: "Un temporizador, el móvil a un lado y, al terminar, algo nuevo brota en la isla." },
             media: W("tendu/v/t-focus.mp4"),
             poster: W("tendu/v/t-focus.webp"),
+          },
+          {
+            title: { en: "Finish, and it blooms.", es: "Termina y florece." },
+            body: { en: "Every completed session turns into coins and a flower growing on your island.", es: "Cada sesión completada se convierte en monedas y en una flor que crece en tu isla." },
+            media: W("tendu/v/t-bloom.mp4"),
+            poster: W("tendu/v/t-bloom.webp"),
           },
           {
             title: { en: "Breathe with something alive.", es: "Respirar con algo vivo." },
