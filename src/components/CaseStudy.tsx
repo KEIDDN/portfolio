@@ -8,6 +8,8 @@ import { dict, t, type Locale } from "@/content/i18n";
 import type { Project, Theme } from "@/content/projects";
 import { Media, Row, ratioOf } from "./Media";
 import TetraIcons from "./TetraIcons";
+import TetraSkins from "./TetraSkins";
+import NextChapter, { type NextTarget } from "./NextChapter";
 import styles from "./CaseStudy.module.css";
 
 const DEFAULT: Theme = { bg: "#050505", fg: "#efefed", accent: "#c4161c", muted: "#7a7875" };
@@ -27,7 +29,7 @@ export function useTheme(theme: Theme) {
   }, [theme]);
 }
 
-export default function CaseStudy({ project, next, locale }: { project: Project; next: Project; locale: Locale }) {
+export default function CaseStudy({ project, next, locale }: { project: Project; next: NextTarget; locale: Locale }) {
   const root = useRef<HTMLDivElement>(null);
   useTheme(project.theme);
   const sound = { on: dict.soundOn[locale], off: dict.soundOff[locale] };
@@ -121,6 +123,15 @@ export default function CaseStudy({ project, next, locale }: { project: Project;
         </dl>
       </section>
 
+      {project.label === "OXIA Labs" && (
+        <Link href={`/${locale}/oxia-labs`} className={styles.madeAt}>
+          <span className={styles.emblem} aria-hidden />
+          <span>{dict.madeAt[locale]}</span>
+          <span className="mono muted">{dict.madeAtSub[locale]}</span>
+          <span className="mono">↗</span>
+        </Link>
+      )}
+
       <div className={styles.blocks}>
         {project.blocks.map((b, i) => {
           switch (b.kind) {
@@ -183,7 +194,7 @@ export default function CaseStudy({ project, next, locale }: { project: Project;
               return (
                 <section key={i} className={styles.icons}>
                   <div className={styles.idea} data-reveal>
-                    <span className="mono muted">{dict.details[locale]}</span>
+                    <span className="mono muted">{locale === "en" ? "System" : "Sistema"}</span>
                     <div>
                       <h2 className={`display ${styles.h2}`}>{t(b.title, locale)}</h2>
                       <p className={styles.body}>{t(b.body, locale)}</p>
@@ -191,6 +202,21 @@ export default function CaseStudy({ project, next, locale }: { project: Project;
                   </div>
                   <div className={styles.wide}>
                     <TetraIcons />
+                  </div>
+                </section>
+              );
+            case "skins":
+              return (
+                <section key={i} className={styles.icons}>
+                  <div className={styles.idea} data-reveal>
+                    <span className="mono muted">{locale === "en" ? "System" : "Sistema"}</span>
+                    <div>
+                      <h2 className={`display ${styles.h2}`}>{t(b.title, locale)}</h2>
+                      <p className={styles.body}>{t(b.body, locale)}</p>
+                    </div>
+                  </div>
+                  <div className={styles.wide}>
+                    <TetraSkins locale={locale} />
                   </div>
                 </section>
               );
@@ -223,14 +249,7 @@ export default function CaseStudy({ project, next, locale }: { project: Project;
         })}
       </div>
 
-      <Link href={`/${locale}/work/${next.slug}`} className={styles.next}>
-        <span className="mono muted">{dict.nextProject[locale]} →</span>
-        <span className={`display ${styles.nextTitle}`}>{next.title}</span>
-        <div className={`${styles.nextImg} img-grain`}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={next.cover} alt={next.title} loading="lazy" />
-        </div>
-      </Link>
+      <NextChapter next={next} />
     </div>
   );
 }

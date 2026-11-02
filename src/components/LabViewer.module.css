@@ -1,0 +1,102 @@
+.viewer {
+  position: fixed;
+  inset: 0;
+  z-index: 95;
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  background: var(--cream);
+  color: var(--ink);
+  --fg: #050505;
+  --muted: #8a8580;
+}
+.head,
+.foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px var(--gutter);
+}
+.info {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 16px;
+  align-items: end;
+  padding: 0 var(--gutter) 3vh;
+}
+.title {
+  grid-column: 1 / span 6;
+  font-size: clamp(44px, 6vw, 110px);
+}
+.note {
+  grid-column: 8 / span 5;
+  font-size: clamp(15px, 1.1vw, 18px);
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+  color: rgba(5, 5, 5, 0.75);
+}
+.track {
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  min-height: 0;
+}
+.track::-webkit-scrollbar {
+  display: none;
+}
+.slide {
+  flex: 0 0 100%;
+  scroll-snap-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 var(--gutter);
+  min-height: 0;
+  height: 100%;
+}
+.frame {
+  display: inline-flex;
+  max-width: 100%;
+  max-height: 100%;
+}
+/* never upscale: width/height auto keep the image at most at its natural size */
+.frame img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: calc(100svh - 300px);
+  object-fit: contain;
+}
+.cut img {
+  filter: drop-shadow(0 30px 40px rgba(40, 30, 20, 0.22));
+}
+.arrows {
+  display: flex;
+  gap: 8px;
+}
+.arrows button {
+  width: 46px;
+  height: 46px;
+  border-radius: 99px;
+  border: 1px solid rgba(5, 5, 5, 0.2);
+  transition: background 0.4s var(--ease), color 0.4s var(--ease), opacity 0.4s;
+}
+.arrows button:hover:not(:disabled) {
+  background: #050505;
+  color: #f1eee6;
+}
+.arrows button:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+@media (max-width: 800px) {
+  .title,
+  .note {
+    grid-column: 1 / -1;
+  }
+  .frame img {
+    max-height: calc(100svh - 380px);
+  }
+}

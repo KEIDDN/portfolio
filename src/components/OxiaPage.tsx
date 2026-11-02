@@ -2,36 +2,17 @@
 
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { t, type L, type Locale } from "@/content/i18n";
-import type { MaterialName } from "./Emblem3D";
 import { useTheme } from "./CaseStudy";
+import VariantStage from "./VariantStage";
+import NextChapter from "./NextChapter";
 import styles from "./OxiaPage.module.css";
 
 const Emblem3D = dynamic(() => import("./Emblem3D"), { ssr: false });
 
-const MATERIALS: MaterialName[] = ["chrome", "steel", "black chrome", "glass"];
-function MaterialSwitch({ value, onChange, locale }: { value: MaterialName; onChange: (m: MaterialName) => void; locale: Locale }) {
-  return (
-    <div className={styles.switch}>
-      <span className="mono muted">{locale === "en" ? "Material" : "Material"}</span>
-      {MATERIALS.map((m) => (
-        <button key={m} onClick={() => onChange(m)} className={`mono ${value === m ? styles.on : ""}`}>
-          {m}
-        </button>
-      ))}
-    </div>
-  );
-}
-
-const VARIANTS = [
-  { src: "/work/oxia/v-chrome.webp", name: "Chrome" },
-  { src: "/work/oxia/v-glass.webp", name: "Glass" },
-  { src: "/work/oxia/v-moss.webp", name: "Moss" },
-  { src: "/work/oxia/v-crystal.webp", name: "Crystal" },
-];
 
 const manifesto: L = {
   en: "No brief, no client. If an idea excites me, I build it — and I keep polishing until it feels right.",
@@ -40,46 +21,46 @@ const manifesto: L = {
 
 const story: L[] = [
   {
-    en: "OXIA Labs is my personal, independent studio. I'd always wanted a place of my own to launch the projects I feel like making, without waiting for anyone to ask.",
-    es: "OXIA Labs es mi estudio personal e independiente. Siempre había querido un sitio propio desde el que lanzar los proyectos que me apetece hacer, sin esperar a que nadie me los pida.",
+    en: "OXIA Labs is my personal, independent studio. I founded it in 2026 because I wanted my own place to launch creative products without waiting for anyone to ask for them.",
+    es: "OXIA Labs es mi estudio personal e independiente. Lo creé en 2026 porque quería un sitio propio desde el que lanzar productos creativos sin esperar a que nadie me los pidiera.",
   },
   {
-    en: "It's where my two worlds meet: over ten years producing music and designing digital products. So the projects mix very polished design with experiences, music, art, technology and AI.",
-    es: "Es donde se cruzan mis dos mundos: más de diez años produciendo música y diseñando producto digital. Por eso los proyectos mezclan un diseño muy pulido con experiencias, música, arte, tecnología e IA.",
+    en: "The name comes from Original eXperiments + IA, and the emblem is an O and an X folded into one abstract mark. For an idea to become an OXIA project it has to go further: not something you just look at, but something immersive you can interact with, built on very polished design.",
+    es: "El nombre viene de Original eXperiments + IA, y el emblema es una O y una X plegadas en una marca abstracta. Para que una idea se convierta en proyecto de OXIA tiene que ir más allá: no algo que solo se mira, sino algo inmersivo con lo que interactuar, construido sobre un diseño muy pulido.",
   },
   {
-    en: "And they're real: a game you can play and download, a wellbeing app in beta, and two audio plugins that work in any DAW.",
-    es: "Y son reales: un juego que puedes jugar y descargar, una app de bienestar en beta y dos plugins de audio que funcionan en cualquier DAW.",
+    en: "So far that has meant a game, a wellbeing app and two audio plugins — music is part of some of them, because it's part of me, but not everything here will be musical. Right now most of the work goes into TETRA. More will come.",
+    es: "Hasta ahora eso ha sido un juego, una app de bienestar y dos plugins de audio. La música está en algunos porque forma parte de mí, pero no todo lo que salga de aquí será musical. Ahora mismo casi todo el trabajo va a TETRA. Vendrán más cosas.",
   },
 ];
 
 const facts: { k: L; v: L }[] = [
   { k: { en: "Founded", es: "Fundado" }, v: { en: "2026", es: "2026" } },
   { k: { en: "Founder", es: "Fundador" }, v: { en: "Miki Herrero", es: "Miki Herrero" } },
-  { k: { en: "Disciplines", es: "Disciplinas" }, v: { en: "Product design, music, 3D, AI", es: "Diseño de producto, música, 3D, IA" } },
+  { k: { en: "Name", es: "Nombre" }, v: { en: "Original eXperiments + IA", es: "Original eXperiments + IA" } },
   { k: { en: "Products", es: "Productos" }, v: { en: "4 — a game, an app, two plugins", es: "4: un juego, una app y dos plugins" } },
 ];
 
 const principles: { title: L; body: L }[] = [
   {
-    title: { en: "Technology is a material", es: "La tecnología es un material" },
+    title: { en: "Original", es: "Original" },
     body: {
-      en: "WebGL, audio and AI are part of the design, like paper or ink. Something to shape, not just to use.",
-      es: "WebGL, audio e IA forman parte del diseño, como el papel o la tinta. Algo que moldear, no solo usar.",
+      en: "If it already exists, it doesn't need me. Every project has to bring something of its own.",
+      es: "Si ya existe, no me necesita. Cada proyecto tiene que aportar algo propio.",
     },
   },
   {
-    title: { en: "Made to be felt", es: "Hecho para sentirse" },
+    title: { en: "To be lived", es: "Para vivirlo" },
     body: {
-      en: "Every project starts from a feeling — calm, rhythm, depth — and the interface is built to get you there.",
-      es: "Cada proyecto empieza en una sensación —calma, ritmo, profundidad— y la interfaz se construye para llevarte a ella.",
+      en: "Not a static design you look at and forget, but an experience you play with, hear and feel.",
+      es: "No un diseño estático que miras y olvidas, sino una experiencia que juegas, escuchas y sientes.",
     },
   },
   {
-    title: { en: "Shipped, not pitched", es: "Lanzado, no presentado" },
+    title: { en: "Polished to the end", es: "Pulido hasta el final" },
     body: {
-      en: "An idea only counts once it's live. Prototype fast, polish a lot, publish.",
-      es: "Una idea solo cuenta cuando está publicada. Prototipar rápido, pulir mucho y publicar.",
+      en: "Every decision with a reason, every detail looked after. That's the part I enjoy most.",
+      es: "Cada decisión con un porqué y cada detalle cuidado. Es la parte que más disfruto.",
     },
   },
 ];
@@ -129,7 +110,6 @@ const THEME = { bg: "#000000", fg: "#f2f2f0", accent: "#ffffff", muted: "#77736f
 
 export default function OxiaPage({ locale }: { locale: Locale }) {
   const root = useRef<HTMLDivElement>(null);
-  const [mat, setMat] = useState<MaterialName>("chrome");
   useTheme(THEME);
 
   useEffect(() => {
@@ -171,15 +151,12 @@ export default function OxiaPage({ locale }: { locale: Locale }) {
           <span className="mono muted" data-x-fade>Est. 2026 — {locale === "en" ? "Founded by Miki Herrero" : "Fundado por Miki Herrero"}</span>
         </div>
         <div data-x-stage className={styles.stage}>
-          <Emblem3D material={mat} scale={2.0} />
+          <Emblem3D material="chrome" scale={2.0} />
         </div>
         <div className={styles.heroBottom}>
-          <h1 className={`display ${styles.title}`}>
+          <h1 className={styles.title}>
             <span className="line-mask"><span data-x-line>OXIA Labs</span></span>
           </h1>
-          <div data-x-fade>
-            <MaterialSwitch value={mat} onChange={setMat} locale={locale} />
-          </div>
         </div>
       </section>
 
@@ -257,34 +234,27 @@ export default function OxiaPage({ locale }: { locale: Locale }) {
         </div>
         <div className={styles.idGrid}>
           <div className={styles.idWord} data-x-reveal>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/brand/oxia-wordmark.svg" alt="OXIA Labs wordmark" />
+            <span className={styles.wordmark}>OXIA Labs</span>
           </div>
           <p className={styles.idText} data-x-reveal>
             {locale === "en"
-              ? "A tight geometric wordmark and an angular emblem made of chamfered strokes. In black and white. I render the emblem as an object in different materials — chrome, glass, moss, crystal — so the brand can change skin without losing its shape."
-              : "Un wordmark geométrico muy ajustado y un emblema angular hecho de trazos achaflanados. En blanco y negro. El emblema lo renderizo como objeto en distintos materiales —cromo, cristal, musgo, cristal roto— para que la marca cambie de piel sin perder su forma."}
+              ? "The wordmark is Garet Regular set tight, at −75 tracking. The emblem, an O and an X folded together, lives in black and white — and as an object, rendered in chrome, glass, moss and crystal with AI, so the brand can change skin without losing its shape."
+              : "El wordmark es Garet Regular muy ajustada, a −75 de tracking. El emblema, una O y una X plegadas, vive en blanco y negro, y también como objeto: renderizado con IA en cromo, cristal, musgo y cristal roto, para que la marca cambie de piel sin perder su forma."}
           </p>
-          <div className={styles.variants}>
-            {VARIANTS.map((v) => (
-              <figure key={v.src} data-x-reveal>
-                <div className="img-grain">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={v.src} alt={`OXIA emblem — ${v.name}`} loading="lazy" />
-                </div>
-                <figcaption className="mono muted">{v.name}</figcaption>
-              </figure>
-            ))}
+          <div className={styles.variants} data-x-reveal>
+            <VariantStage />
           </div>
         </div>
       </section>
 
-      <section className={styles.next}>
-        <span className="mono muted">{locale === "en" ? "Coming next" : "Lo siguiente"}</span>
-        <p className={`display ${styles.nextText}`}>
-          {locale === "en" ? "More is on the way." : "Vienen más cosas."}
-        </p>
-      </section>
+      <NextChapter
+        next={{
+          href: `/${locale}#lab`,
+          title: "Lab",
+          kicker: locale === "en" ? "Next — 03 · Design experiments" : "Siguiente — 03 · Experimentos de diseño",
+          img: "/work/lab/vinyl-tutto-passa-1.webp",
+        }}
+      />
     </div>
   );
 }

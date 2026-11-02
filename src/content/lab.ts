@@ -18,10 +18,21 @@ export const series: Series[] = [
     kind: { en: "3D · Jewellery", es: "3D · Joyería" },
     year: "2026",
     note: {
-      en: "A reinterpretation of the botón charro, the traditional silver button from Salamanca, turned into rings and pendants. Modelled in Blender and finished with AI.",
-      es: "Una reinterpretación del botón charro de Salamanca convertida en anillos y colgantes. Modelado en Blender y terminado con IA.",
+      en: "I'm from Salamanca, and the botón charro is part of my culture: a very baroque silver button. I wanted to bring it into a more modern aesthetic as rings and pendants. Modelled with Blender and AI MCPs.",
+      es: "Soy de Salamanca y el botón charro es parte de mi cultura: un botón de plata muy barroco. Quise llevarlo a una estética más moderna en forma de anillos y colgantes. Modelado con Blender y MCPs de IA.",
     },
     images: [W("lab/04.webp"), W("cutouts/charro.webp"), W("cutouts/pendant.webp")],
+  },
+  {
+    slug: "inhabit",
+    title: "Inhabit",
+    kind: { en: "3D · Concept", es: "3D · Concepto" },
+    year: "2026",
+    note: {
+      en: "An artistic critique of the housing crisis: a vulture perched on a house, and a house squeezed until it bends. About vulture funds and how hard it has become to have a home, in Spain and everywhere.",
+      es: "Una crítica artística al problema de la vivienda: un buitre posado sobre una casa y una casa estrujada hasta deformarse. Sobre los fondos buitre y lo difícil que se ha vuelto tener un hogar, en España y en todas partes.",
+    },
+    images: [W("lab/01.webp"), W("lab/inhabit-house.webp")],
   },
   {
     slug: "tutto-passa",
@@ -29,8 +40,8 @@ export const series: Series[] = [
     kind: { en: "Vinyl", es: "Vinilo" },
     year: "2026",
     note: {
-      en: "Sleeve, label and inner sleeve for a record about letting things go.",
-      es: "Portada, galleta y funda interior para un disco sobre dejar pasar las cosas.",
+      en: "An invented Neapolitan record. 'Tutto passa' — everything passes, the good and the bad — is a phrase I have tattooed. Sleeve, label, booklet and inner sleeve around a photo I love.",
+      es: "Un disco napolitano inventado. «Tutto passa», todo pasa, lo bueno y lo malo, es una frase que llevo tatuada. Portada, galleta, libreto y funda interior alrededor de una foto que me encanta.",
     },
     images: [W("lab/vinyl-tutto-passa.webp"), ...[1, 2, 3, 4, 5].map((i) => W(`lab/vinyl-tutto-passa-${i}.webp`))],
   },
@@ -40,8 +51,8 @@ export const series: Series[] = [
     kind: { en: "Vinyl", es: "Vinilo" },
     year: "2026",
     note: {
-      en: "A Miles Davis record redesigned in two inks: navy brushstrokes over raw paper.",
-      es: "Un disco de Miles Davis rediseñado a dos tintas: pinceladas azul marino sobre papel crudo.",
+      en: "I love jazz. An imagined Miles Davis record with a more Japanese, abstract aesthetic: navy brushstrokes over raw paper, closer to art than to a cover.",
+      es: "Me encanta el jazz. Un disco imaginado de Miles Davis con una estética más japonesa y abstracta: pinceladas azul marino sobre papel crudo, más cerca del arte que de una portada.",
     },
     images: [W("lab/vinyl-miles.webp"), ...[1, 2, 3, 4].map((i) => W(`lab/vinyl-miles-${i}.webp`))],
   },
@@ -51,8 +62,8 @@ export const series: Series[] = [
     kind: { en: "Posters", es: "Pósters" },
     year: "2025",
     note: {
-      en: "Alternative posters for four films I love: halftones, print textures and big type.",
-      es: "Pósters alternativos para cuatro películas que me encantan: tramas, texturas de impresión y tipografía grande.",
+      en: "I'm a die-hard film lover, and these are four of my favourite films. Alternative posters with halftones, print textures and big type.",
+      es: "Soy un cinéfilo empedernido y estas son cuatro de mis películas favoritas. Pósters alternativos con tramas, texturas de impresión y tipografía grande.",
     },
     images: [W("posters/01.webp"), W("posters/02.webp"), W("posters/03.webp"), W("posters/04.webp")],
   },
@@ -62,8 +73,8 @@ export const series: Series[] = [
     kind: { en: "Posters", es: "Pósters" },
     year: "2026",
     note: {
-      en: "A triptych for three Japanese icons — Supra, Impreza and Skyline — in a retro key.",
-      es: "Un tríptico para tres iconos japoneses —Supra, Impreza y Skyline— en clave retro.",
+      en: "I'm a huge fan of Japanese cars. My own take on retro posters for three I love: Supra, Impreza and Skyline.",
+      es: "Soy un gran fanático de los coches japoneses. Mi propia versión de pósters retro para tres que me encantan: Supra, Impreza y Skyline.",
     },
     images: [1, 2, 3].map((i) => W(`lab/jpn-drift-${i}.webp`)),
   },
@@ -73,8 +84,8 @@ export const series: Series[] = [
     kind: { en: "Type · Illustration", es: "Tipografía · Ilustración" },
     year: "2025",
     note: {
-      en: "Horse, wolf, eagle and leopard drawn with characters. A series about texture and experimental type.",
-      es: "Caballo, lobo, águila y leopardo dibujados con caracteres. Una serie sobre textura y tipografía experimental.",
+      en: "ASCII was one of the first ways images were drawn on screens. I wanted to play with it in a retro-futuristic key, and animals felt like a curious subject: horse, wolf, eagle and leopard.",
+      es: "El ASCII fue una de las primeras formas de dibujar imágenes en pantalla. Quise jugar con él en clave retrofuturista, y los animales me parecieron un tema curioso: caballo, lobo, águila y leopardo.",
     },
     images: [W("posters/05.webp")],
   },
@@ -84,10 +95,10 @@ export const series: Series[] = [
     kind: { en: "3D", es: "3D" },
     year: "2026",
     note: {
-      en: "A ceramics collection modelled in Blender and finished with AI: glazes, textures and imperfections.",
-      es: "Una colección de cerámica modelada en Blender y terminada con IA: esmaltes, texturas e imperfecciones.",
+      en: "I really like ceramics. A collection of pieces made with Blender through Claude's MCP: glazes, speckles and imperfections, up close.",
+      es: "Me gusta mucho la cerámica. Una colección de piezas hechas con Blender a través del MCP de Claude: esmaltes, motas e imperfecciones, de cerca.",
     },
-    images: [W("cutouts/ceramics.webp")],
+    images: [W("cutouts/ceramics.webp"), W("lab/ceramics-detail.webp")],
   },
   {
     slug: "objects",
@@ -95,10 +106,10 @@ export const series: Series[] = [
     kind: { en: "3D", es: "3D" },
     year: "2026",
     note: {
-      en: "Things that don't exist: a wax seal with my signature, a chrome keychain and a vulture on a house. Blender + AI.",
-      es: "Cosas que no existen: un sello de lacre con mi firma, un llavero cromado y un buitre sobre una casa. Blender + IA.",
+      en: "Experiments with my own name: a wax seal and a chrome keychain.",
+      es: "Experimentos con mi propio nombre: un sello de lacre y un llavero cromado.",
     },
-    images: [W("lab/03.webp"), W("lab/02.webp"), W("lab/01.webp")],
+    images: [W("lab/03.webp"), W("lab/02.webp")],
   },
 ];
 
@@ -115,14 +126,14 @@ export const wall = [
   { s: "ceramics", src: W("cutouts/ceramics.webp"), x: 1, y: 40, w: 9, d: 1.1, cut: true },
   { s: "any-kind-of-blues", src: W("lab/vinyl-miles-1.webp"), x: 14, y: 42, w: 11, d: 0.5 },
   { s: "animal-series", src: W("posters/05.webp"), x: 29, y: 44, w: 14, d: 0.6 },
-  { s: "objects", src: W("cutouts/vulture.webp"), x: 47, y: 38, w: 6, d: 1.2, cut: true },
+  { s: "inhabit", src: W("cutouts/vulture.webp"), x: 47, y: 38, w: 6, d: 1.2, cut: true },
   { s: "film-posters", src: W("posters/04.webp"), x: 57, y: 41, w: 8, d: 0.8 },
   { s: "boton-charro", src: W("lab/04.webp"), x: 69, y: 45, w: 13, d: 0.6 },
   { s: "boton-charro", src: W("cutouts/pendant.webp"), x: 86, y: 39, w: 5, d: 1.3, cut: true },
   { s: "film-posters", src: W("posters/03.webp"), x: 6, y: 74, w: 8, d: 0.7 },
   { s: "tutto-passa", src: W("lab/vinyl-tutto-passa-3.webp"), x: 19, y: 78, w: 14, d: 0.5 },
   { s: "any-kind-of-blues", src: W("lab/vinyl-miles-3.webp"), x: 38, y: 76, w: 12, d: 0.6 },
-  { s: "objects", src: W("lab/01.webp"), x: 55, y: 77, w: 13, d: 0.5 },
+  { s: "inhabit", src: W("lab/inhabit-house.webp"), x: 55, y: 75, w: 12, d: 0.5 },
   { s: "tutto-passa", src: W("lab/vinyl-tutto-passa-2.webp"), x: 71, y: 76, w: 15, d: 0.6 },
   { s: "jpn-drift", src: W("lab/jpn-drift-2.webp"), x: 89, y: 70, w: 8, d: 0.9 },
 ];

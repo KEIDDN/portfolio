@@ -1,79 +1,84 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { dict, t, type Locale } from "@/content/i18n";
 import { getProject, projects, workSlugs } from "@/content/projects";
+import { ratioOf } from "./Media";
 import ChapterHead from "./ChapterHead";
 import styles from "./Work.module.css";
 
-const LAYOUT = ["big", "small", "small", "big"] as const;
-
+/**
+ * Editorial list on the left, one sticky stage on the right.
+ * The stage always shows the whole cover (its real ratio) of the project you're reading.
+ */
 export default function Work({ locale }: { locale: Locale }) {
   const root = useRef<HTMLElement>(null);
+  const [active, setActive] = useState(0);
   const work = workSlugs.map((s) => getProject(s)!);
   const archive = projects.filter((p) => p.archive);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.utils.toArray<HTMLElement>("[data-card]").forEach((el) => {
-        const media = el.querySelector("[data-media]");
-        gsap.fromTo(media, { clipPath: "inset(12% 6% 12% 6%)" }, {
-          clipPath: "inset(0% 0% 0% 0%)",
-          duration: 1.6,
-          ease: "expo.out",
-          scrollTrigger: { trigger: el, start: "top 88%" },
-        });
-        gsap.from(el.querySelectorAll("[data-txt]"), {
-          yPercent: 110,
-          duration: 1.2,
-          ease: "expo.out",
-          stagger: 0.05,
-          delay: 0.15,
-          scrollTrigger: { trigger: el, start: "top 88%" },
-        });
+      gsap.utils.toArray<HTMLElement>("[data-item]").forEach((el, i) => {
+        ScrollTrigger.create({ trigger: el, start: "top 55%", end: "bottom 55%", onToggle: (s) => s.isActive && setActive(i) });
       });
       gsap.from("[data-arch]", { opacity: 0, y: 24, duration: 1, ease: "expo.out", stagger: 0.06, scrollTrigger: { trigger: "[data-arch]", start: "top 92%" } });
     }, root);
-
-    const vids = root.current!.querySelectorAll("video");
-    const io = new IntersectionObserver((es) =>
-      es.forEach((e) => {
-        const v = e.target as HTMLVideoElement;
-        if (e.isIntersecting) v.play().catch(() => {});
-        else v.pause();
-      }),
-    );
-    vids.forEach((v) => io.observe(v));
-    return () => {
-      ctx.revert();
-      io.disconnect();
-    };
+    return () => ctx.revert();
   }, []);
+
+  // only the visible cover plays
+  useEffect(() => {
+    root.current!.querySelectorAll<HTMLVideoElement>("[data-stage] video").forEach((v, i) => {
+      if (i === active) v.play().catch(() => {});
+      else v.pause();
+    });
+  }, [active]);
+
+  const cover = (p: (typeof work)[number]) =>
+    p.coverVideo ? (
+      <video src={p.coverVideo} poster={p.cover} muted loop playsInline preload="metadata" />
+    ) : (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img src={p.cover} alt={p.title} loading="lazy" />
+    );
 
   return (
     <section ref={root} id="work" className={styles.section}>
       <ChapterHead n="01" kicker={dict.ch1[locale]} title={dict.work[locale]} sub={dict.workSub[locale]} />
-      <div className={styles.grid}>
-        {work.map((p, i) => (
-          <Link key={p.slug} href={`/${locale}/work/${p.slug}`} className={`${styles.card} ${styles[LAYOUT[i]]}`} data-card>
-            <div className={styles.media} data-media>
-              {p.coverVideo ? (
-                <video src={p.coverVideo} poster={p.cover} muted loop playsInline preload="metadata" />
-              ) : (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={p.cover} alt={p.title} loading="lazy" />
-              )}
-              <span className={`mono ${styles.tag}`}>{p.label}</span>
-            </div>
-            <div className={styles.info}>
-              <span className="line-mask"><span data-txt className={`display ${styles.title}`}>{p.title}</span></span>
-              <span className="line-mask"><span data-txt className="mono muted">{p.year}</span></span>
-            </div>
-            <span className="line-mask"><span data-txt className={styles.summary}>{t(p.summary, locale)}</span></span>
-          </Link>
-        ))}
+      <div className={styles.layout}>
+        <div className={styles.list}>
+          {work.map((p, i) => (
+            <Link key={p.slug} href={`/${locale}/work/${p.slug}`} className={`${styles.item} ${active === i ? styles.on : ""}`} data-item>
+              <div className={styles.itemTop}>
+                <span className="mono muted">{String(i + 1).padStart(2, "0")}</span>
+                <span className="mono muted">{p.label} — {p.year}</span>
+              </div>
+              <span className={`display ${styles.title}`}>{p.title}</span>
+              <span className={styles.summary}>{t(p.summary, locale)}</span>
+              <span className={`mono ${styles.cta}`}>{dict.view[locale]} →</span>
+              <div className={styles.mobileCover} style={{ aspectRatio: ratioOf(p.cover, 16 / 9) }}>{cover(p)}</div>
+            </Link>
+          ))}
+        </div>
+        <div className={styles.stageWrap}>
+          <div className={styles.stage} data-stage>
+            {work.map((p, i) => (
+              <Link
+                key={p.slug}
+                href={`/${locale}/work/${p.slug}`}
+                className={`${styles.slide} ${active === i ? styles.slideOn : ""} img-grain`}
+                style={{ aspectRatio: ratioOf(p.cover, 16 / 9) }}
+                tabIndex={-1}
+              >
+                {cover(p)}
+              </Link>
+            ))}
+          </div>
+        </div>
       </div>
 
       <div className={styles.archive}>

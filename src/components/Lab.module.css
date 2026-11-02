@@ -123,56 +123,6 @@
   height: auto;
   border-radius: 3px;
 }
-.viewer {
-  position: fixed;
-  inset: 0;
-  z-index: 95;
-  overflow-y: auto;
-  background: var(--cream);
-  color: var(--ink);
-  padding: 3vh var(--gutter) 12vh;
-  overscroll-behavior: contain;
-}
-.vHead {
-  position: sticky;
-  top: 0;
-  display: flex;
-  justify-content: space-between;
-  padding: 1vh 0 2vh;
-  z-index: 2;
-}
-.vTitle {
-  font-size: clamp(56px, 10vw, 190px);
-  margin-top: 6vh;
-}
-.vNote {
-  max-width: 46ch;
-  font-size: clamp(17px, 1.4vw, 22px);
-  line-height: 1.42;
-  letter-spacing: -0.015em;
-  margin: 4vh 0 10vh auto;
-}
-.vImages {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8vh;
-}
-.vImages > div {
-  width: min(100%, 1400px);
-}
-.vImages img {
-  width: 100%;
-  height: auto;
-  max-height: 88vh;
-  object-fit: contain;
-}
-.vImages > .vCut {
-  width: min(70%, 900px);
-}
-.vCut img {
-  filter: drop-shadow(0 30px 40px rgba(40, 30, 20, 0.22));
-}
 @media (max-width: 800px) {
   .view {
     height: auto;
@@ -209,8 +159,5 @@
   .srow > :nth-child(3),
   .srow > :nth-child(4) {
     display: none;
-  }
-  .vImages > .vCut {
-    width: 100%;
   }
 }

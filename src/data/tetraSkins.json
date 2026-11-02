@@ -1,0 +1,242 @@
+[
+ {
+  "id": "studio",
+  "name": "Studio",
+  "en": "Continuous pieces, lit from above.",
+  "es": "Piezas continuas, iluminadas desde arriba.",
+  "colors": {
+   "I": "#4cc3f2",
+   "O": "#f6c445",
+   "T": "#a46ef0",
+   "S": "#43c776",
+   "Z": "#f0595a",
+   "J": "#4a78f5",
+   "L": "#f58b42",
+   "garbage": "#3a3a3f"
+  }
+ },
+ {
+  "id": "clay",
+  "name": "Clay",
+  "en": "Soft-touch matte pastels.",
+  "es": "Pasteles mate de tacto suave.",
+  "colors": {
+   "I": "#8fd3ea",
+   "O": "#f3d488",
+   "T": "#c6a9ee",
+   "S": "#9cd8a7",
+   "Z": "#f1a39d",
+   "J": "#9bb4f1",
+   "L": "#f3ba8b",
+   "garbage": "#56565c"
+  }
+ },
+ {
+  "id": "gem",
+  "name": "Gem",
+  "en": "Cut stones with facets and glints.",
+  "es": "Piedras talladas con facetas y destellos.",
+  "colors": {
+   "I": "#2ec5f0",
+   "O": "#ffc21a",
+   "T": "#a347f0",
+   "S": "#22c35e",
+   "Z": "#f0303d",
+   "J": "#2f62f0",
+   "L": "#ff7a1a",
+   "garbage": "#55555c"
+  }
+ },
+ {
+  "id": "crystal",
+  "name": "Crystal",
+  "en": "Prismatic glass with an iridescent rim.",
+  "es": "Cristal prism\u00e1tico con un borde iridiscente.",
+  "colors": {
+   "I": "#5fd8ff",
+   "O": "#ffd95a",
+   "T": "#b98cff",
+   "S": "#5fe8a0",
+   "Z": "#ff6f86",
+   "J": "#6d8fff",
+   "L": "#ffa25f",
+   "garbage": "#8a8f9c"
+  }
+ },
+ {
+  "id": "neon",
+  "name": "Neon",
+  "en": "One glowing tube of light per piece.",
+  "es": "Un tubo de luz por pieza.",
+  "colors": {
+   "I": "#5ce1ff",
+   "O": "#ffe14d",
+   "T": "#c86bff",
+   "S": "#4dff9a",
+   "Z": "#ff4d6d",
+   "J": "#4d7cff",
+   "L": "#ff9f4d",
+   "garbage": "#8a8a94"
+  }
+ },
+ {
+  "id": "aurora",
+  "name": "Aurora",
+  "en": "Bioluminescent cells that slowly breathe.",
+  "es": "C\u00e9lulas bioluminiscentes que respiran despacio.",
+  "colors": {
+   "I": "#4ff0ff",
+   "O": "#ffe680",
+   "T": "#d38bff",
+   "S": "#5dffb0",
+   "Z": "#ff7aa8",
+   "J": "#6f8cff",
+   "L": "#ffb36b",
+   "garbage": "#7d8aa0"
+  }
+ },
+ {
+  "id": "ember",
+  "name": "Ember",
+  "en": "A molten filament inside a dark shell.",
+  "es": "Un filamento fundido dentro de una carcasa oscura.",
+  "colors": {
+   "I": "#56d8ff",
+   "O": "#ffd23f",
+   "T": "#c77dff",
+   "S": "#5ef08a",
+   "Z": "#ff5b5b",
+   "J": "#5b8cff",
+   "L": "#ff9f43",
+   "garbage": "#6b5f58"
+  }
+ },
+ {
+  "id": "bevel",
+  "name": "Bevel",
+  "en": "The classic beveled mino of modern online play.",
+  "es": "El mino biselado cl\u00e1sico del juego online moderno.",
+  "colors": {
+   "I": "#3dc9b0",
+   "O": "#e8c13a",
+   "T": "#b04ae0",
+   "S": "#7ac83a",
+   "Z": "#e04a4f",
+   "J": "#4a5ae0",
+   "L": "#e8833a",
+   "garbage": "#6a6a70"
+  }
+ },
+ {
+  "id": "wire",
+  "name": "Wire",
+  "en": "Isometric wireframe cubes.",
+  "es": "Cubos isom\u00e9tricos de alambre.",
+  "colors": {
+   "I": "#5ce1ff",
+   "O": "#ffe14d",
+   "T": "#c86bff",
+   "S": "#4dff9a",
+   "Z": "#ff4d6d",
+   "J": "#4d7cff",
+   "L": "#ff9f4d",
+   "garbage": "#8a8a94"
+  }
+ },
+ {
+  "id": "nes",
+  "name": "NES",
+  "en": "Pixel blocks. Colors shift with every level.",
+  "es": "Bloques de p\u00edxel. Los colores cambian en cada nivel.",
+  "colors": {
+   "T": "#0058f8",
+   "O": "#0058f8",
+   "I": "#0058f8",
+   "J": "#0058f8",
+   "S": "#0058f8",
+   "L": "#3cbcfc",
+   "Z": "#3cbcfc",
+   "garbage": "#7c7c7c"
+  }
+ },
+ {
+  "id": "gameboy",
+  "name": "Game Boy",
+  "en": "Four greens. A pattern for every piece.",
+  "es": "Cuatro verdes. Un patr\u00f3n para cada pieza.",
+  "colors": {
+   "I": "#8bac0f",
+   "O": "#9bbc0f",
+   "T": "#306230",
+   "S": "#8bac0f",
+   "Z": "#9bbc0f",
+   "J": "#8bac0f",
+   "L": "#9bbc0f",
+   "garbage": "#306230"
+  }
+ },
+ {
+  "id": "mono",
+  "name": "Mono",
+  "en": "Luminance only. Continuous, near-square.",
+  "es": "Solo luminancia. Continuo, casi cuadrado.",
+  "colors": {
+   "I": "#f5f5f7",
+   "O": "#dcdce0",
+   "T": "#bfbfc5",
+   "S": "#a3a3aa",
+   "Z": "#86868e",
+   "J": "#6b6b73",
+   "L": "#55555c",
+   "garbage": "#2a2a2e"
+  }
+ },
+ {
+  "id": "glass",
+  "name": "Liquid Glass",
+  "en": "Thick tinted glass with a living rim of light.",
+  "es": "Cristal grueso tintado con un borde de luz vivo.",
+  "colors": {
+   "I": "#5ad2ff",
+   "O": "#ffd060",
+   "T": "#b78bff",
+   "S": "#5fe3a1",
+   "Z": "#ff6b7f",
+   "J": "#6a8dff",
+   "L": "#ffa25c",
+   "garbage": "#8c919c"
+  }
+ },
+ {
+  "id": "brut",
+  "name": "Brut",
+  "en": "Raw cast concrete. Formwork joints and tie holes.",
+  "es": "Hormig\u00f3n visto. Juntas de encofrado y agujeros de anclaje.",
+  "colors": {
+   "I": "#8aa2aa",
+   "O": "#c9b48a",
+   "T": "#958aa0",
+   "S": "#8b9e82",
+   "Z": "#b07d70",
+   "J": "#727f97",
+   "L": "#bb9673",
+   "garbage": "#4a4a4c"
+  }
+ },
+ {
+  "id": "corten",
+  "name": "Corten",
+  "en": "Weathering steel. Every tone of rust.",
+  "es": "Acero corten. Todos los tonos del \u00f3xido.",
+  "colors": {
+   "I": "#ec8a45",
+   "O": "#f9d39b",
+   "T": "#b24d1f",
+   "S": "#d0662a",
+   "Z": "#8f3716",
+   "J": "#6b2a12",
+   "L": "#f5a83e",
+   "garbage": "#3b2419"
+  }
+ }
+]

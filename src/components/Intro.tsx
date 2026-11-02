@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { dict, type Locale } from "@/content/i18n";
@@ -26,7 +27,16 @@ export default function Intro({ locale }: { locale: Locale }) {
           <span key={i} data-w>{w} </span>
         ))}
       </p>
-      <p data-small className={styles.small}>{dict.introSmall[locale]}</p>
+      <p data-small className={styles.small}>
+        {dict.introSmall[locale].split("OXIA Labs").map((part, i, arr) => (
+          <span key={i}>
+            {part}
+            {i < arr.length - 1 && (
+              <Link href={`/${locale}/oxia-labs`} className={styles.link}>OXIA Labs ↗</Link>
+            )}
+          </span>
+        ))}
+      </p>
     </section>
   );
 }

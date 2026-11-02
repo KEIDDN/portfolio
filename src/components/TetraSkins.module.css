@@ -1,0 +1,72 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 10vh;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 3vh 16px;
+}
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.img {
+  overflow: hidden;
+  border-radius: 4px;
+  background: #0a0a0b;
+}
+.img img {
+  width: 100%;
+  height: auto;
+  transition: transform 1.2s var(--ease);
+}
+.card:hover .img img {
+  transform: scale(1.06);
+}
+.card figcaption {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 10px;
+  align-items: baseline;
+}
+.name {
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: -0.04em;
+}
+.desc {
+  grid-column: 2;
+  font-size: 13px;
+  line-height: 1.35;
+  color: color-mix(in srgb, var(--fg) 55%, transparent);
+}
+.palette {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.palette > div {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+.swatch {
+  aspect-ratio: 1 / 1.15;
+  border-radius: 6px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: rgba(0, 0, 0, 0.72);
+}
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .palette > div {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}

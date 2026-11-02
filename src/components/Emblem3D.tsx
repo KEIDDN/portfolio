@@ -19,9 +19,9 @@ function useEmblemGeometry() {
     const geo = new THREE.ExtrudeGeometry(shapes, {
       depth: 0.16,
       bevelEnabled: true,
-      bevelThickness: 0.035,
-      bevelSize: 0.022,
-      bevelSegments: 6,
+      bevelThickness: 0.04,
+      bevelSize: 0.026,
+      bevelSegments: 10,
       curveSegments: 4,
     });
     geo.center();
@@ -59,7 +59,7 @@ function Emblem({ material, scale = 1.7 }: { material: MaterialName; scale?: num
           color="#ffffff"
         />
       ) : material === "chrome" ? (
-        <meshPhysicalMaterial color="#ffffff" metalness={1} roughness={0.08} clearcoat={1} clearcoatRoughness={0.05} envMapIntensity={1.6} />
+        <meshPhysicalMaterial color="#f4f4f2" metalness={1} roughness={0.035} clearcoat={1} clearcoatRoughness={0.02} envMapIntensity={1.45} />
       ) : material === "steel" ? (
         <meshPhysicalMaterial color="#c9ccd1" metalness={1} roughness={0.32} anisotropy={0.9} anisotropyRotation={Math.PI / 2} envMapIntensity={1.8} />
       ) : (
@@ -74,26 +74,22 @@ export default function Emblem3D({ material, scale }: { material: MaterialName; 
     <Canvas
       dpr={[1, 1.75]}
       camera={{ position: [0, 0, 4.2], fov: 35 }}
-      gl={{ antialias: true, alpha: true, toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.25 }}
+      gl={{ antialias: true, alpha: true, toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.1 }}
     >
-      <ambientLight intensity={0.4} />
-      <directionalLight position={[3, 4, 5]} intensity={1.4} />
+      <ambientLight intensity={0.15} />
       <Float speed={1.4} rotationIntensity={0.25} floatIntensity={0.6}>
         <Emblem material={material} scale={scale} />
       </Float>
-      <Environment resolution={256}>
-        <color attach="background" args={["#262626"]} />
-        <Lightformer intensity={3} rotation-x={Math.PI / 2} position={[0, 5, -9]} scale={[10, 10, 1]} />
-        <Lightformer intensity={2.5} position={[0, 0, 8]} scale={[6, 3, 1]} />
-        <group rotation={[Math.PI / 2, 1, 0]}>
-          {[2, 0, 2, 0, 2, 0, 2, 0].map((x, i) => (
-            <Lightformer key={i} intensity={3} rotation={[Math.PI / 4, 0, 0]} position={[x, 4, i * 4]} scale={[4, 1, 1]} />
-          ))}
-          <Lightformer intensity={1.6} rotation-y={Math.PI / 2} position={[-5, 1, -1]} scale={[50, 2, 1]} />
-          <Lightformer intensity={1.6} rotation-y={Math.PI / 2} position={[-5, -1, -1]} scale={[50, 2, 1]} />
-          <Lightformer intensity={1.6} rotation-y={-Math.PI / 2} position={[10, 1, 0]} scale={[50, 2, 1]} />
-        </group>
-        <Lightformer form="ring" color="#c4161c" intensity={3} position={[-6, -4, 4]} scale={4} onUpdate={(self) => self.lookAt(0, 0, 0)} />
+      {/* studio chrome: a dark room with long, crisp softbox strips, black and white only */}
+      <Environment resolution={512}>
+        <color attach="background" args={["#0b0b0b"]} />
+        <Lightformer intensity={4} rotation-x={Math.PI / 2} position={[0, 6, -2]} scale={[12, 1.2, 1]} />
+        <Lightformer intensity={2.2} rotation-x={Math.PI / 2} position={[0, 6, 3]} scale={[12, 0.5, 1]} />
+        <Lightformer intensity={3} position={[0, 0, 9]} scale={[1.2, 10, 1]} />
+        <Lightformer intensity={2.6} rotation-y={Math.PI / 2} position={[-7, 0.5, 0]} scale={[14, 0.9, 1]} />
+        <Lightformer intensity={2.6} rotation-y={-Math.PI / 2} position={[7, -0.5, 0]} scale={[14, 0.9, 1]} />
+        <Lightformer intensity={1.2} rotation-x={-Math.PI / 2} position={[0, -6, 0]} scale={[10, 10, 1]} color="#9a9a9a" />
+        <Lightformer form="ring" intensity={2} position={[4, 3, 6]} scale={2.4} onUpdate={(self) => self.lookAt(0, 0, 0)} />
       </Environment>
     </Canvas>
   );

@@ -1,5 +1,5 @@
 .intro {
-  padding: 26vh var(--gutter) 24vh;
+  padding: 26vh var(--gutter) 16vh;
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   gap: 6vh 16px;
@@ -26,4 +26,12 @@
   .small {
     grid-column: 1;
   }
+}
+.link {
+  color: var(--fg);
+  border-bottom: 1px solid currentColor;
+  transition: opacity 0.4s;
+}
+.link:hover {
+  opacity: 0.6;
 }

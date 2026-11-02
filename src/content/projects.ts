@@ -22,6 +22,7 @@ export type Block =
   | { kind: "image"; src: string; alt: string; layout?: "full" | "wide" | "inset" }
   | { kind: "pair"; srcs: [string, string]; alt: string }
   | { kind: "icons"; title: L; body: L }
+  | { kind: "skins"; title: L; body: L }
   | { kind: "details"; items: { label: L; body: L }[] }
   | { kind: "chapter"; title: string; kicker: string; body: L; theme: Theme }
   | { kind: "statement"; body: L };
@@ -55,7 +56,7 @@ export const projects: Project[] = [
     type: { en: "Audiovisual game", es: "Juego audiovisual" },
     role: { en: "Product design, UX/UI, visual system, music", es: "Diseño de producto, UX/UI, sistema visual, música" },
     platforms: { en: "Web, macOS, Windows, mobile", es: "Web, macOS, Windows y móvil" },
-    tools: "Figma, Three.js, Ableton",
+    tools: "Figma, Three.js, Web Audio, Ableton",
     summary: {
       en: "My take on the perfect game: falling blocks and electronic music that doesn't play over you — it plays with every move.",
       es: "Mi versión del juego perfecto: bloques que caen y música electrónica que no suena de fondo, sino con cada movimiento.",
@@ -69,8 +70,8 @@ export const projects: Project[] = [
         kind: "idea",
         title: { en: "I've always played with music on.", es: "Siempre he jugado con música." },
         body: {
-          en: "To me, Tetris is the perfect game, and I've always played it with electronic music on. I felt it deserved a modern redesign, so I made one as a personal project — with the music not in the background, but part of the game. Stack, hold, clear. Tension and release, like a set that pulls you into a trance.",
-          es: "Para mí el Tetris es el juego perfecto, y siempre lo he jugado con música electrónica de fondo. Sentía que le faltaba un rediseño moderno y quise hacerlo como proyecto personal: que la música no sonara de fondo, sino que fuera parte del juego. Apilar, aguantar, limpiar líneas. Tensión y liberación, como una sesión que te mete en trance.",
+          en: "I'm a Tetris fanatic. To me it's the perfect game, but the way we play it online feels dated in many ways. I wanted a very polished design experience that also merged with music — because blocks and electronic music share a language: stack, hold, clear. Tension and release, like a set that pulls you into a trance.",
+          es: "Soy un fanático del Tetris. Para mí es el juego perfecto, pero la manera de jugarlo en internet se ha quedado anticuada en muchos sentidos. Quería una experiencia de diseño muy pulida que además se uniera a la música, porque los bloques y la música electrónica hablan el mismo idioma: apilar, aguantar, limpiar. Tensión y liberación, como una sesión que te mete en trance.",
         },
       },
       {
@@ -86,6 +87,17 @@ export const projects: Project[] = [
       },
       {
         kind: "moment",
+        title: { en: "You don't play over the music", es: "No juegas encima de la música" },
+        body: {
+          en: "You play it. Stack high and the mix tenses up; clear four lines and the drop lands.",
+          es: "La juegas. Si apilas alto, la mezcla se tensa; si limpias cuatro líneas, llega el drop.",
+        },
+        media: W("tetra/v/listen.mp4"),
+        poster: W("tetra/v/listen.webp"),
+        sound: true,
+      },
+      {
+        kind: "moment",
         title: { en: "Every skin is a room", es: "Cada skin es una sala" },
         body: {
           en: "Fifteen skins, each with its own materials, light and electronic track. Changing skin means changing room.",
@@ -96,11 +108,19 @@ export const projects: Project[] = [
         sound: true,
       },
       {
+        kind: "skins",
+        title: { en: "Fifteen skins, fifteen rooms", es: "Quince skins, quince salas" },
+        body: {
+          en: "Rendered right here with the game's own code: every skin paints its pieces in its own way, from soft clay to weathering steel.",
+          es: "Renderizadas aquí mismo con el código real del juego: cada skin pinta sus piezas a su manera, desde la arcilla suave hasta el acero corten.",
+        },
+      },
+      {
         kind: "moment",
         title: { en: "Playing is listening", es: "Jugar es escuchar" },
         body: {
-          en: "Every rotation, drop and clear lands inside the track, with spatial audio. The background reacts to the game, like playing with the lights off.",
-          es: "Cada giro, caída y línea suena dentro de la pista, con audio espacial. El fondo reacciona a la partida, como jugar con las luces apagadas.",
+          en: "The game reacts to the music and to your moves. Every rotation, drop and clear lands inside the track, placed around you with binaural audio, and the background breathes with the game.",
+          es: "El juego reacciona a la música y a tus movimientos. Cada giro, caída y línea suena dentro de la pista, colocada a tu alrededor con audio binaural, y el fondo respira con la partida.",
         },
         media: W("tetra/v/game.mp4"),
         poster: W("tetra/v/game.webp"),
@@ -161,8 +181,8 @@ export const projects: Project[] = [
           {
             label: { en: "Sound", es: "Sonido" },
             body: {
-              en: "One track per skin, effects mixed in time and spatial audio. Best with headphones.",
-              es: "Un tema por skin, efectos mezclados a tempo y audio espacial. Mejor con auriculares.",
+              en: "Electronic music I produced, one track per skin, and a spatial, binaural audio engine built for the game. Best with headphones.",
+              es: "Música electrónica producida por mí, un tema por skin, y un motor de audio espacial y binaural hecho para el juego. Mejor con auriculares.",
             },
           },
           {
@@ -187,8 +207,8 @@ export const projects: Project[] = [
     label: "OXIA Labs",
     type: { en: "Wellbeing app · Proof of concept", es: "App de bienestar · Prueba de concepto" },
     role: { en: "Product design, UX/UI, visual direction", es: "Diseño de producto, UX/UI, dirección visual" },
-    platforms: { en: "Mobile (web prototype)", es: "Móvil (prototipo web)" },
-    tools: "Figma, Blender, Three.js",
+    platforms: { en: "Web app, installable on iPhone (PWA)", es: "Web app instalable en el iPhone (PWA)" },
+    tools: "Figma, React, Three.js, TypeScript",
     summary: {
       en: "A wellbeing app where looking after yourself grows a garden.",
       es: "Una app de bienestar en la que cuidarte hace crecer un jardín.",
@@ -201,8 +221,8 @@ export const projects: Project[] = [
         kind: "idea",
         title: { en: "We forget to stop.", es: "Se nos olvida parar." },
         body: {
-          en: "We rush through the day and rarely stop to look after ourselves. I wanted an app that invites you to do it without pressure: no streaks to break, no red badges. The metaphor is a garden. Every moment you give yourself makes it grow, and if one day you can't, nothing withers. It was my first app designed for mobile.",
-          es: "Vamos todo el día corriendo y casi nunca paramos a cuidarnos. Quería una app que te invitara a hacerlo sin presión: sin rachas que se rompen ni avisos en rojo. La metáfora es un jardín. Cada momento que te dedicas lo hace crecer, y si un día no puedes, no se marchita. Fue mi primera app pensada para móvil.",
+          en: "It came from something I lived through. Sometimes it's hard to stop, and we neglect ourselves — the same way a garden gets ugly when nobody looks after it. Tendu invites you to give yourself some time and watch both you and your garden bloom. No streaks to break, no red badges: if one day you can't, nothing withers. It was my first app designed for mobile.",
+          es: "Surgió de algo que viví. A veces nos cuesta parar y nos descuidamos, igual que un jardín que se pone feo cuando nadie lo cuida. Tendu te invita a dedicarte un poco de tiempo y ver cómo floreces tú y florece tu jardín. Sin rachas que se rompen ni avisos en rojo: si un día no puedes, no se marchita nada. Fue mi primera app pensada para móvil.",
         },
       },
       {
@@ -271,19 +291,22 @@ export const projects: Project[] = [
         kind: "details",
         items: [
           {
-            label: { en: "Colour", es: "Color" },
-            body: { en: "Warm paper tones and a single green.", es: "Tonos cálidos de papel y un solo verde." },
-          },
-          {
-            label: { en: "Form", es: "Forma" },
+            label: { en: "Wellbeing before engagement", es: "Bienestar antes que engagement" },
             body: {
-              en: "A real-time low-poly diorama. Panels float over the garden, so you never leave it.",
-              es: "Un diorama low-poly en tiempo real. Los paneles flotan sobre el jardín para que nunca salgas de él.",
+              en: "Progress without guilt: you never lose anything for being away. Coins and progress are never sold.",
+              es: "Progreso sin culpa: no pierdes nada por ausentarte. Nunca se venden monedas ni progreso.",
             },
           },
           {
-            label: { en: "Tone", es: "Tono" },
-            body: { en: "Short, kind words. No guilt.", es: "Textos cortos y amables. Nada de culpa." },
+            label: { en: "Private", es: "Privado" },
+            body: { en: "The journal is yours and is never shared.", es: "El diario es tuyo y jamás se comparte." },
+          },
+          {
+            label: { en: "Look and feel", es: "Estética" },
+            body: {
+              en: "A floating low-poly garden cube, Apple-like calm and Liquid Glass panels that float over it, so you never leave the garden.",
+              es: "Un jardín-cubo flotante low poly, la calma de Apple y paneles de Liquid Glass que flotan sobre él para que nunca salgas del jardín.",
+            },
           },
         ],
       },
@@ -310,9 +333,9 @@ export const projects: Project[] = [
     year: "2026",
     label: "OXIA Labs",
     type: { en: "Audio plugins", es: "Plugins de audio" },
-    role: { en: "Product design, UI, 3D, packaging", es: "Diseño de producto, UI, 3D, packaging" },
+    role: { en: "Product design, UI, sound design, 3D", es: "Diseño de producto, UI, diseño de sonido, 3D" },
     platforms: { en: "Any DAW, as plugins", es: "Cualquier DAW, como plugin" },
-    tools: "Figma, Blender",
+    tools: "Figma, Blender, C++ / JUCE",
     summary: {
       en: "Two real audio plugins: a tape machine you can play and a reverb you can see.",
       es: "Dos plugins de audio reales: una máquina de cinta que se toca y una reverb que se ve.",
@@ -324,8 +347,8 @@ export const projects: Project[] = [
         kind: "idea",
         title: { en: "Plugins that feel like instruments.", es: "Plugins que se sienten como instrumentos." },
         body: {
-          en: "I've been producing music for over ten years, and a lot of plugins look like spreadsheets with knobs. I wanted to design the opposite: interfaces that tell you how something will sound before you hear it. Both work today inside any DAW.",
-          es: "Llevo más de diez años produciendo música y muchos plugins parecen hojas de cálculo con potenciómetros. Quise diseñar lo contrario: interfaces que te dicen cómo va a sonar algo antes de oírlo. Los dos funcionan hoy dentro de cualquier DAW.",
+          en: "I wanted my own plugins, to try ideas I couldn't find anywhere else and to experiment with audio technology. I've been producing music for over ten years, self-taught, so I designed both the interface and the sound. They're built in C++ with JUCE and work in any DAW.",
+          es: "Quería mis propios plugins, para probar ideas que no encontraba en otros y experimentar con tecnología de audio. Llevo más de diez años produciendo música, de forma autodidacta, así que diseñé tanto la interfaz como el sonido. Están hechos en C++ con JUCE y funcionan en cualquier DAW.",
         },
       },
       {
@@ -333,8 +356,8 @@ export const projects: Project[] = [
         title: "Unwind",
         kicker: "Tape Manipulation Instrument",
         body: {
-          en: "A reel-to-reel machine. Wow, flutter, age and saturation are physical controls, and stop, play and reverse work like a real transport. Off-white hardware and a single orange light.",
-          es: "Una máquina de bobinas. Wow, flutter, age y saturation son controles físicos, y stop, play y reverse funcionan como un transporte real. Hardware blanco roto y una sola luz naranja.",
+          en: "A tape machine with a lo-fi soul. I use it all the time on guitars, but it works on drums and anything else. Wow, flutter, age and saturation are physical controls; stop, play and reverse work like a real transport.",
+          es: "Una tape machine con alma lo-fi. La uso muchísimo en guitarras, pero funciona en baterías y en cualquier cosa. Wow, flutter, age y saturation son controles físicos; stop, play y reverse funcionan como un transporte real.",
         },
         theme: { bg: "#ecebe6", fg: "#141414", accent: "#e8601c", muted: "#8b8984" },
       },
@@ -345,8 +368,8 @@ export const projects: Project[] = [
         title: "Dark Matter",
         kicker: "Space Reverb",
         body: {
-          en: "The reverb tail is a nebula at the centre of the interface. Size, decay and diffusion bend it in real time: you see the room before you hear it.",
-          es: "La cola de la reverb es una nebulosa en el centro de la interfaz. Size, decay y diffusion la deforman en tiempo real: ves la sala antes de oírla.",
+          en: "A very spatial reverb, built on complex algorithms, made to take you somewhere else. Its tail is a nebula at the centre of the interface that size, decay and diffusion bend in real time.",
+          es: "Una reverb muy espacial, construida con algoritmos complejos, pensada para llevarte a otro mundo. Su cola es una nebulosa en el centro de la interfaz que size, decay y diffusion deforman en tiempo real.",
         },
         theme: { bg: "#0b0a10", fg: "#efeef4", accent: "#a98bff", muted: "#7c7a88" },
       },
@@ -378,8 +401,8 @@ export const projects: Project[] = [
         kind: "idea",
         title: { en: "Veritas: Latin for truth.", es: "Veritas: verdad, en latín." },
         body: {
-          en: "In 2024 I wanted to understand how a real product is designed, not just a brand. I looked at modern digital banks and imagined one with a single promise: no small print. Brand and app were designed as one system.",
-          es: "En 2024 quise entender cómo se diseña un producto de verdad, no solo una marca. Me fijé en los bancos digitales modernos y planteé uno con una sola promesa: nada de letra pequeña. La marca y la app se diseñaron como un mismo sistema.",
+          en: "One of my first projects, and my first real approach to user experience in Figma. I looked at modern digital banks and imagined one with a single promise: no small print. It's a concept — neither the bank nor the app exist — but I'm very fond of it, because it's where I truly got involved with a product for the first time.",
+          es: "Uno de mis primeros proyectos y mi primer acercamiento de verdad a la experiencia de usuario en Figma. Me fijé en los bancos digitales modernos y planteé uno con una sola promesa: nada de letra pequeña. Es conceptual, ni el banco ni la app existen, pero le tengo mucho cariño porque fue donde me impliqué de verdad con un producto por primera vez.",
         },
       },
       {
@@ -451,8 +474,17 @@ export const projects: Project[] = [
 
 export const workSlugs = ["tetra", "tendu", "unwind-dark-matter", "veritas"];
 export const getProject = (slug: string) => projects.find((p) => p.slug === slug);
-export const nextProject = (slug: string) => {
-  const order = [...workSlugs, "more-vintage"];
-  const i = order.indexOf(slug);
-  return getProject(order[(i + 1) % order.length])!;
+/** The story continues after the last project: Veritas (and the archive) lead to OXIA Labs. */
+export const nextAfter = (slug: string, locale: "en" | "es") => {
+  const i = workSlugs.indexOf(slug);
+  if (i >= 0 && i < workSlugs.length - 1) {
+    const p = getProject(workSlugs[i + 1])!;
+    return { href: `/${locale}/work/${p.slug}`, title: p.title, kicker: locale === "en" ? "Next project" : "Siguiente proyecto", img: p.cover };
+  }
+  return {
+    href: `/${locale}/oxia-labs`,
+    title: "OXIA Labs",
+    kicker: locale === "en" ? "Next — 02 · The studio" : "Siguiente — 02 · El estudio",
+    img: "/work/oxia/v-chrome.webp",
+  };
 };

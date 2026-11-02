@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { locales, t, type Locale } from "@/content/i18n";
-import { getProject, nextProject, projects } from "@/content/projects";
+import { getProject, nextAfter, projects } from "@/content/projects";
 import CaseStudy from "@/components/CaseStudy";
 import Footer from "@/components/Footer";
 
@@ -22,7 +22,7 @@ export default async function Page({ params }: { params: Promise<{ lang: string;
   if (!p) notFound();
   return (
     <main>
-      <CaseStudy project={p} next={nextProject(slug)} locale={lang as Locale} />
+      <CaseStudy project={p} next={nextAfter(slug, lang as Locale)} locale={lang as Locale} />
       <Footer locale={lang as Locale} />
     </main>
   );
