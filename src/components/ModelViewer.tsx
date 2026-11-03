@@ -224,7 +224,7 @@ export default function ModelViewer({
           frameloop={visible ? "always" : "never"}
           dpr={[1, 1.75]}
           camera={{ position: [0, 0, 4.4], fov: 32 }}
-          gl={{ antialias: true, alpha: true, toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.05 }}
+          gl={{ antialias: true, alpha: true, preserveDrawingBuffer: true, toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.05 }}
         >
           <Invalidate run={visible} />
           <Lights look={look} />

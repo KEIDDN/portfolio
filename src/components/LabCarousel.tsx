@@ -5,9 +5,11 @@ import { Environment, Lightformer, useTexture } from "@react-three/drei";
 import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import * as THREE from "three";
+import gsap from "gsap";
 import { t, type Locale } from "@/content/i18n";
 import { labIntro, series } from "@/content/lab";
 import { usePreparedModel } from "./ModelViewer";
+import { MODELS } from "@/content/models";
 import { useLenis } from "./SmoothScroll";
 import LabRoom from "./LabRoom";
 import styles from "./LabCarousel.module.css";
@@ -99,6 +101,36 @@ function Lightbox({ src, p }: { src: string; p: React.RefObject<Presence> }) {
   );
 }
 
+/** Concentric grooves, drawn once: they break the disc's reflection into rings, like vinyl does. */
+let groovesTex: THREE.CanvasTexture | null = null;
+function grooves() {
+  if (groovesTex) return groovesTex;
+  const c = document.createElement("canvas");
+  c.width = c.height = 1024;
+  const g = c.getContext("2d")!;
+  g.fillStyle = "#808080";
+  g.fillRect(0, 0, 1024, 1024);
+  for (let r = 175; r < 506; r += 1.6) {
+    const v = 96 + Math.floor(Math.random() * 70);
+    g.strokeStyle = `rgb(${v},${v},${v})`;
+    g.lineWidth = 0.9;
+    g.beginPath();
+    g.arc(512, 512, r, 0, Math.PI * 2);
+    g.stroke();
+  }
+  // the run-out and lead-in: two smooth bands
+  for (const [a, b] of [[175, 190], [490, 506]]) {
+    g.strokeStyle = "#5a5a5a";
+    g.lineWidth = b - a;
+    g.beginPath();
+    g.arc(512, 512, (a + b) / 2, 0, Math.PI * 2);
+    g.stroke();
+  }
+  groovesTex = new THREE.CanvasTexture(c);
+  groovesTex.anisotropy = 8;
+  return groovesTex;
+}
+
 /** A record: the sleeve with its cover, and the disc sliding out and turning when it's in front. */
 function Vinyl({ src, disc, p }: { src: string; disc: string; p: React.RefObject<Presence> }) {
   const { tex } = useImage(src);
@@ -116,7 +148,17 @@ function Vinyl({ src, disc, p }: { src: string; disc: string; p: React.RefObject
         <group ref={spin}>
           <mesh rotation-x={Math.PI / 2}>
             <cylinderGeometry args={[0.53, 0.53, 0.008, 96]} />
-            <meshPhysicalMaterial color={disc} roughness={0.32} metalness={0.15} clearcoat={1} clearcoatRoughness={0.12} />
+            <meshPhysicalMaterial
+              color={disc}
+              roughness={0.42}
+              roughnessMap={grooves()}
+              bumpMap={grooves()}
+              bumpScale={0.6}
+              metalness={0.2}
+              clearcoat={0.6}
+              clearcoatRoughness={0.2}
+              envMapIntensity={1.4}
+            />
           </mesh>
           <mesh position={[0, 0, 0.0045]}>
             <circleGeometry args={[0.17, 64]} />
@@ -133,8 +175,11 @@ function Vinyl({ src, disc, p }: { src: string; disc: string; p: React.RefObject
   );
 }
 
-function Model({ k }: { k: NonNullable<(typeof series)[number]["models"]>[number] }) {
+function Model({ k, onReady }: { k: NonNullable<(typeof series)[number]["models"]>[number]; onReady?: () => void }) {
   const obj = usePreparedModel(k);
+  useEffect(() => {
+    onReady?.();
+  }, [onReady]);
   return (
     <group position={[0, 0.72, 0]} scale={0.64}>
       <primitive object={obj} />
@@ -143,7 +188,7 @@ function Model({ k }: { k: NonNullable<(typeof series)[number]["models"]>[number
 }
 
 /** One series: a plinth, a ring of its own light at the top edge, and its piece turning on it. */
-function Pedestal({ k, sh, near, onPick }: { k: number; sh: React.RefObject<Shared>; near: boolean; onPick: (k: number) => void }) {
+function Pedestal({ k, sh, near, onPick, onArrive }: { k: number; sh: React.RefObject<Shared>; near: boolean; onPick: (k: number) => void; onArrive?: () => void }) {
   const s = series[k];
   const g = useRef<THREE.Group>(null);
   const piece = useRef<THREE.Group>(null);
@@ -151,6 +196,9 @@ function Pedestal({ k, sh, near, onPick }: { k: number; sh: React.RefObject<Shar
   const col = useMemo(() => new THREE.Color(s.color), [s.color]);
   const model = s.models?.[0];
   const spins = !!model && near;
+  // pieces with an unfinished back (the iPod, the moss emblem…) only sway, facing you; the rest turn all the way
+  const lim = model ? MODELS[model].yaw : undefined;
+  const y0 = model ? THREE.MathUtils.degToRad(MODELS[model].y0 ?? 0) : 0;
   const shown = DISPLAY[s.slug];
   const pres = useRef<Presence>({ dim: 1, front: 0 });
   useFrame((state, dt) => {
@@ -168,7 +216,8 @@ function Pedestal({ k, sh, near, onPick }: { k: number; sh: React.RefObject<Shar
     const p = piece.current!;
     const time = state.clock.elapsedTime;
     // 3D pieces turn on their plinth; sheets always face you, with a slight sway
-    if (spins) p.rotation.y += dt * (0.16 + front * 0.24);
+    if (spins && !lim) p.rotation.y += dt * (0.16 + front * 0.24);
+    else if (spins && lim) p.rotation.y = -a + y0 + Math.sin(time * 0.4 + k) * THREE.MathUtils.degToRad(Math.min(lim[1], -lim[0]) * 0.6);
     else p.rotation.y = -a * 0.85 + Math.sin(time * 0.45 + k) * (0.1 + front * 0.14) - front * 0.18;
     pres.current.dim = 0.3 + front * 0.7;
     pres.current.front = front;
@@ -203,7 +252,7 @@ function Pedestal({ k, sh, near, onPick }: { k: number; sh: React.RefObject<Shar
               <Lightbox src={shown.src} p={pres} />
             )
           ) : (
-            spins && <Model k={model!} />
+            spins && <Model k={model!} onReady={k === sh.current!.skip ? onArrive : undefined} />
           )}
         </Suspense>
       </group>
@@ -300,6 +349,18 @@ export default function LabCarousel({ locale }: { locale: Locale }) {
       return n.size === m.size ? m : n;
     });
   }, [i]);
+
+  // arriving from the home: the bridge it left behind dissolves once the piece stands on its plinth here
+  const arrive = useCallback(() => {
+    const b = document.getElementById("mh-bridge");
+    if (!b) return;
+    b.id = "";
+    gsap.to(b, { opacity: 0, duration: 1, delay: 0.25, ease: "power2.out", onComplete: () => b.remove() });
+  }, []);
+  useEffect(() => {
+    const t = setTimeout(arrive, 3200);
+    return () => clearTimeout(t);
+  }, [arrive]);
 
   const go = useCallback((k: number) => {
     const S = sh.current;
@@ -411,7 +472,7 @@ export default function LabCarousel({ locale }: { locale: Locale }) {
         >
           <Rig sh={sh} onIndex={setI} color={s.color} />
           {series.map((_, k) => (
-            <Pedestal key={k} k={k} sh={sh} near={near.has(k)} onPick={pick} />
+            <Pedestal key={k} k={k} sh={sh} near={near.has(k)} onPick={pick} onArrive={arrive} />
           ))}
           {/* the floor: a dark mirror that catches the coloured light */}
           <mesh rotation-x={-Math.PI / 2} position={[0, -1.02, -R]}>
@@ -447,6 +508,7 @@ export default function LabCarousel({ locale }: { locale: Locale }) {
         <span className={`mono muted ${styles.kind}`}>
           {t(s.kind, locale)} · {pieces} {locale === "en" ? (pieces === 1 ? "piece" : "pieces") : pieces === 1 ? "pieza" : "piezas"}
         </span>
+        <p className={styles.short}>{t(s.short, locale)}</p>
         <button type="button" className={styles.enter} onClick={() => open(i)}>
           <span className={styles.dot} aria-hidden />
           {locale === "en" ? "Enter the room" : "Entrar en la sala"} <span aria-hidden>→</span>

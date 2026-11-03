@@ -102,6 +102,13 @@
 .kind {
   color: color-mix(in srgb, var(--lab-c) 55%, #f4f2ee);
 }
+.short {
+  max-width: 36ch;
+  font-size: clamp(16px, 1.2vw, 20px);
+  line-height: 1.4;
+  letter-spacing: -0.015em;
+  color: color-mix(in srgb, var(--fg) 80%, transparent);
+}
 .enter {
   margin-top: 8px;
   display: inline-flex;

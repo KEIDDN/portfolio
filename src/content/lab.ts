@@ -6,6 +6,8 @@ export type Series = {
   slug: string;
   title: string;
   kind: L;
+  /** one line under the name, in the Lab's ring */
+  short: L;
   /** museum label: where it comes from and how it was made */
   origin: L;
   process: L;
@@ -32,6 +34,7 @@ export const labIntro: L = {
 export const series: Series[] = [
   {
     slug: "boton-charro",
+    short: { en: "Salamanca's baroque silverwork, as present-day jewellery.", es: "La platería charra, llevada a la joyería de hoy." },
     color: "#9fb8e0",
     title: "Botón Charro",
     kind: { en: "3D · Jewellery", es: "3D · Joyería" },
@@ -45,11 +48,12 @@ export const series: Series[] = [
     },
     format: { en: "3D render · Blender", es: "Render 3D · Blender" },
     models: ["ring"],
-    images: [W("lab/04.webp"), W("cutouts/charro.webp"), W("cutouts/pendant.webp")],
+    images: [W("lab/04.webp"), W("cutouts/pendant.webp")],
     orbit: [W("cutouts/charro.webp"), W("lab/04.webp"), W("cutouts/pendant.webp")],
   },
   {
     slug: "miki-racing",
+    short: { en: "Two racing helmets with Japanese and Y2K graphics.", es: "Dos cascos de carreras con gráfica japonesa y Y2K." },
     color: "#ff3d9a",
     title: "Miki Racing",
     kind: { en: "3D · Helmets", es: "3D · Cascos" },
@@ -67,6 +71,7 @@ export const series: Series[] = [
   },
   {
     slug: "inhabit",
+    short: { en: "Three sculptures on the housing crisis.", es: "Tres esculturas sobre la crisis de la vivienda." },
     color: "#ff5a36",
     title: "Inhabit",
     kind: { en: "3D · Concept", es: "3D · Concepto" },
@@ -85,6 +90,7 @@ export const series: Series[] = [
   },
   {
     slug: "ipod",
+    short: { en: "An iPod of my own, sticker by sticker.", es: "Un iPod a mi medida, pegatina a pegatina." },
     color: "#ff2d55",
     title: "iPod Concept",
     kind: { en: "3D · Product", es: "3D · Producto" },
@@ -103,6 +109,7 @@ export const series: Series[] = [
   },
   {
     slug: "tutto-passa",
+    short: { en: "The full release of a Neapolitan record that doesn't exist.", es: "La edición completa de un disco napolitano que no existe." },
     color: "#3a8fe0",
     title: "Tutto Passa",
     kind: { en: "Vinyl", es: "Vinilo" },
@@ -120,6 +127,7 @@ export const series: Series[] = [
   },
   {
     slug: "any-kind-of-blues",
+    short: { en: "An imagined Miles Davis record, in Japanese abstraction.", es: "Un disco imaginado de Miles Davis, en abstracción japonesa." },
     color: "#3550e0",
     title: "Any Kind of Blues",
     kind: { en: "Vinyl", es: "Vinilo" },
@@ -137,6 +145,7 @@ export const series: Series[] = [
   },
   {
     slug: "miki",
+    short: { en: "Exaggerated versions of me, in other worlds.", es: "Versiones exageradas de mí, en otros universos." },
     color: "#f5b82e",
     title: "Miki",
     kind: { en: "3D · Self-portrait", es: "3D · Autorretrato" },
@@ -155,6 +164,7 @@ export const series: Series[] = [
   },
   {
     slug: "film-posters",
+    short: { en: "Four films, each told in a single image.", es: "Cuatro películas, cada una contada en una sola imagen." },
     color: "#f0642e",
     title: "Film Posters",
     kind: { en: "Posters", es: "Pósters" },
@@ -169,6 +179,7 @@ export const series: Series[] = [
   },
   {
     slug: "fruy2k",
+    short: { en: "Everyday fruit in the loudest graphics of the 2000s.", es: "Fruta de todos los días con la gráfica más ruidosa de los 2000." },
     color: "#8fdc3c",
     title: "FruY2K",
     kind: { en: "Image · Still life", es: "Imagen · Bodegón" },
@@ -186,6 +197,7 @@ export const series: Series[] = [
   },
   {
     slug: "jpn-drift",
+    short: { en: "Supra, Impreza and Skyline: the nineties in three posters.", es: "Supra, Impreza y Skyline: los noventa en tres pósters." },
     color: "#ffa21c",
     title: "Retro JPN Drift",
     kind: { en: "Posters", es: "Pósters" },
@@ -203,6 +215,7 @@ export const series: Series[] = [
   },
   {
     slug: "keiddn",
+    short: { en: "The mark of my music project, modelled in 3D.", es: "El logo de mi proyecto musical, modelado en 3D." },
     color: "#e3122f",
     title: "KEIDDN",
     kind: { en: "3D · Identity", es: "3D · Identidad" },
@@ -223,6 +236,7 @@ export const series: Series[] = [
   },
   {
     slug: "animal-series",
+    short: { en: "Four animals drawn with nothing but characters.", es: "Cuatro animales dibujados solo con caracteres." },
     color: "#d9d2c2",
     title: "ASCII Animal Series",
     kind: { en: "Type · Illustration", es: "Tipografía · Ilustración" },
@@ -240,6 +254,7 @@ export const series: Series[] = [
   },
   {
     slug: "ceramics",
+    short: { en: "Digital clay, with flaws that look handmade.", es: "Arcilla digital, con defectos que parecen hechos a mano." },
     color: "#d4a373",
     title: "Ceramics",
     kind: { en: "3D · Objects", es: "3D · Objetos" },
@@ -258,6 +273,7 @@ export const series: Series[] = [
   },
   {
     slug: "objects",
+    short: { en: "My name as objects: a wax seal and a keychain.", es: "Mi nombre convertido en objeto: un lacre y un llavero." },
     color: "#d11f33",
     title: "Objects",
     kind: { en: "3D · Objects", es: "3D · Objetos" },

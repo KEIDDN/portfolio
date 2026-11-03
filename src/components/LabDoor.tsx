@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
@@ -15,8 +16,12 @@ const ModelViewer = dynamic(() => import("./ModelViewer"), { ssr: false });
 /** The pieces that take turns at the centre, and the series each one belongs to. */
 const STARS: { key: ModelKey; slug: string }[] = [
   { key: "ring", slug: "boton-charro" },
+  { key: "vulture", slug: "inhabit" },
   { key: "ipod", slug: "ipod" },
+  { key: "keiddn", slug: "keiddn" },
   { key: "lego", slug: "miki" },
+  { key: "sello", slug: "objects" },
+  { key: "ceramics", slug: "ceramics" },
 ];
 
 /**
@@ -31,6 +36,38 @@ export default function LabDoor({ locale }: { locale: Locale }) {
   const pieces = series.flatMap((s) => s.orbit.slice(0, 2).map((src) => ({ src, s })));
   const total = series.reduce((n, s) => n + s.images.length + (s.models?.length ?? 0), 0);
   const star = series.find((s) => s.slug === STARS[i].slug)!;
+
+  // into the Lab without a cut: the page goes dark around the piece, which stays where it is until the Lab's own copy of it is ready
+  const router = useRouter();
+  const enter = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey) return;
+    e.preventDefault();
+    try {
+      sessionStorage.setItem("mh-lab-from", STARS[i].slug);
+    } catch {}
+    (window as Window & { __mhMorph?: boolean }).__mhMorph = true;
+    const stage = root.current!.querySelector<HTMLElement>("[data-stage]")!;
+    const canvas = stage.querySelector("canvas");
+    const r = stage.getBoundingClientRect();
+    const bridge = document.createElement("div");
+    bridge.id = "mh-bridge";
+    Object.assign(bridge.style, { position: "fixed", inset: "0", zIndex: "140", pointerEvents: "none" });
+    const bg = document.createElement("div");
+    Object.assign(bg.style, { position: "absolute", inset: "0", background: "#000", opacity: "0" });
+    bridge.appendChild(bg);
+    if (canvas) {
+      const img = document.createElement("img");
+      try {
+        img.src = canvas.toDataURL();
+      } catch {}
+      Object.assign(img.style, { position: "absolute", left: `${r.left}px`, top: `${r.top}px`, width: `${r.width}px`, height: `${r.height}px`, objectFit: "contain" });
+      bridge.appendChild(img);
+      // the piece settles where the Lab will show it: the centre of the screen
+      gsap.to(img, { left: (innerWidth - r.width) / 2, top: (innerHeight - r.height) / 2 - innerHeight * 0.04, duration: 0.9, ease: "expo.inOut" });
+    }
+    document.body.appendChild(bridge);
+    gsap.to(bg, { opacity: 1, duration: 0.7, ease: "power2.inOut", onComplete: () => router.push(`/${locale}/lab`) });
+  };
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -82,13 +119,7 @@ export default function LabDoor({ locale }: { locale: Locale }) {
               <Link
                 href={`/${locale}/lab`}
                 className={styles.cta}
-                onClick={() => {
-                  // the piece on show here is the one that waits at the centre of the Lab: no curtain, one continuous move
-                  try {
-                    sessionStorage.setItem("mh-lab-from", STARS[i].slug);
-                  } catch {}
-                  (window as Window & { __mhMorph?: boolean }).__mhMorph = true;
-                }}
+                onClick={enter}
               >
                 {locale === "en" ? "Enter the Lab" : "Entrar en el Lab"} <span aria-hidden>→</span>
               </Link>
