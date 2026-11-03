@@ -28,7 +28,7 @@ function Piece({ k, on, drag }: { k: ModelKey; on: boolean; drag: React.RefObjec
     });
     const inner = new THREE.Group();
     inner.add(c);
-    inner.rotation.set(m.rx ?? 0, 0, m.rz ?? 0);
+    inner.rotation.set(m.rx ?? 0, m.ry ?? 0, m.rz ?? 0);
     const box = new THREE.Box3().setFromObject(inner);
     const size = box.getSize(new THREE.Vector3());
     const centre = box.getCenter(new THREE.Vector3());
@@ -72,9 +72,8 @@ function Piece({ k, on, drag }: { k: ModelKey; on: boolean; drag: React.RefObjec
 function Studio({ look }: { look: Look }) {
   if (look.env === "metal")
     return (
-      <Environment resolution={512}>
-        {/* a mid-grey room, so polished metal reads silver, not black */}
-        <color attach="background" args={["#4a4a4a"]} />
+      <Environment resolution={512} files="/hdri/studio_small_09.hdr">
+        {/* a real photographed studio underneath, so metal reflects detail and not just strips */}
         <Lightformer intensity={2} rotation-x={Math.PI / 2} position={[0, 8, 0]} scale={[18, 18, 1]} />
         <Lightformer intensity={1.2} rotation-x={-Math.PI / 2} position={[0, -8, 0]} scale={[18, 18, 1]} color="#2a2a2a" />
         {/* hard strips: they draw long, crisp highlights along the edges */}
@@ -98,8 +97,7 @@ function Studio({ look }: { look: Look }) {
       </Environment>
     );
   return (
-    <Environment resolution={512}>
-      <color attach="background" args={["#262626"]} />
+    <Environment resolution={512} files="/hdri/photo_studio_loft_hall.hdr">
       <Lightformer intensity={2.4} position={[0, 1.5, 10]} scale={[12, 2.6, 1]} />
       <Lightformer intensity={1.2} position={[0, -2.5, 10]} scale={[12, 1, 1]} />
       <Lightformer intensity={3.4} rotation-x={Math.PI / 2} position={[0, 7, 0]} scale={[14, 3, 1]} />

@@ -55,7 +55,7 @@ export default function LabRoom({
     // the piece you clicked flies from the universe to its place on the wall (FLIP)
     const startImg = from ? figs.map((f) => f.querySelector("img")).find((im) => im && from.src.endsWith(im.getAttribute("src")!)) : null;
     if (from && startImg) {
-      gsap.fromTo(el, { backgroundColor: "rgba(5,5,5,0)" }, { backgroundColor: "rgba(5,5,5,1)", duration: 0.7, ease: "power2.out" });
+      gsap.fromTo(el, { backgroundColor: "rgba(0,0,0,0)" }, { backgroundColor: "rgba(0,0,0,1)", duration: 0.7, ease: "power2.out" });
       const fly = () => {
         const to = startImg.getBoundingClientRect();
         if (!to.width) return;
@@ -205,7 +205,7 @@ export default function LabRoom({
             const k = j + models.length;
             return (
             <figure key={src} className={styles.fig}>
-              <div className={src.includes("/cutouts/") ? styles.cut : "img-grain"}>
+              <div className={src.includes("/cutouts/") ? styles.cut : ""}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={src} alt={`${s.title} — ${k + 1}`} draggable={false} />
               </div>

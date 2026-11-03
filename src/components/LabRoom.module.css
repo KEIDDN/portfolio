@@ -5,7 +5,7 @@
   display: grid;
   grid-template-columns: minmax(300px, 26vw) 1fr;
   grid-template-rows: auto 1fr auto;
-  background: #050505;
+  background: #000;
   color: #f4f2ee;
   --fg: #f4f2ee;
   --ink: #f4f2ee;
