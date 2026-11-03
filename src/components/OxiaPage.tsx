@@ -7,11 +7,11 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { t, type L, type Locale } from "@/content/i18n";
 import { useTheme } from "./CaseStudy";
-import { VARIANTS } from "./VariantStage";
+import VariantStage from "./VariantStage";
 import NextChapter from "./NextChapter";
 import styles from "./OxiaPage.module.css";
 
-const Emblem3D = dynamic(() => import("./Emblem3D"), { ssr: false });
+const ModelViewer = dynamic(() => import("./ModelViewer"), { ssr: false });
 
 
 const manifesto: L = {
@@ -151,7 +151,7 @@ export default function OxiaPage({ locale }: { locale: Locale }) {
           <span className="mono muted" data-x-fade>Est. 2026 — {locale === "en" ? "Founded by Miki Herrero" : "Fundado por Miki Herrero"}</span>
         </div>
         <div data-x-stage className={styles.stage}>
-          <Emblem3D material="chrome" scale={2.0} />
+          <ModelViewer keys={["oxia-chrome"]} label="⟲" />
         </div>
         <div className={styles.heroBottom}>
           <h1 className={styles.title}>
@@ -230,23 +230,15 @@ export default function OxiaPage({ locale }: { locale: Locale }) {
       <section className={styles.identity}>
         <div className={styles.secHead}>
           <h2 className={`display ${styles.secTitle}`}>{locale === "en" ? "Emblem" : "Emblema"}</h2>
-          <span className="mono muted">{locale === "en" ? "One sign · Four materials" : "Un signo · Cuatro materias"}</span>
+          <span className="mono muted">{locale === "en" ? "One sign · Three materials" : "Un signo · Tres materias"}</span>
         </div>
         <p className={styles.idText} data-x-reveal>
           {locale === "en"
             ? "An O and an X folded into one sign. It changes material without losing its shape."
             : "Una O y una X plegadas en un solo signo. Cambia de materia sin perder la forma."}
         </p>
-        <div className={styles.lineup}>
-          {VARIANTS.map((v, i) => (
-            <figure key={v.name} className={styles.lineItem} data-x-reveal>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={v.src} alt={`OXIA — ${v.name}`} loading="lazy" draggable={false} />
-              <figcaption className="mono muted">
-                {String(i + 1).padStart(2, "0")} — {v.name}
-              </figcaption>
-            </figure>
-          ))}
+        <div className={styles.lineup} data-x-reveal>
+          <VariantStage />
         </div>
       </section>
 

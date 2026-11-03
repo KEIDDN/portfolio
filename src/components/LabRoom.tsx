@@ -3,12 +3,15 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { dict, t, type Locale } from "@/content/i18n";
+import dynamic from "next/dynamic";
 import { series } from "@/content/lab";
 import styles from "./LabRoom.module.css";
 
+const ModelViewer = dynamic(() => import("./ModelViewer"), { ssr: false });
+
 const L = {
   origin: { en: "Origin", es: "Origen" },
-  experiment: { en: "Experiment", es: "Experimento" },
+  process: { en: "Process", es: "Proceso" },
   format: { en: "Format", es: "Formato" },
   next: { en: "Next series", es: "Siguiente serie" },
 };
@@ -32,7 +35,8 @@ export default function LabRoom({
   onGo: (i: number) => void;
 }) {
   const s = series[index];
-  const n = s.images.length;
+  const models = s.models ?? [];
+  const n = models.length + s.images.length;
   const root = useRef<HTMLDivElement>(null);
   const area = useRef<HTMLDivElement>(null);
   const track = useRef<HTMLDivElement>(null);
@@ -49,9 +53,9 @@ export default function LabRoom({
     const tr = track.current!;
     const figs = Array.from(tr.children) as HTMLElement[];
     // the piece you clicked flies from the universe to its place on the wall (FLIP)
-    const startImg = from ? figs.map((f) => f.querySelector("img")!).find((im) => from.src.endsWith(im.getAttribute("src")!)) : null;
+    const startImg = from ? figs.map((f) => f.querySelector("img")).find((im) => im && from.src.endsWith(im.getAttribute("src")!)) : null;
     if (from && startImg) {
-      gsap.fromTo(el, { backgroundColor: "rgba(241,238,230,0)" }, { backgroundColor: "rgba(241,238,230,1)", duration: 0.7, ease: "power2.out" });
+      gsap.fromTo(el, { backgroundColor: "rgba(5,5,5,0)" }, { backgroundColor: "rgba(5,5,5,1)", duration: 0.7, ease: "power2.out" });
       const fly = () => {
         const to = startImg.getBoundingClientRect();
         if (!to.width) return;
@@ -67,7 +71,7 @@ export default function LabRoom({
       };
       if (startImg.complete) fly();
       else startImg.addEventListener("load", fly, { once: true });
-      gsap.from(figs.filter((f) => !f.contains(startImg)), { x: 160, opacity: 0, duration: 1.4, ease: "expo.out", stagger: 0.08, delay: 0.7 });
+      gsap.from(figs.filter((f) => !startImg || !f.contains(startImg)), { x: 160, opacity: 0, duration: 1.4, ease: "expo.out", stagger: 0.08, delay: 0.7 });
       gsap.from(el.querySelectorAll("[data-c], header, footer"), { y: 24, opacity: 0, duration: 1.1, ease: "expo.out", stagger: 0.05, delay: 0.55 });
     } else {
       gsap.fromTo(el, { clipPath: "inset(100% 0 0 0)" }, { clipPath: "inset(0% 0 0 0)", duration: 1, ease: "expo.inOut" });
@@ -170,9 +174,9 @@ export default function LabRoom({
 
       <aside className={styles.label}>
         <h2 data-c className={`display ${styles.title}`}>{s.title}</h2>
-        <span data-c className="mono muted">{t(s.kind, locale)} — {s.year}</span>
+        <span data-c className="mono muted">{t(s.kind, locale)}</span>
         <dl className={styles.dl}>
-          {(["origin", "experiment", "format"] as const).map((k) => (
+          {(["origin", "process", "format"] as const).map((k) => (
             <div key={k} data-c className={styles.row}>
               <dt className="mono muted">{t(L[k], locale)}</dt>
               <dd>{t(s[k], locale)}</dd>
@@ -187,7 +191,19 @@ export default function LabRoom({
 
       <div ref={area} className={styles.area}>
         <div ref={track} className={styles.track}>
-          {s.images.map((src, k) => (
+          {models.map((m, k) => (
+            <figure key={m} className={styles.fig}>
+              <div className={styles.model}>
+                <ModelViewer keys={[m]} label={locale === "en" ? "Drag" : "Gira"} />
+              </div>
+              <figcaption className="mono muted">
+                {String(k + 1).padStart(2, "0")} / {String(n).padStart(2, "0")} · 3D — {locale === "en" ? "drag to turn" : "arrastra para girar"}
+              </figcaption>
+            </figure>
+          ))}
+          {s.images.map((src, j) => {
+            const k = j + models.length;
+            return (
             <figure key={src} className={styles.fig}>
               <div className={src.includes("/cutouts/") ? styles.cut : "img-grain"}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -197,7 +213,8 @@ export default function LabRoom({
                 {String(k + 1).padStart(2, "0")} / {String(n).padStart(2, "0")}
               </figcaption>
             </figure>
-          ))}
+            );
+          })}
         </div>
         {n > 1 && (
           <>

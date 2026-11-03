@@ -1,31 +1,31 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
+import type { ModelKey } from "@/content/models";
 import styles from "./VariantStage.module.css";
 
-export const VARIANTS = [
-  { src: "/work/oxia/cut-chrome.webp", name: "Chrome" },
-  { src: "/work/oxia/cut-glass.webp", name: "Glass" },
-  { src: "/work/oxia/cut-moss.webp", name: "Moss" },
-  { src: "/work/oxia/cut-crystal.webp", name: "Crystal" },
+const ModelViewer = dynamic(() => import("./ModelViewer"), { ssr: false });
+
+export const VARIANTS: { key: ModelKey; name: string }[] = [
+  { key: "oxia-chrome", name: "Chrome" },
+  { key: "oxia-prismatic", name: "Prismatic" },
+  { key: "oxia-mossy", name: "Moss" },
 ];
 
-/** The emblem's material renders (cut out, floating on black), one at a time, with a switcher and a grainy wipe. */
+/** The emblem in its three materials, in real 3D: one sign that changes skin. Drag to turn it. */
 export default function VariantStage({ auto = true }: { auto?: boolean }) {
   const [i, setI] = useState(0);
   const [hold, setHold] = useState(false);
   useEffect(() => {
     if (!auto || hold) return;
-    const id = setInterval(() => setI((v) => (v + 1) % VARIANTS.length), 3200);
+    const id = setInterval(() => setI((v) => (v + 1) % VARIANTS.length), 4200);
     return () => clearInterval(id);
   }, [auto, hold]);
   return (
     <div className={styles.wrap}>
-      <div className={styles.stage}>
-        {VARIANTS.map((v, k) => (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img key={v.src} src={v.src} alt={`OXIA emblem — ${v.name}`} className={k === i ? styles.on : ""} loading="lazy" draggable={false} />
-        ))}
+      <div className={styles.stage} onPointerDown={() => setHold(true)}>
+        <ModelViewer keys={VARIANTS.map((v) => v.key)} active={i} label="⟲" />
       </div>
       <div className={styles.switch} role="tablist">
         {VARIANTS.map((v, k) => (

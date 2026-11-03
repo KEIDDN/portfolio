@@ -17,22 +17,25 @@ import styles from "./LabUniverse.module.css";
  */
 
 // constellation centres, in world px (origin = centre of the universe)
-const CENTRES: [number, number][] = (
-  [
-    [-1350, -760], // botón charro
-    [-120, -1020], // inhabit
-    [1180, -720], // tutto passa
-    [1420, 520], // any kind of blues
-    [-160, 160], // film posters
-    [-1120, 1240], // jpn drift
-    [300, 1360], // ascii
-    [-1640, 300], // ceramics
-    [1500, 1600], // objects
-  ] as [number, number][]
-).map(([x, y]) => [x * 1.3, y * 1.25]);
+const CENTRES: [number, number][] = [
+  [-2350, -1500], // botón charro
+  [-800, -1700], // miki racing
+  [750, -1450], // inhabit
+  [2300, -1650], // ipod
+  [-1650, -300], // tutto passa
+  [0, -150], // any kind of blues
+  [1600, -350], // miki
+  [-2400, 950], // film posters
+  [-850, 1050], // fruy2k
+  [700, 900], // jpn drift
+  [2350, 1000], // keiddn
+  [-1600, 2150], // ascii
+  [0, 2250], // ceramics
+  [1650, 2100], // objects
+];
 const STAR = 520; // width of the main piece
 const SAT = 300; // width of the satellites
-const WORLD = { w: 5200, h: 4300 };
+const WORLD = { w: 6400, h: 5200 };
 
 const isCut = (src: string) => src.includes("/cutouts/");
 
@@ -446,7 +449,7 @@ export default function LabUniverse({ locale }: { locale: Locale }) {
                 </span>
                 <span className={styles.tagTitle}>{s.title}</span>
                 <span className={styles.tagKind}>
-                  {t(s.kind, locale)} — {s.year}
+                  {t(s.kind, locale)}
                 </span>
               </div>
             </div>
