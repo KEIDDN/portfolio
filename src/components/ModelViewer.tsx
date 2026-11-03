@@ -10,13 +10,12 @@ const DEFAULT_LOOK: Look = { env: "studio", envI: 1.2, rough: 1, key: 0.9, expos
 
 const D = THREE.MathUtils.degToRad;
 
-/** One model, centred and scaled to fit a unit box, turned to its best side. */
-function Piece({ k, on, drag }: { k: ModelKey; on: boolean; drag: React.RefObject<{ yaw: number; pitch: number; active: boolean }> }) {
+/** A model ready to show: its own materials tuned to its look, turned to its best side, centred and fitted to a unit box. */
+export function usePreparedModel(k: ModelKey) {
   const m = MODELS[k];
   const { scene } = useGLTF(m.src);
-  const obj = useMemo(() => {
+  return useMemo(() => {
     const c = scene.clone(true);
-    // each piece gets its own materials, tuned to its look
     const look = m.look ?? DEFAULT_LOOK;
     c.traverse((o) => {
       const mesh = o as THREE.Mesh;
@@ -39,6 +38,12 @@ function Piece({ k, on, drag }: { k: ModelKey; on: boolean; drag: React.RefObjec
     g.scale.setScalar(s);
     return g;
   }, [scene, m]);
+}
+
+/** One model, centred and scaled to fit a unit box, turned to its best side. */
+function Piece({ k, on, drag }: { k: ModelKey; on: boolean; drag: React.RefObject<{ yaw: number; pitch: number; active: boolean }> }) {
+  const m = MODELS[k];
+  const obj = usePreparedModel(k);
   const ref = useRef<THREE.Group>(null);
   const [lo, hi] = m.yaw ?? [-180, 180];
   const free = hi - lo >= 360;

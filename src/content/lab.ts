@@ -16,6 +16,8 @@ export type Series = {
   images: string[];
   /** the constellation in the universe: up to four pieces, the first one is the star */
   orbit: string[];
+  /** the series' own light: the colour its pedestal glows with */
+  color: string;
   /** music: a Spotify embed URL (open.spotify.com/embed/…) and profile links. Empty = placeholder. */
   music?: { embed?: string; spotify?: string; instagram?: string };
 };
@@ -30,6 +32,7 @@ export const labIntro: L = {
 export const series: Series[] = [
   {
     slug: "boton-charro",
+    color: "#9fb8e0",
     title: "Botón Charro",
     kind: { en: "3D · Jewellery", es: "3D · Joyería" },
     origin: {
@@ -47,6 +50,7 @@ export const series: Series[] = [
   },
   {
     slug: "miki-racing",
+    color: "#ff3d9a",
     title: "Miki Racing",
     kind: { en: "3D · Helmets", es: "3D · Cascos" },
     origin: {
@@ -63,6 +67,7 @@ export const series: Series[] = [
   },
   {
     slug: "inhabit",
+    color: "#ff5a36",
     title: "Inhabit",
     kind: { en: "3D · Concept", es: "3D · Concepto" },
     origin: {
@@ -80,6 +85,7 @@ export const series: Series[] = [
   },
   {
     slug: "ipod",
+    color: "#ff2d55",
     title: "iPod Concept",
     kind: { en: "3D · Product", es: "3D · Producto" },
     origin: {
@@ -97,6 +103,7 @@ export const series: Series[] = [
   },
   {
     slug: "tutto-passa",
+    color: "#3a8fe0",
     title: "Tutto Passa",
     kind: { en: "Vinyl", es: "Vinilo" },
     origin: {
@@ -113,6 +120,7 @@ export const series: Series[] = [
   },
   {
     slug: "any-kind-of-blues",
+    color: "#3550e0",
     title: "Any Kind of Blues",
     kind: { en: "Vinyl", es: "Vinilo" },
     origin: {
@@ -129,6 +137,7 @@ export const series: Series[] = [
   },
   {
     slug: "miki",
+    color: "#f5b82e",
     title: "Miki",
     kind: { en: "3D · Self-portrait", es: "3D · Autorretrato" },
     origin: {
@@ -146,6 +155,7 @@ export const series: Series[] = [
   },
   {
     slug: "film-posters",
+    color: "#f0642e",
     title: "Film Posters",
     kind: { en: "Posters", es: "Pósters" },
     origin: { en: "Four of my favourite films.", es: "Cuatro de mis películas favoritas." },
@@ -159,6 +169,7 @@ export const series: Series[] = [
   },
   {
     slug: "fruy2k",
+    color: "#8fdc3c",
     title: "FruY2K",
     kind: { en: "Image · Still life", es: "Imagen · Bodegón" },
     origin: {
@@ -175,6 +186,7 @@ export const series: Series[] = [
   },
   {
     slug: "jpn-drift",
+    color: "#ffa21c",
     title: "Retro JPN Drift",
     kind: { en: "Posters", es: "Pósters" },
     origin: {
@@ -191,6 +203,7 @@ export const series: Series[] = [
   },
   {
     slug: "keiddn",
+    color: "#e3122f",
     title: "KEIDDN",
     kind: { en: "3D · Identity", es: "3D · Identidad" },
     origin: {
@@ -210,6 +223,7 @@ export const series: Series[] = [
   },
   {
     slug: "animal-series",
+    color: "#d9d2c2",
     title: "ASCII Animal Series",
     kind: { en: "Type · Illustration", es: "Tipografía · Ilustración" },
     origin: {
@@ -226,6 +240,7 @@ export const series: Series[] = [
   },
   {
     slug: "ceramics",
+    color: "#d4a373",
     title: "Ceramics",
     kind: { en: "3D · Objects", es: "3D · Objetos" },
     origin: {
@@ -243,6 +258,7 @@ export const series: Series[] = [
   },
   {
     slug: "objects",
+    color: "#d11f33",
     title: "Objects",
     kind: { en: "3D · Objects", es: "3D · Objetos" },
     origin: { en: "My own name as raw material.", es: "Mi propio nombre como materia prima." },

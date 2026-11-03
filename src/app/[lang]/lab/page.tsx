@@ -1,16 +1,16 @@
 import type { Locale } from "@/content/i18n";
-import LabUniverse from "@/components/LabUniverse";
+import LabCarousel from "@/components/LabCarousel";
 
 export const metadata = {
   title: "Lab",
-  description: "Lab — a laboratory of design experiments by Miki Herrero.",
+  description: "Lab — design experiments by Miki Herrero: objects, records, posters and 3D pieces.",
 };
 
 export default async function Page({ params }: { params: Promise<{ lang: string }> }) {
   const locale = (await params).lang as Locale;
   return (
     <main>
-      <LabUniverse locale={locale} />
+      <LabCarousel locale={locale} />
     </main>
   );
 }

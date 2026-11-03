@@ -79,7 +79,17 @@ export default function LabDoor({ locale }: { locale: Locale }) {
           </p>
           <span className="line-mask">
             <span data-l>
-              <Link href={`/${locale}/lab`} className={styles.cta} data-title="Lab">
+              <Link
+                href={`/${locale}/lab`}
+                className={styles.cta}
+                onClick={() => {
+                  // the piece on show here is the one that waits at the centre of the Lab: no curtain, one continuous move
+                  try {
+                    sessionStorage.setItem("mh-lab-from", STARS[i].slug);
+                  } catch {}
+                  (window as Window & { __mhMorph?: boolean }).__mhMorph = true;
+                }}
+              >
                 {locale === "en" ? "Enter the Lab" : "Entrar en el Lab"} <span aria-hidden>→</span>
               </Link>
             </span>
