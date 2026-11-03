@@ -16,6 +16,35 @@ const L = {
   next: { en: "Next series", es: "Siguiente serie" },
 };
 
+/** KEIDDN's music in a Liquid Glass frame: the Spotify embed once it exists, a quiet placeholder until then. */
+function Player({ music, locale }: { music: NonNullable<(typeof series)[number]["music"]>; locale: Locale }) {
+  const soon = locale === "en" ? "Soon" : "Pronto";
+  return (
+    <div data-c className={styles.player}>
+      {music.embed ? (
+        <iframe src={music.embed} title="KEIDDN on Spotify" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" />
+      ) : (
+        <div className={styles.pHold}>
+          <span className={styles.pPlay} aria-hidden>▶</span>
+          <span className={styles.pText}>
+            <span>KEIDDN</span>
+            <span className="mono muted">{locale === "en" ? "Listen on Spotify" : "Escuchar en Spotify"} · {soon}</span>
+          </span>
+          <span className={styles.pWave} aria-hidden>
+            {Array.from({ length: 22 }, (_, i) => (
+              <i key={i} style={{ animationDelay: `${(i * 137) % 900}ms` }} />
+            ))}
+          </span>
+        </div>
+      )}
+      <div className={styles.pLinks}>
+        {music.spotify ? <a href={music.spotify} target="_blank" rel="noreferrer" className="mono ulink">Spotify ↗</a> : <span className="mono muted">Spotify · {soon}</span>}
+        {music.instagram ? <a href={music.instagram} target="_blank" rel="noreferrer" className="mono ulink">Instagram ↗</a> : <span className="mono muted">Instagram · {soon}</span>}
+      </div>
+    </div>
+  );
+}
+
 /**
  * A series as a museum room: the label on the left, the pieces hung in a row.
  * Wheel, drag, the side zones or ← → walk along the wall. Pieces are shown
@@ -183,6 +212,7 @@ export default function LabRoom({
             </div>
           ))}
         </dl>
+        {s.music && <Player music={s.music} locale={locale} />}
         <button data-c type="button" className={styles.next} onClick={() => onGo(nextIdx)}>
           <span className="mono muted">{t(L.next, locale)}</span>
           <span className={styles.nextTitle}>{series[nextIdx].title} →</span>

@@ -105,8 +105,8 @@ export const projects: Project[] = [
         kind: "idea",
         title: { en: "Falling blocks and electronic music speak the same language.", es: "Los bloques y la música electrónica hablan el mismo idioma." },
         body: {
-          en: "Both build tension and release it in one go. I've been producing music for ten years and I've always loved this game. TETRA comes from putting the two together, and from redesigning a classic to the standard of a product made today.",
-          es: "Los dos acumulan tensión y la sueltan de golpe. Llevo diez años produciendo música y siempre me ha encantado este juego. TETRA nace de juntar los dos mundos y de rediseñar un clásico con la exigencia de un producto de hoy.",
+          en: "Both build tension and release it in one go. TETRA starts from that overlap to redesign a classic: a game where every run sounds like a set, finished to the standard of a modern design product.",
+          es: "Los dos acumulan tensión y la sueltan de golpe. TETRA parte de esa coincidencia para rediseñar un clásico: un juego en el que cada partida suena como un set, con el acabado de un producto de diseño actual.",
         },
       },
       {
@@ -136,8 +136,8 @@ export const projects: Project[] = [
         n: D(2),
         title: { en: "Icons that follow the rules of the game.", es: "Iconos con las reglas del juego." },
         body: {
-          en: "I love grids. Each icon is drawn on a 5×5 grid with the same rounded cells as the pieces: 29 glyphs that make moving through the menu feel like more of the game.",
-          es: "Me encantan las retículas. Cada icono se dibuja en una rejilla de 5×5 con las mismas celdas redondeadas que las piezas: 29 glifos que hacen que moverse por el menú se sienta como seguir jugando.",
+          en: "The grid rules. Each icon is drawn on a 5×5 grid with the same rounded cells as the pieces: 29 glyphs that turn the menu into an extension of the game.",
+          es: "La retícula manda. Cada icono se dibuja en una rejilla de 5×5 con las mismas celdas redondeadas que las piezas: 29 glifos que convierten el menú en una extensión del juego.",
         },
         proof: "icons",
       },
@@ -166,8 +166,8 @@ export const projects: Project[] = [
         n: D(5),
         title: { en: "The menu: five versions to get it right.", es: "El menú: cinco versiones hasta dar con él." },
         body: {
-          en: "They all worked. I kept the one that asks least of you: the mode, large; a single action; and, once you choose, the skin running live beside it.",
-          es: "Todas funcionaban. Me quedé con la que menos pide: el modo en grande, una sola acción y, al elegir, la skin en directo al lado.",
+          en: "Five iterations, all of them working. The one that shipped asks the least: the mode, large; a single action; and, once chosen, the skin running live beside it.",
+          es: "Cinco iteraciones, todas funcionales. La elegida es la que menos pide: el modo en grande, una sola acción y, al elegir, la skin en directo al lado.",
         },
         steps: [
           { src: W("tetra/menu/m1.webp"), label: { en: "Cover with a live game", es: "Portada con partida en directo" }, body: { en: "The name, huge, and a game playing itself. Handsome, but it only offered one mode.", es: "El nombre en grande y una partida jugándose sola. Bonita, pero solo ofrecía un modo." } },
@@ -203,8 +203,8 @@ export const projects: Project[] = [
         kind: "details",
         items: [
           {
-            label: { en: "How I made it", es: "Cómo lo hice" },
-            body: { en: "Design in Figma, and AI directed through OXIA's own design agents and skills. The AI builds; the design decisions are mine.", es: "Diseño en Figma y dirección de IA con agentes y skills de diseño propios de OXIA. La IA construye; las decisiones de diseño son mías." },
+            label: { en: "Process", es: "Proceso" },
+            body: { en: "Designed in Figma and built with directed AI, through OXIA's own design agents and skills. AI builds. It doesn't make the design decisions.", es: "Diseño en Figma y desarrollo con IA dirigida, mediante agentes y skills de diseño propios de OXIA. La IA construye. Las decisiones de diseño, no." },
           },
           {
             label: { en: "In numbers", es: "En cifras" },
@@ -282,8 +282,8 @@ export const projects: Project[] = [
         n: D(3),
         title: { en: "Low poly and Liquid Glass, in measure.", es: "Low poly y Liquid Glass, con medida." },
         body: {
-          en: "Low poly brings warmth; glass brings lightness. Liquid Glass is everywhere right now, so I kept it for what floats above the garden (panels, controls, notices) and never for the garden itself.",
-          es: "El low poly da calidez; el cristal, ligereza. Liquid Glass está en todas partes, así que lo reservé para lo que flota sobre el jardín (paneles, controles, avisos) y nunca para el jardín en sí.",
+          en: "Low poly brings warmth; glass brings lightness. Liquid Glass is everywhere right now, so here it is kept for what floats above the garden (panels, controls, notices) and never for the garden itself.",
+          es: "El low poly da calidez; el cristal, ligereza. Liquid Glass está en todas partes, así que aquí se reserva para lo que flota sobre el jardín (paneles, controles, avisos) y nunca para el jardín en sí.",
         },
         proof: { media: W("tendu/v/t-night.webp"), phone: true },
       },
@@ -308,8 +308,8 @@ export const projects: Project[] = [
         kind: "details",
         items: [
           {
-            label: { en: "How I made it", es: "Cómo lo hice" },
-            body: { en: "First concept in Figma, refined with AI. Built with React and Three.js, installable on the iPhone.", es: "Primer concepto en Figma, refinado con IA. Hecha con React y Three.js, instalable en el iPhone." },
+            label: { en: "Process", es: "Proceso" },
+            body: { en: "First concept in Figma, refined with directed AI. Built with React and Three.js and installable on the iPhone.", es: "Primer concepto en Figma, refinado con IA dirigida. Construida con React y Three.js e instalable en el iPhone." },
           },
           {
             label: { en: "Private by design", es: "Privado por diseño" },
@@ -358,8 +358,8 @@ export const projects: Project[] = [
         kind: "idea",
         title: { en: "Design the sound and the interface together.", es: "Diseñar el sonido y la interfaz a la vez." },
         body: {
-          en: "Ten years of self-taught music production and audio engineering, put to one goal: every control should make sense to the ear and to the eye. Built in C++ with JUCE, they run in any DAW.",
-          es: "Diez años produciendo música de forma autodidacta y conocimientos de ingeniería de audio, al servicio de un objetivo: que cada control se entienda con el oído y con la vista. Desarrollados en C++ con JUCE, funcionan en cualquier DAW.",
+          en: "Sound design and interface in a single process, with one goal: every control should make sense to the ear and to the eye. Built in C++ with JUCE, they run in any DAW.",
+          es: "Diseño de sonido e interfaz en un mismo proceso, con un objetivo: que cada control se entienda con el oído y con la vista. Desarrollados en C++ con JUCE, funcionan en cualquier DAW.",
         },
       },
       {
@@ -413,8 +413,8 @@ export const projects: Project[] = [
         kind: "idea",
         title: { en: "Digital banks promise transparency. Then hide it in the small print.", es: "La banca digital promete transparencia. Y la esconde en la letra pequeña." },
         body: {
-          en: "A first product project, designed in Figma: imagine a bank whose brand and app keep a single promise.",
-          es: "Un primer proyecto de producto, diseñado en Figma: imaginar un banco cuya marca y cuya app cumplan una sola promesa.",
+          en: "A product project designed in Figma: a bank whose brand and app keep a single promise.",
+          es: "Un proyecto de producto diseñado en Figma: un banco cuya marca y cuya app cumplen una sola promesa.",
         },
       },
       { kind: "stage", n: "02", label: ST.idea },

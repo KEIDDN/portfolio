@@ -1,84 +1,153 @@
 .section {
   position: relative;
-  background: var(--cream);
-  color: var(--ink);
-  --fg: #050505;
-  --muted: #6f6a64;
-  --line: rgba(0, 0, 0, 0.14);
-  padding: 14px var(--gutter) 0;
-  overflow: hidden;
+  height: 320svh;
+  background: #000;
+  color: #f4f2ee;
+  --fg: #f4f2ee;
+  --muted: #8f8b85;
+  --line: rgba(255, 255, 255, 0.14);
 }
-.label {
+.pin {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: auto 1fr auto;
+  gap: 0 16px;
+  padding: 0 var(--gutter);
+}
+.top {
+  grid-column: 1 / -1;
   display: flex;
   justify-content: space-between;
-  padding-top: 14px;
+  padding: 14px 0;
+  margin-top: 72px;
   border-top: 1px solid var(--line);
   position: relative;
   z-index: 3;
 }
-.door {
-  position: relative;
-  display: block;
-  height: 125vh;
-}
-.field {
-  position: absolute;
-  inset: 0 calc(var(--gutter) * -1);
-}
-.piece {
-  position: absolute;
-}
-.piece > div {
-  transition: transform 1.2s var(--ease), filter 1s var(--ease);
-}
-.piece img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-.cut img {
-  filter: drop-shadow(0 22px 26px rgba(40, 30, 20, 0.2));
-}
-.door:hover .piece > div {
-  filter: saturate(1.05);
-}
-.center {
+/* the 3D piece, centred, as large as the screen allows */
+.stage {
   position: absolute;
   left: 50%;
-  top: 50%;
+  top: 46%;
+  width: min(62vh, 44vw);
+  height: min(62vh, 44vw);
   transform: translate(-50%, -50%);
   z-index: 2;
+  background: radial-gradient(closest-side, rgba(255, 255, 255, 0.07), transparent);
+}
+.now {
+  grid-column: 10 / -1;
+  grid-row: 2;
+  align-self: center;
+  justify-self: end;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 22px;
-  text-align: center;
-  width: min(560px, 90vw);
-  padding: 46px 40px 40px;
-  background: color-mix(in srgb, var(--cream) 82%, transparent);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  border-radius: 6px;
+  align-items: flex-end;
+  gap: 10px;
+  text-align: right;
+  z-index: 3;
+  animation: rise 0.9s var(--ease) both;
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+.nowTitle {
+  font-size: clamp(22px, 1.9vw, 34px);
+  font-weight: 500;
+  letter-spacing: -0.04em;
+}
+.copy {
+  grid-column: 1 / span 4;
+  grid-row: 2;
+  align-self: end;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding-bottom: 26vh;
+  z-index: 3;
 }
 .title {
-  font-size: clamp(96px, 12vw, 230px);
+  font-size: clamp(110px, 14vw, 260px);
+  line-height: 0.82;
 }
 .line {
-  display: block;
-  font-size: 18px;
-  line-height: 1.4;
+  max-width: 34ch;
+  font-size: clamp(16px, 1.15vw, 20px);
+  line-height: 1.45;
   letter-spacing: -0.01em;
-  max-width: 38ch;
+  color: color-mix(in srgb, var(--fg) 75%, transparent);
 }
 .cta {
-  display: inline-block;
-  padding: 13px 22px;
-  border-radius: 99px;
-  background: var(--ink);
-  color: var(--cream);
-  font-size: 16px;
-  transition: transform 0.6s var(--ease);
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 22px;
+  border-radius: 999px;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(14px) saturate(1.4);
+  transition: background 0.5s var(--ease), gap 0.5s var(--ease);
 }
-.door:hover .cta {
-  transform: scale(1.04);
+.cta:hover {
+  background: rgba(255, 255, 255, 0.16);
+  gap: 18px;
+}
+/* the rest of the collection, passing underneath with the scroll */
+.stripWrap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 4vh;
+  height: 20vh;
+  z-index: 1;
+  mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+}
+.strip {
+  display: flex;
+  align-items: flex-end;
+  gap: 2.4vw;
+  height: 100%;
+  padding-left: 40vw;
+  width: max-content;
+  will-change: transform;
+}
+.piece {
+  display: block;
+  height: 100%;
+  opacity: 0.55;
+  transition: opacity 0.5s var(--ease), transform 0.8s var(--ease);
+}
+.piece:hover {
+  opacity: 1;
+  transform: translateY(-6px);
+}
+.piece img {
+  height: 100%;
+  width: auto;
+  display: block;
+  border-radius: 4px;
+}
+@media (max-width: 800px) {
+  .stage {
+    width: 80vw;
+    height: 80vw;
+    top: 40%;
+  }
+  .copy {
+    grid-column: 1 / -1;
+    padding-bottom: 24vh;
+  }
+  .now {
+    display: none;
+  }
 }

@@ -16,13 +16,15 @@ export type Series = {
   images: string[];
   /** the constellation in the universe: up to four pieces, the first one is the star */
   orbit: string[];
+  /** music: a Spotify embed URL (open.spotify.com/embed/…) and profile links. Empty = placeholder. */
+  music?: { embed?: string; spotify?: string; instagram?: string };
 };
 
 const W = (p: string) => `/work/${p}`;
 
 export const labIntro: L = {
-  en: "Things I make with no client and no brief. Objects, records, posters and versions of myself, made to try out an idea, a technique or a tool.",
-  es: "Lo que hago sin cliente y sin briefing. Objetos, discos, pósters y versiones de mí mismo, hechos para probar una idea, una técnica o una herramienta.",
+  en: "Experiments with no client and no brief: objects, records, posters and versions of myself. This is where I test techniques and tools before they reach the work.",
+  es: "Experimentos sin cliente y sin briefing: objetos, discos, pósters y versiones de mí mismo. Aquí pruebo técnicas y herramientas antes de que lleguen al trabajo.",
 };
 
 export const series: Series[] = [
@@ -201,6 +203,8 @@ export const series: Series[] = [
     },
     format: { en: "3D logo · Blender", es: "Logotipo 3D · Blender" },
     models: ["keiddn"],
+    // TODO(KEIDDN): paste the Spotify artist embed and the profile links here
+    music: { embed: "", spotify: "", instagram: "" },
     images: [W("lab/keiddn.webp")],
     orbit: [W("lab/keiddn.webp")],
   },
