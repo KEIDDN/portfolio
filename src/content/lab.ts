@@ -71,7 +71,7 @@ export const series: Series[] = [
       es: "Dibujo cada pieza en plano, en Illustrator y Photoshop, y luego la modelo en Blender: un buitre que custodia su presa, una casa estrujada hasta deformarse, una casa que se derrite en tu llavero.",
     },
     format: { en: "3D sculpture · Series of 3", es: "Escultura 3D · Serie de 3" },
-    models: ["vulture", "keychain"],
+    models: ["vulture", "squeeze", "keychain"],
     images: [W("lab/01.webp"), W("lab/inhabit-house.webp")],
     orbit: [W("lab/inhabit-house.webp"), W("cutouts/vulture.webp")],
   },

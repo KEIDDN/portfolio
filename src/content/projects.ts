@@ -1,4 +1,6 @@
 import type { L } from "./i18n";
+import type { Step } from "@/components/case/Evolution";
+import type { RoomItem } from "@/components/case/Room";
 
 export type Theme = { bg: string; fg: string; accent: string; muted?: string };
 
@@ -29,7 +31,19 @@ export type Block =
   | { kind: "skins"; title: L; body: L }
   | { kind: "details"; items: { label: L; body: L }[] }
   | { kind: "chapter"; title: string; kicker: string; body: L; theme: Theme }
-  | { kind: "statement"; body: L; sub?: L };
+  | { kind: "statement"; body: L; sub?: L }
+  /** a design decision: the why, then the proof (rendered live from the product's own code when it can be) */
+  | {
+      kind: "decision";
+      n: string;
+      title: L;
+      body: L;
+      proof: "icons" | "skins" | "logo" | "palette" | { media: string; poster?: string; phone?: boolean };
+    }
+  /** a decision told through its versions, pinned and replaced as you scroll */
+  | { kind: "evolution"; n: string; title: L; body: L; steps: Step[] }
+  /** the material hung on a wall that slides by, like a room in the Lab */
+  | { kind: "room"; title: L; body: L; items: RoomItem[] };
 
 export type Project = {
   slug: string;
@@ -61,7 +75,11 @@ const ST = {
   idea: { en: "The idea", es: "La idea" },
   system: { en: "The system", es: "El sistema" },
   use: { en: "In use", es: "En uso" },
+  decisions: { en: "The decisions", es: "Las decisiones" },
+  room: { en: "The room", es: "La sala" },
+  result: { en: "The result", es: "El resultado" },
 };
+const D = (n: number) => `${String(n).padStart(2, "0")} —`;
 
 export const projects: Project[] = [
   {
@@ -74,144 +92,129 @@ export const projects: Project[] = [
     platforms: { en: "Web, macOS, Windows, mobile", es: "Web, macOS, Windows y móvil" },
     tools: "Figma, TypeScript, React, PixiJS, Three.js, Web Audio, Ableton",
     summary: {
-      en: "The falling-blocks classic, redesigned to be played with your ears.",
-      es: "El clásico de los bloques, rediseñado para jugarse también con los oídos.",
+      en: "The falling-blocks classic, redesigned from the music up.",
+      es: "El clásico de los bloques, rediseñado desde la música.",
     },
     cover: W("tetra/v/cover.webp"),
     coverVideo: W("tetra/v/cover.mp4"),
     url: "https://tetra-blocks.vercel.app/",
     theme: { bg: "#000000", fg: "#f2f2f0", accent: "#ffffff", muted: "#8f8f8c" },
     blocks: [
-      { kind: "stage", n: "01", label: ST.challenge },
+      { kind: "stage", n: "01", label: ST.idea },
       {
         kind: "idea",
-        title: { en: "The perfect game, stuck in the past.", es: "El juego perfecto, atrapado en el pasado." },
+        title: { en: "Falling blocks and electronic music speak the same language.", es: "Los bloques y la música electrónica hablan el mismo idioma." },
         body: {
-          en: "Few games are as well designed as falling blocks. Yet its online versions have fallen behind: cluttered interfaces, ads, and music that merely plays along.",
-          es: "Pocos juegos están tan bien diseñados como el de los bloques que caen. Pero sus versiones online se han quedado atrás: interfaces recargadas, publicidad y una música que se limita a acompañar.",
-        },
-      },
-      { kind: "stage", n: "02", label: ST.idea },
-      {
-        kind: "idea",
-        title: { en: "Music you don't just hear. Music you play.", es: "Que la música no suene de fondo. Que se juegue." },
-        body: {
-          en: "Blocks and electronic music share one language: building tension and releasing it. In TETRA, every move becomes part of the track.",
-          es: "Los bloques y la música electrónica comparten un mismo lenguaje: acumular tensión y liberarla. En TETRA, cada movimiento forma parte de la pista.",
+          en: "Both build tension and release it in one go. I've been producing music for ten years and I've always loved this game. TETRA comes from putting the two together, and from redesigning a classic to the standard of a product made today.",
+          es: "Los dos acumulan tensión y la sueltan de golpe. Llevo diez años produciendo música y siempre me ha encantado este juego. TETRA nace de juntar los dos mundos y de rediseñar un clásico con la exigencia de un producto de hoy.",
         },
       },
       {
         kind: "moment",
         title: { en: "Stack and the mix tightens. Clear and the drop lands.", es: "Apila y la mezcla se tensa. Limpia y llega el drop." },
         body: {
-          en: "The music answers the game in real time, with a binaural audio engine that places every sound around you.",
-          es: "La música responde a la partida en tiempo real, con un motor de audio binaural que coloca cada sonido a tu alrededor.",
+          en: "The music answers the game in real time, and binaural audio places every sound around you.",
+          es: "La música responde a la partida en tiempo real, y el audio binaural coloca cada sonido a tu alrededor.",
         },
         media: W("tetra/v/listen.mp4"),
         poster: W("tetra/v/listen.webp"),
         sound: true,
       },
-      { kind: "stage", n: "03", label: ST.system },
+      { kind: "stage", n: "02", label: ST.decisions },
       {
-        kind: "icons",
-        title: { en: "An icon dictionary built from blocks.", es: "Un diccionario de iconos hecho de bloques." },
+        kind: "decision",
+        n: D(1),
+        title: { en: "Everything is made of pieces. Starting with the logo.", es: "Todo está hecho de piezas. Empezando por el logo." },
         body: {
-          en: "Every icon is drawn on a 5×5 grid with the same rounded cells as the pieces. The visual system is born from the game itself.",
-          es: "Cada icono se dibuja sobre una retícula de 5×5 con las mismas celdas redondeadas que las piezas. El sistema visual nace del propio juego.",
+          en: "Four minos make the T. When the game opens, the mark builds itself piece by piece in just over a second and the word rises behind it. You're playing before you play.",
+          es: "Cuatro minos forman la T. Al abrir el juego, la marca se monta pieza a pieza en poco más de un segundo y la palabra sube detrás. Antes de jugar, ya estás jugando.",
         },
+        proof: "logo",
       },
       {
-        kind: "skins",
-        title: { en: "Fifteen skins. Fifteen rooms.", es: "Quince skins. Quince salas." },
+        kind: "decision",
+        n: D(2),
+        title: { en: "Icons that follow the rules of the game.", es: "Iconos con las reglas del juego." },
         body: {
-          en: "Each skin redefines materials, light and soundtrack. Rendered here with the game's own code.",
-          es: "Cada skin redefine materiales, luz y banda sonora. Renderizadas aquí con el código real del juego.",
+          en: "I love grids. Each icon is drawn on a 5×5 grid with the same rounded cells as the pieces: 29 glyphs that make moving through the menu feel like more of the game.",
+          es: "Me encantan las retículas. Cada icono se dibuja en una rejilla de 5×5 con las mismas celdas redondeadas que las piezas: 29 glifos que hacen que moverse por el menú se sienta como seguir jugando.",
         },
+        proof: "icons",
       },
       {
-        kind: "moment",
-        title: { en: "Changing skin means changing room.", es: "Cambiar de skin es cambiar de sala." },
+        kind: "decision",
+        n: D(3),
+        title: { en: "Black, seven colours, two typefaces.", es: "Negro, siete colores y dos tipografías." },
         body: {
-          en: "Every skin brings its own electronic track, produced for the game.",
-          es: "Cada una trae su propio tema de música electrónica, producido para el juego.",
+          en: "The pieces and the music bring the light, so the interface stays near-absolute black. One colour per piece, not one more. Plus Jakarta Sans to read; Geist Mono for every number, because in a speed game the numbers matter.",
+          es: "La luz la ponen las piezas y la música, así que la interfaz se queda en un negro casi absoluto. Un color por pieza, ni uno más. Plus Jakarta Sans para leer y Geist Mono para cada cifra, porque en un juego de velocidad los números importan.",
         },
-        media: W("tetra/v/skins.mp4"),
-        poster: W("tetra/v/skins.webp"),
-        sound: true,
+        proof: "palette",
       },
+      {
+        kind: "decision",
+        n: D(4),
+        title: { en: "Leave the world without breaking it.", es: "Salirse del universo sin romperlo." },
+        body: {
+          en: "Each skin changes materials, light and music, but every one keeps the shape of the piece. The classics, NES and Game Boy, nod to the original: the eighties inside a present-day interface is a contrast that works.",
+          es: "Cada skin cambia materiales, luz y música, pero todas respetan la forma de la pieza. Las clásicas, NES y Game Boy, son un guiño al original: los ochenta dentro de una interfaz de hoy es un contraste que funciona.",
+        },
+        proof: "skins",
+      },
+      {
+        kind: "evolution",
+        n: D(5),
+        title: { en: "The menu: five versions to get it right.", es: "El menú: cinco versiones hasta dar con él." },
+        body: {
+          en: "They all worked. I kept the one that asks least of you: the mode, large; a single action; and, once you choose, the skin running live beside it.",
+          es: "Todas funcionaban. Me quedé con la que menos pide: el modo en grande, una sola acción y, al elegir, la skin en directo al lado.",
+        },
+        steps: [
+          { src: W("tetra/menu/m1.webp"), label: { en: "Cover with a live game", es: "Portada con partida en directo" }, body: { en: "The name, huge, and a game playing itself. Handsome, but it only offered one mode.", es: "El nombre en grande y una partida jugándose sola. Bonita, pero solo ofrecía un modo." } },
+          { src: W("tetra/menu/m2.webp"), label: { en: "Launcher", es: "Lanzador" }, body: { en: "Every mode at headline size, like a console menu.", es: "Todos los modos a tamaño de titular, como un menú de consola." } },
+          { src: W("tetra/menu/m3.webp"), label: { en: "Wheel with a glass lens", es: "Rueda con lente de cristal" }, body: { en: "The chosen mode sits in a Liquid Glass lens; the rest bend away along an arc.", es: "El modo elegido entra en una lente de Liquid Glass y los demás se curvan en arco." } },
+          { src: W("tetra/menu/m4.webp"), label: { en: "Centred", es: "Centrado" }, body: { en: "The wheel moves to the centre and the game drops behind it.", es: "La rueda pasa al centro y la partida se queda de fondo." } },
+          { src: W("tetra/menu/m5.webp"), label: { en: "Only what matters", es: "Solo lo esencial" }, body: { en: "No game behind it: the mode, one line and one action.", es: "Sin partida de fondo: el modo, una línea y una acción." } },
+          { src: W("tetra/menu/m6.webp"), label: { en: "Once you choose", es: "Al elegir" }, body: { en: "The menu steps aside and you try the skin live before you play.", es: "El menú se aparta a la izquierda y pruebas la skin en directo antes de jugar." } },
+        ],
+      },
+      { kind: "stage", n: "03", label: ST.room },
+      {
+        kind: "room",
+        title: { en: "TETRA, piece by piece.", es: "TETRA, pieza a pieza." },
+        body: {
+          en: "The opening, the game, the opponents and the phone, hung whole.",
+          es: "La entrada, la partida, los rivales y el móvil, colgados enteros.",
+        },
+        items: [
+          { src: W("tetra/v/intro.mp4"), poster: W("tetra/v/intro.webp"), caption: { en: "A short 3D opening sets the tone. No tutorials.", es: "Una intro breve en 3D marca el tono. Sin tutoriales." } },
+          { src: W("tetra/v/game.mp4"), poster: W("tetra/v/game.webp"), caption: { en: "Every rotation, drop and clear lands inside the track.", es: "Cada giro, caída y línea suena dentro de la pista." } },
+          { src: W("tetra/v/opponents.mp4"), poster: W("tetra/v/opponents.webp"), caption: { en: "Ten named opponents, Versus and Cups.", es: "Diez rivales con nombre propio, Versus y Copas." } },
+          { src: W("tetra/v/select.mp4"), poster: W("tetra/v/select.webp"), caption: { en: "Mode and skin on one screen, with a live preview.", es: "Modo y skin en una sola pantalla, con vista previa en directo." } },
+          { src: W("tetra/v/skins.mp4"), poster: W("tetra/v/skins.webp"), caption: { en: "Changing skin means changing room, and track.", es: "Cambiar de skin es cambiar de sala, y de tema." } },
+          { src: W("tetra/v/desktop.mp4"), poster: W("tetra/v/desktop.webp"), caption: { en: "A desktop app for macOS and Windows.", es: "App de escritorio para macOS y Windows." } },
+          { src: W("tetra/m-landing.webp"), caption: { en: "On the phone, from the first screen.", es: "En el móvil, desde la primera pantalla." }, phone: true },
+          { src: W("tetra/m-choose.webp"), caption: { en: "Choosing with your thumb.", es: "Elegir con el pulgar." }, phone: true },
+          { src: W("tetra/m-game.webp"), caption: { en: "Controls designed for touch.", es: "Controles pensados para el tacto." }, phone: true },
+        ],
+      },
+      { kind: "stage", n: "04", label: ST.result },
       {
         kind: "details",
         items: [
           {
-            label: { en: "Colour", es: "Color" },
-            body: { en: "Near-absolute black: the light comes from the pieces and the music.", es: "Negro casi absoluto: la luz la ponen las piezas y la música." },
+            label: { en: "How I made it", es: "Cómo lo hice" },
+            body: { en: "Design in Figma, and AI directed through OXIA's own design agents and skills. The AI builds; the design decisions are mine.", es: "Diseño en Figma y dirección de IA con agentes y skills de diseño propios de OXIA. La IA construye; las decisiones de diseño son mías." },
           },
           {
-            label: { en: "Sound", es: "Sonido" },
-            body: { en: "One original track per skin and binaural spatial audio. Best with headphones.", es: "Un tema original por skin y audio espacial binaural. Mejor con auriculares." },
+            label: { en: "In numbers", es: "En cifras" },
+            body: { en: "15 skins, 10 opponents, 29 icons and one track per skin.", es: "15 skins, 10 rivales, 29 iconos y un tema por skin." },
           },
           {
-            label: { en: "No noise", es: "Sin ruido" },
-            body: { en: "Free, no ads, no store. Nothing between the player and the game.", es: "Gratis, sin anuncios y sin tienda. Nada entre el jugador y la partida." },
+            label: { en: "For everyone", es: "Para todos" },
+            body: { en: "Free, with no ads. Web, macOS, Windows and mobile.", es: "Gratis y sin anuncios. Web, macOS, Windows y móvil." },
           },
         ],
-      },
-      { kind: "stage", n: "04", label: ST.use },
-      {
-        kind: "moment",
-        title: { en: "An entrance that sets the tone.", es: "Una entrada que marca el tono." },
-        body: {
-          en: "A short 3D intro presents the idea before the first game. No tutorials.",
-          es: "Una intro breve en 3D presenta la idea antes de la primera partida. Sin tutoriales.",
-        },
-        media: W("tetra/v/intro.mp4"),
-        poster: W("tetra/v/intro.webp"),
-        sound: true,
-      },
-      {
-        kind: "moment",
-        title: { en: "Playing is listening.", es: "Jugar es escuchar." },
-        body: {
-          en: "The background breathes with the game; every rotation, drop and clear lands inside the track.",
-          es: "El fondo respira con la partida; cada giro, caída y línea suena dentro de la pista.",
-        },
-        media: W("tetra/v/game.mp4"),
-        poster: W("tetra/v/game.webp"),
-        sound: true,
-        layout: "full",
-      },
-      {
-        kind: "moment",
-        title: { en: "Opponents with personality.", es: "Rivales con personalidad." },
-        body: {
-          en: "Named bots, a Versus mode and Cups: there's always a reason to come back.",
-          es: "Bots con nombre propio, modo Versus y Copas: siempre hay un motivo para volver.",
-        },
-        media: W("tetra/v/opponents.mp4"),
-        poster: W("tetra/v/opponents.webp"),
-        sound: true,
-      },
-      {
-        kind: "moment",
-        title: { en: "Two decisions, one click.", es: "Dos decisiones, un clic." },
-        body: {
-          en: "Mode and skin on a single screen, with a live preview.",
-          es: "Modo y skin en una sola pantalla, con vista previa en directo.",
-        },
-        media: W("tetra/v/select.mp4"),
-        poster: W("tetra/v/select.webp"),
-        sound: true,
-      },
-      {
-        kind: "moment",
-        title: { en: "Web, desktop and mobile.", es: "Web, escritorio y móvil." },
-        body: {
-          en: "Plays in the browser, installs on macOS and Windows, and on mobile comes with controls designed for touch.",
-          es: "Se juega en el navegador, se instala en macOS y Windows y, en móvil, llega con controles pensados para el tacto.",
-        },
-        media: W("tetra/v/desktop.mp4"),
-        poster: W("tetra/v/desktop.webp"),
-        also: [W("tetra/m-landing.webp"), W("tetra/m-choose.webp"), W("tetra/m-game.webp")],
       },
       {
         kind: "statement",
@@ -239,92 +242,82 @@ export const projects: Project[] = [
     heroPoster: W("tendu/v/t-bloom.webp"),
     theme: { bg: "#f9f6f1", fg: "#1b1f1c", accent: "#4f7a3a", muted: "#7a7a72" },
     blocks: [
-      { kind: "stage", n: "01", label: ST.challenge },
+      { kind: "stage", n: "01", label: ST.idea },
       {
         kind: "idea",
-        title: { en: "Wellbeing apps compete for your attention too.", es: "Las apps de bienestar también compiten por tu atención." },
+        title: { en: "Looking after yourself shouldn't be one more chore.", es: "Cuidarte no debería ser otra obligación." },
         body: {
-          en: "Streaks that break, red badges, guilt for not opening them. The opposite of what wellbeing promises.",
-          es: "Rachas que se rompen, avisos en rojo, culpa por no entrar. Justo lo contrario de lo que promete el bienestar.",
+          en: "Wellbeing apps compete for your attention too: streaks that break, red badges, guilt for not opening them. Tendu turns that around. Focusing, breathing or writing how you feel grows an island, and if one day you don't come back, nothing withers.",
+          es: "Las apps de bienestar también compiten por tu atención: rachas que se rompen, avisos en rojo, culpa por no entrar. Tendu le da la vuelta. Concentrarte, respirar o escribir cómo estás hace crecer una isla, y si un día no entras, no se marchita nada.",
         },
       },
-      { kind: "stage", n: "02", label: ST.idea },
+      { kind: "stage", n: "02", label: ST.decisions },
       {
-        kind: "idea",
-        title: { en: "A garden that grows when you look after yourself.", es: "Un jardín que crece cuando te cuidas." },
+        kind: "decision",
+        n: D(1),
+        title: { en: "No guilt, in every word.", es: "Sin culpa, en cada palabra." },
         body: {
-          en: "Every pause, every breath and every journal entry grows a small island. If one day you can't, nothing withers.",
-          es: "Cada pausa, cada respiración y cada entrada en el diario hacen crecer una pequeña isla. Si un día no puedes, no se marchita nada.",
+          en: "Nobody makes you do anything. Fancy twenty minutes on the timer? Go ahead. Just want to look at your garden and the gifts the animals left you? That counts too. Being away never costs you, and the copy says so on every screen.",
+          es: "Nadie te obliga a nada. ¿Te apetecen veinte minutos de temporizador? Adelante. ¿Solo quieres ver tu jardín y los regalos que te han dejado los animales? También vale. Ausentarte nunca resta, y el copy lo dice en cada pantalla.",
         },
+        proof: { media: W("tendu/v/t-welcome.webp"), phone: true },
       },
       {
-        kind: "screens",
-        items: [
-          {
-            title: { en: "It greets you by name.", es: "Te recibe por tu nombre." },
-            body: { en: "Every time you come back, your garden is waiting for you.", es: "Cada vez que vuelves, tu jardín te está esperando." },
-            media: W("tendu/v/t-welcome.webp"),
-            poster: W("tendu/v/t-welcome.webp"),
-          },
-          {
-            title: { en: "It grows with you.", es: "Crece contigo." },
-            body: { en: "Day 290: the island reflects the time you give yourself, with seasons and nights that follow your clock.", es: "Día 290: la isla refleja el tiempo que te dedicas, con estaciones y noches que siguen tu reloj." },
-            media: W("tendu/v/t-night.webp"),
-            poster: W("tendu/v/t-night.webp"),
-          },
+        kind: "evolution",
+        n: D(2),
+        title: { en: "The garden is the interface.", es: "El jardín es la interfaz." },
+        body: {
+          en: "No progress bars, no charts: your consistency shows on the island. From day one to year one, it grows with the time you give yourself.",
+          es: "Ni barras de progreso ni gráficas: tu constancia se ve en la isla. Del día 1 al año 1, crece con el tiempo que te dedicas.",
+        },
+        steps: [
+          { src: W("tendu/island/s1.webp"), label: { en: "Day 1", es: "Día 1" }, body: { en: "Newborn: one plot, one tree.", es: "Recién nacida: una parcela y un árbol." } },
+          { src: W("tendu/island/s2.webp"), label: { en: "Week 2", es: "Semana 2" }, body: { en: "16 plots. Paths and the first lights arrive.", es: "16 parcelas. Llegan los caminos y las primeras luces." } },
+          { src: W("tendu/island/s3.webp"), label: { en: "Month 3", es: "Mes 3" }, body: { en: "25 plots, a pond and the first blossom.", es: "25 parcelas, un estanque y la primera floración." } },
+          { src: W("tendu/island/s4.webp"), label: { en: "Year 1", es: "Año 1" }, body: { en: "The whole island, laid out your way.", es: "La isla completa, a tu manera." } },
         ],
       },
-      { kind: "stage", n: "03", label: ST.system },
+      {
+        kind: "decision",
+        n: D(3),
+        title: { en: "Low poly and Liquid Glass, in measure.", es: "Low poly y Liquid Glass, con medida." },
+        body: {
+          en: "Low poly brings warmth; glass brings lightness. Liquid Glass is everywhere right now, so I kept it for what floats above the garden (panels, controls, notices) and never for the garden itself.",
+          es: "El low poly da calidez; el cristal, ligereza. Liquid Glass está en todas partes, así que lo reservé para lo que flota sobre el jardín (paneles, controles, avisos) y nunca para el jardín en sí.",
+        },
+        proof: { media: W("tendu/v/t-night.webp"), phone: true },
+      },
+      { kind: "stage", n: "03", label: ST.room },
+      {
+        kind: "room",
+        title: { en: "Tendu, screen by screen.", es: "Tendu, pantalla a pantalla." },
+        body: {
+          en: "Focus, bloom, breathe, write and plant: the app in use, recorded on the phone.",
+          es: "Concentrarse, florecer, respirar, escribir y plantar: la app en uso, grabada en el móvil.",
+        },
+        items: [
+          { src: W("tendu/v/t-focus.mp4"), poster: W("tendu/v/t-focus.webp"), phone: true, caption: { en: "A timer, the phone face down, and something new sprouts.", es: "Un temporizador, el móvil a un lado y algo nuevo brota." } },
+          { src: W("tendu/v/t-bloom.mp4"), poster: W("tendu/v/t-bloom.webp"), phone: true, caption: { en: "Finish, and it blooms.", es: "Termina y florece." } },
+          { src: W("tendu/v/t-breathe.mp4"), poster: W("tendu/v/t-breathe.webp"), phone: true, caption: { en: "An orb that breathes with you. Nothing else on screen.", es: "Una esfera que respira contigo. Nada más en pantalla." } },
+          { src: W("tendu/v/t-journal.mp4"), poster: W("tendu/v/t-journal.webp"), phone: true, caption: { en: "One question a day. Slide to say how you feel.", es: "Una pregunta al día. Deslizas para decir cómo estás." } },
+          { src: W("tendu/v/t-nursery.mp4"), poster: W("tendu/v/t-nursery.webp"), phone: true, caption: { en: "What you earn, you plant.", es: "Lo que ganas, lo plantas." } },
+        ],
+      },
+      { kind: "stage", n: "04", label: ST.result },
       {
         kind: "details",
         items: [
           {
-            label: { en: "Wellbeing before engagement", es: "Bienestar antes que engagement" },
-            body: { en: "Progress without guilt: being away never costs you. Coins and progress are never for sale.", es: "Progreso sin culpa: ausentarse nunca resta. Ni monedas ni progreso a la venta." },
+            label: { en: "How I made it", es: "Cómo lo hice" },
+            body: { en: "First concept in Figma, refined with AI. Built with React and Three.js, installable on the iPhone.", es: "Primer concepto en Figma, refinado con IA. Hecha con React y Three.js, instalable en el iPhone." },
           },
           {
             label: { en: "Private by design", es: "Privado por diseño" },
             body: { en: "The journal is yours alone. It's never shared.", es: "El diario es solo tuyo. Nunca se comparte." },
           },
           {
-            label: { en: "Visual calm", es: "Calma visual" },
-            body: { en: "A floating low-poly garden and Liquid Glass panels that never take you out of it.", es: "Un jardín low poly flotante y paneles de Liquid Glass que nunca te sacan de él." },
-          },
-        ],
-      },
-      { kind: "stage", n: "04", label: ST.use },
-      {
-        kind: "sequence",
-        items: [
-          {
-            title: { en: "Focus that grows things.", es: "Concentrarse hace crecer cosas." },
-            body: { en: "A timer, the phone face down, and when you finish, something new sprouts on the island.", es: "Un temporizador, el móvil a un lado y, al terminar, algo nuevo brota en la isla." },
-            media: W("tendu/v/t-focus.mp4"),
-            poster: W("tendu/v/t-focus.webp"),
-          },
-          {
-            title: { en: "Finish, and it blooms.", es: "Termina y florece." },
-            body: { en: "Every completed session turns into coins and a flower growing on your island.", es: "Cada sesión completada se convierte en monedas y en una flor que crece en tu isla." },
-            media: W("tendu/v/t-bloom.mp4"),
-            poster: W("tendu/v/t-bloom.webp"),
-          },
-          {
-            title: { en: "Breathe with something alive.", es: "Respirar con algo vivo." },
-            body: { en: "An orb that swells and settles with your breath. Nothing else on screen.", es: "Una esfera que se expande y se contrae al ritmo de tu respiración. Nada más en pantalla." },
-            media: W("tendu/v/t-breathe.mp4"),
-            poster: W("tendu/v/t-breathe.webp"),
-          },
-          {
-            title: { en: "A journal that asks the right question.", es: "Un diario que hace la pregunta justa." },
-            body: { en: "One question a day. Slide to say how you feel and a flower opens with you.", es: "Una pregunta al día. Deslizas para decir cómo estás y una flor se abre contigo." },
-            media: W("tendu/v/t-journal.mp4"),
-            poster: W("tendu/v/t-journal.webp"),
-          },
-          {
-            title: { en: "What you earn, you plant.", es: "Lo que ganas, lo plantas." },
-            body: { en: "Looking after yourself earns seeds, trees and small details for your island.", es: "Lo que ganas cuidándote se convierte en semillas, árboles y detalles para tu isla." },
-            media: W("tendu/v/t-nursery.mp4"),
-            poster: W("tendu/v/t-nursery.webp"),
+            label: { en: "Nothing for sale", es: "Nada a la venta" },
+            body: { en: "Coins and progress are earned, never bought.", es: "Las monedas y el progreso se ganan; nunca se compran." },
           },
         ],
       },

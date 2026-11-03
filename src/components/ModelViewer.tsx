@@ -4,7 +4,9 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Environment, Lightformer, useGLTF, ContactShadows } from "@react-three/drei";
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
-import { MODELS, type ModelKey } from "@/content/models";
+import { MODELS, type Look, type ModelKey } from "@/content/models";
+
+const DEFAULT_LOOK: Look = { env: "studio", envI: 1.2, rough: 1, key: 0.9, exposure: 1.05 };
 
 const D = THREE.MathUtils.degToRad;
 
@@ -14,6 +16,16 @@ function Piece({ k, on, drag }: { k: ModelKey; on: boolean; drag: React.RefObjec
   const { scene } = useGLTF(m.src);
   const obj = useMemo(() => {
     const c = scene.clone(true);
+    // each piece gets its own materials, tuned to its look
+    const look = m.look ?? DEFAULT_LOOK;
+    c.traverse((o) => {
+      const mesh = o as THREE.Mesh;
+      if (!mesh.isMesh) return;
+      const mat = (mesh.material as THREE.MeshStandardMaterial).clone();
+      mat.envMapIntensity = look.envI;
+      mat.roughness = Math.min(1, (mat.roughness ?? 1) * look.rough);
+      mesh.material = mat;
+    });
     const inner = new THREE.Group();
     inner.add(c);
     inner.rotation.set(m.rx ?? 0, 0, m.rz ?? 0);
@@ -56,17 +68,64 @@ function Piece({ k, on, drag }: { k: ModelKey; on: boolean; drag: React.RefObjec
   );
 }
 
-function Studio({ tone }: { tone: "dark" | "light" }) {
+/** The room each piece is reflected in. */
+function Studio({ look }: { look: Look }) {
+  if (look.env === "metal")
+    return (
+      <Environment resolution={512}>
+        {/* a mid-grey room, so polished metal reads silver, not black */}
+        <color attach="background" args={["#4a4a4a"]} />
+        <Lightformer intensity={2} rotation-x={Math.PI / 2} position={[0, 8, 0]} scale={[18, 18, 1]} />
+        <Lightformer intensity={1.2} rotation-x={-Math.PI / 2} position={[0, -8, 0]} scale={[18, 18, 1]} color="#2a2a2a" />
+        {/* hard strips: they draw long, crisp highlights along the edges */}
+        <Lightformer intensity={7} rotation-x={Math.PI / 2} position={[0, 6, -1]} scale={[10, 0.6, 1]} />
+        <Lightformer intensity={5} rotation-y={Math.PI / 2} position={[-6, 1, 1]} scale={[0.6, 10, 1]} />
+        <Lightformer intensity={5} rotation-y={-Math.PI / 2} position={[6, 0, -1]} scale={[0.6, 10, 1]} />
+        <Lightformer intensity={3} position={[0, 0.5, 9]} scale={[10, 2, 1]} />
+        <Lightformer intensity={0} position={[0, -1.5, 8]} scale={[14, 1.2, 1]} color="#000" />
+        <Lightformer intensity={3} position={[-5, 4, -6]} scale={[3, 3, 1]} onUpdate={(self) => self.lookAt(0, 0, 0)} />
+        <Lightformer form="ring" intensity={6} position={[3.5, 2.5, 5]} scale={1.6} onUpdate={(self) => self.lookAt(0, 0, 0)} />
+      </Environment>
+    );
+  if (look.env === "soft")
+    return (
+      <Environment resolution={256}>
+        <color attach="background" args={["#3b3833"]} />
+        <Lightformer intensity={2.2} position={[0, 4, 8]} scale={[16, 10, 1]} color="#fff3e2" onUpdate={(self) => self.lookAt(0, 0, 0)} />
+        <Lightformer intensity={1.4} rotation-x={Math.PI / 2} position={[0, 8, 0]} scale={[16, 16, 1]} color="#fffaf2" />
+        <Lightformer intensity={0.9} rotation-y={Math.PI / 2} position={[-9, 0, 0]} scale={[16, 8, 1]} color="#e9eef5" />
+        <Lightformer intensity={0.6} rotation-y={-Math.PI / 2} position={[9, 0, 0]} scale={[16, 8, 1]} color="#ffe9d2" />
+      </Environment>
+    );
   return (
     <Environment resolution={512}>
-      <color attach="background" args={[tone === "dark" ? "#262626" : "#d8d4cb"]} />
+      <color attach="background" args={["#262626"]} />
       <Lightformer intensity={2.4} position={[0, 1.5, 10]} scale={[12, 2.6, 1]} />
       <Lightformer intensity={1.2} position={[0, -2.5, 10]} scale={[12, 1, 1]} />
       <Lightformer intensity={3.4} rotation-x={Math.PI / 2} position={[0, 7, 0]} scale={[14, 3, 1]} />
       <Lightformer intensity={3} rotation-y={Math.PI / 2} position={[-8, 0.5, 0]} scale={[14, 2.2, 1]} />
       <Lightformer intensity={3} rotation-y={-Math.PI / 2} position={[8, -0.5, 0]} scale={[14, 2.2, 1]} />
       <Lightformer form="ring" intensity={3.5} position={[4, 3, 6]} scale={2.6} onUpdate={(self) => self.lookAt(0, 0, 0)} />
+      {look.front ? <Lightformer intensity={look.front} position={[0, 2, 12]} scale={[22, 9, 1]} /> : null}
     </Environment>
+  );
+}
+
+/** Direct light and exposure follow the piece on show. */
+function Lights({ look }: { look: Look }) {
+  const { gl } = useThree();
+  useEffect(() => {
+    gl.toneMappingExposure = look.exposure;
+  }, [gl, look.exposure]);
+  const warm = look.env === "soft";
+  return (
+    <>
+      <ambientLight intensity={warm ? 0.45 : 0.25} />
+      <directionalLight position={[2.5, 3.5, 4]} intensity={look.key} color={warm ? "#fff1df" : "#ffffff"} />
+      {/* rim lights from behind, so dark pieces still draw their outline on black */}
+      <directionalLight position={[-3, 2.5, -4]} intensity={warm ? 1.2 : 2.2} />
+      <directionalLight position={[3.5, -1, -3]} intensity={warm ? 0.6 : 1.2} />
+    </>
   );
 }
 
@@ -101,6 +160,7 @@ export default function ModelViewer({
   const [seen, setSeen] = useState(false);
   const [visible, setVisible] = useState(false);
   const drag = useRef({ yaw: 0, pitch: 0, active: false });
+  const look = MODELS[keys[active]].look ?? DEFAULT_LOOK;
   // a model is only fetched the first time it is shown (the next one is fetched just ahead)
   const [mounted, setMounted] = useState(() => new Set<ModelKey>([keys[active]]));
   useEffect(() => {
@@ -164,11 +224,7 @@ export default function ModelViewer({
           gl={{ antialias: true, alpha: true, toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.05 }}
         >
           <Invalidate run={visible} />
-          <ambientLight intensity={0.35} />
-          <directionalLight position={[2, 3, 5]} intensity={0.9} />
-          {/* rim light from behind, so dark pieces still draw their outline on black */}
-          <directionalLight position={[-3, 2.5, -4]} intensity={2.2} />
-          <directionalLight position={[3.5, -1, -3]} intensity={1.2} />
+          <Lights look={look} />
           <Suspense fallback={null}>
             {keys.map((k, i) =>
               mounted.has(k) ? (
@@ -177,7 +233,7 @@ export default function ModelViewer({
                 </Suspense>
               ) : null,
             )}
-            <Studio tone={tone} />
+            <Studio look={look} />
             {shadow && <ContactShadows position={[0, -1.15, 0]} opacity={0.5} scale={5} blur={2.6} far={2.2} />}
           </Suspense>
         </Canvas>

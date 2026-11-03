@@ -1,0 +1,131 @@
+.ev {
+  position: relative;
+}
+.pin {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 16px;
+  align-items: center;
+  padding: 0 var(--gutter);
+}
+.side {
+  grid-column: 1 / span 4;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding-right: 2vw;
+}
+.title {
+  font-size: clamp(30px, 2.8vw, 54px);
+  font-weight: 500;
+  letter-spacing: -0.045em;
+  line-height: 1;
+}
+.body {
+  font-size: clamp(16px, 1.15vw, 20px);
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+  color: color-mix(in srgb, var(--fg) 75%, transparent);
+}
+.list {
+  list-style: none;
+  margin-top: 3vh;
+  display: flex;
+  flex-direction: column;
+}
+.list li {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  gap: 2px 8px;
+  padding: 12px 0;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  transition: color 0.5s var(--ease);
+}
+.lLabel {
+  font-size: 17px;
+  letter-spacing: -0.02em;
+}
+.lBody {
+  grid-column: 2;
+  max-height: 0;
+  overflow: hidden;
+  font-size: 15px;
+  line-height: 1.4;
+  opacity: 0;
+  transition: max-height 0.7s var(--ease), opacity 0.5s var(--ease), margin 0.7s var(--ease);
+}
+.list li.past {
+  color: color-mix(in srgb, var(--fg) 55%, transparent);
+}
+.list li.on {
+  color: var(--fg);
+}
+.list li.on .lBody {
+  max-height: 6em;
+  opacity: 0.75;
+  margin-top: 4px;
+}
+.frame {
+  grid-column: 5 / -1;
+  position: relative;
+  width: 100%;
+  max-height: 80svh;
+  justify-self: center;
+  border-radius: clamp(14px, 1.2vw, 22px);
+  overflow: hidden;
+  background: #000;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08), 0 60px 120px -60px rgba(0, 0, 0, 0.8);
+}
+.frame img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transform: scale(1.03);
+  transition: opacity 0.8s var(--ease), transform 1.2s var(--ease);
+}
+.frame img.shown {
+  opacity: 1;
+  transform: none;
+}
+.frame img.gone {
+  transform: scale(0.98);
+}
+.count {
+  position: absolute;
+  right: 16px;
+  bottom: 14px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(10px);
+}
+.track {
+  margin-top: -100svh;
+}
+.beat {
+  height: 75svh;
+}
+.beat:last-child {
+  height: 100svh;
+}
+@media (max-width: 800px) {
+  .side,
+  .frame {
+    grid-column: 1 / -1;
+  }
+  .pin {
+    align-content: center;
+    gap: 3vh;
+  }
+  .lBody {
+    display: none;
+  }
+}

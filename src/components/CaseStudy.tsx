@@ -10,6 +10,9 @@ import { Media, Row, ratioOf } from "./Media";
 import TetraIcons from "./TetraIcons";
 import TetraSkins from "./TetraSkins";
 import Sequence from "./Sequence";
+import Evolution from "./case/Evolution";
+import Room from "./case/Room";
+import { TetraLogo, TetraPalette } from "./case/TetraBrand";
 import NextChapter, { type NextTarget } from "./NextChapter";
 import styles from "./CaseStudy.module.css";
 
@@ -244,6 +247,43 @@ export default function CaseStudy({ project, next, locale }: { project: Project;
                   <p className={styles.body} data-reveal>{t(b.body, locale)}</p>
                 </section>
               );
+            case "decision": {
+              const pf = b.proof;
+              return (
+                <section key={i} className={styles.decision}>
+                  <div className={styles.dHead}>
+                    <span className="mono muted" data-reveal>{b.n}</span>
+                    <h2 className={`display ${styles.dTitle}`} data-reveal>{t(b.title, locale)}</h2>
+                    <p className={styles.body} data-reveal>{t(b.body, locale)}</p>
+                  </div>
+                  <div data-reveal>
+                    {pf === "icons" ? (
+                      <TetraIcons locale={locale} />
+                    ) : pf === "skins" ? (
+                      <div className={styles.wide}>
+                        <TetraSkins locale={locale} />
+                      </div>
+                    ) : pf === "logo" ? (
+                      <TetraLogo />
+                    ) : pf === "palette" ? (
+                      <TetraPalette locale={locale} />
+                    ) : pf.phone ? (
+                      <div className={styles.dPhone}>
+                        <Media src={pf.media} poster={pf.poster} alt={t(b.title, locale)} grain={false} ratio={ratioOf(pf.poster ?? pf.media, 0.46)} />
+                      </div>
+                    ) : (
+                      <div className={styles.wide}>
+                        <Media src={pf.media} poster={pf.poster} alt={t(b.title, locale)} />
+                      </div>
+                    )}
+                  </div>
+                </section>
+              );
+            }
+            case "evolution":
+              return <Evolution key={i} n={b.n} title={b.title} body={b.body} steps={b.steps} locale={locale} />;
+            case "room":
+              return <Room key={i} title={b.title} body={b.body} items={b.items} locale={locale} />;
             case "statement":
               return (
                 <section key={i} className={styles.closing} data-stop>

@@ -425,3 +425,46 @@
   -webkit-mask: url("/brand/oxia-emblem.svg") center / contain no-repeat;
   mask: url("/brand/oxia-emblem.svg") center / contain no-repeat;
 }
+
+/* a design decision: number, the decision as a headline, the why; the proof below */
+.decision {
+  display: flex;
+  flex-direction: column;
+  gap: 9vh;
+}
+.dHead {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 4vh 16px;
+  padding: 0 var(--gutter);
+  align-items: start;
+}
+.dHead > :first-child {
+  grid-column: 1 / span 3;
+  padding-top: 0.9em;
+}
+.dTitle {
+  grid-column: 4 / span 8;
+  font-size: clamp(36px, 3.8vw, 72px);
+  line-height: 1;
+}
+.dHead > .body {
+  grid-column: 4 / span 5;
+}
+.dPhone {
+  width: min(380px, 24vw);
+  margin: 0 auto;
+  border-radius: clamp(28px, 2.6vw, 46px);
+  overflow: hidden;
+  box-shadow: 0 50px 90px -40px rgba(40, 34, 20, 0.45), 0 0 0 1px rgba(0, 0, 0, 0.06);
+}
+@media (max-width: 800px) {
+  .dHead > *,
+  .dTitle,
+  .dHead > .body {
+    grid-column: 1 / -1;
+  }
+  .dPhone {
+    width: 64vw;
+  }
+}

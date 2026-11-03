@@ -1,0 +1,140 @@
+@font-face {
+  font-family: "TetraJakarta";
+  src: url("/fonts/plus-jakarta-sans-latin-wght-normal.woff2") format("woff2-variations");
+  font-weight: 200 800;
+  font-display: swap;
+}
+@font-face {
+  font-family: "TetraGeist";
+  src: url("/fonts/geist-mono-latin-400-normal.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+
+.logo {
+  display: grid;
+  place-items: center;
+  min-height: 62svh;
+  margin: 0 var(--gutter);
+  border-radius: 28px;
+  background: radial-gradient(60% 70% at 50% 50%, #111 0%, #000 100%);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+.lockup {
+  display: flex;
+  align-items: center;
+  gap: clamp(20px, 2.4vw, 44px);
+}
+.mark {
+  width: clamp(90px, 9vw, 170px);
+  overflow: visible;
+}
+.cell {
+  fill: #fbfbfc;
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: drop 0.62s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+@keyframes drop {
+  from {
+    transform: translateY(-160%) scale(0.6);
+    opacity: 0;
+  }
+}
+.word {
+  font-family: "TetraJakarta", sans-serif;
+  font-weight: 600;
+  font-size: clamp(72px, 7.6vw, 148px);
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: #fbfbfc;
+  animation: rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.5s both;
+}
+@keyframes rise {
+  from {
+    transform: translateY(30%);
+    opacity: 0;
+    filter: blur(6px);
+  }
+}
+
+.palette {
+  margin: 0 var(--gutter);
+  display: flex;
+  flex-direction: column;
+  gap: 8vh;
+}
+.pieces {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 16px;
+}
+.piece {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 28px 18px 16px;
+  border-radius: 20px;
+  background: #0b0b0c;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+.piece svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.piece figcaption {
+  display: flex;
+  justify-content: space-between;
+  font-family: "TetraGeist", monospace;
+  font-size: 13px;
+  color: #8f8f8c;
+}
+.pname {
+  color: #fbfbfc;
+}
+.type {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.type > div {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+.tLabel {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--muted);
+}
+.jakarta {
+  font-family: "TetraJakarta", sans-serif;
+  font-weight: 600;
+  font-size: clamp(40px, 4.4vw, 84px);
+  letter-spacing: -0.035em;
+  line-height: 1;
+}
+.geist {
+  font-family: "TetraGeist", monospace;
+  font-size: clamp(26px, 2.6vw, 48px);
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+.geist i {
+  font-style: normal;
+  color: #6c6c6a;
+  font-size: 0.5em;
+  margin: 0 0.6em 0 0.25em;
+  vertical-align: 0.4em;
+}
+@media (max-width: 800px) {
+  .pieces {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .type {
+    grid-template-columns: 1fr;
+  }
+}
