@@ -132,7 +132,12 @@
 }
 @media (max-width: 800px) {
   .pieces {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .piece {
+    padding: 16px 10px 10px;
+    min-width: 0;
   }
   .type {
     grid-template-columns: 1fr;
